@@ -1,0 +1,2 @@
+includeBuild "../K3DGE"
+rootProject.name = "TesterGame"

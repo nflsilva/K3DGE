@@ -1,0 +1,32 @@
+buildscript {
+    ext.kotlinVersion = "1.5.10"
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    }
+}
+
+plugins {
+    id 'java'
+}
+
+subprojects {
+    apply plugin: "org.jetbrains.kotlin.jvm"
+    group "pt.k3dge"
+    version "0.0.1-SNAPSHOT"
+
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+
+    }
+}
+
+jar {
+    from {
+        configurations.implementation.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
