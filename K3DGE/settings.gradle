@@ -1,3 +1,4 @@
+include(":Tools")
 include(":UI")
 include(":Render")
 include(":Core")
