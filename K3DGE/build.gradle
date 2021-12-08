@@ -1,6 +1,22 @@
+import org.gradle.internal.os.OperatingSystem
+
 buildscript {
     ext.kotlinVersion = "1.5.10"
     ext.lwjglVersion = "3.3.0"
+    ext.jomlVersion = "1.10.2"
+
+    switch (OperatingSystem.current()) {
+        case OperatingSystem.LINUX:
+            ext.lwjglNatives = "natives-linux"
+            break
+        case OperatingSystem.MAC_OS:
+            ext.lwjglNatives = natives-macos
+            break
+        case OperatingSystem.WINDOWS:
+            ext.lwjglNatives = "natives-windows"
+            break
+    }
+
     repositories {
         mavenCentral()
     }

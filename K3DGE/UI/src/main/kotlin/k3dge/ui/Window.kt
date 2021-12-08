@@ -25,7 +25,7 @@ class Window(
 
         window = glfwCreateWindow(width, height, title, 0, 0)
 
-        glfwSetKeyCallback(window) { window: Long, key: Int, scancode: Int, action: Int, mods: Int ->
+        glfwSetKeyCallback(window) { window: Long, key: Int, _: Int, action: Int, _: Int ->
             if (key == GLFW.GLFW_KEY_ESCAPE && action == GLFW.GLFW_RELEASE) {
                 GLFW.glfwSetWindowShouldClose(window, true)
             }

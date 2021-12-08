@@ -1,5 +1,8 @@
 dependencies {
+    implementation "org.joml:joml:${jomlVersion}"
+
     implementation project(":Render")
     implementation project(":UI")
     implementation project(":Tools")
+
 }

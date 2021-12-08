@@ -1,34 +1,23 @@
 package k3dge.core
 
+import k3dge.render.RenderEngine
 import k3dge.tools.Log
 
 import k3dge.ui.InputState
 import k3dge.ui.UIEngine
 
-
 class CoreEngine {
 
     private var isRunning: Boolean = false
-    private var ticksPerSecond: Int = 120
-
+    private var gameObjects: MutableList<GameEntity> = mutableListOf()
     private val uiEngine: UIEngine = UIEngine()
-
-    fun start() {
-        if(isRunning) return
-
-        uiEngine.start()
-        isRunning = true
-        run()
-    }
-    fun stop() {
-        uiEngine.stop()
-    }
+    private val renderEngine: RenderEngine = RenderEngine()
 
     private fun run() {
 
-        var nowTime = 0.0
+        var nowTime: Double
+        var deltaTime: Double
         var lastTime = 0.0
-        var deltaTime = 0.0
         var timeToTick = 0.0
 
         var frames = 0
@@ -45,12 +34,12 @@ class CoreEngine {
             lastTime = nowTime;
 
             if(timeToTick <= 0) {
-                update(deltaTime, uiEngine.getInputState())
+                onUpdate(deltaTime, uiEngine.getInputState())
                 updates++
                 timeToTick = tickTime
             }
 
-            render()
+            onFrame()
             frames++
 
             if(uiEngine.getTime() > seconds) {
@@ -64,12 +53,41 @@ class CoreEngine {
                 isRunning = false
             }
         }
+
+        onCleanUp()
     }
-    private fun render() {
+    private fun onFrame() {
         uiEngine.onFrame()
+        for(go in gameObjects){
+            go.onFrame(renderEngine)
+        }
     }
-    private fun update(elapsedTime: Double, input: InputState) {
+    private fun onUpdate(elapsedTime: Double, input: InputState) {
         uiEngine.onUpdate()
+        for(go in gameObjects){
+            go.onUpdate(elapsedTime, input)
+        }
+    }
+    private fun onCleanUp(){
+        for(go in gameObjects){
+            go.cleanUp()
+        }
+    }
+
+    fun start() {
+        if(isRunning) return
+
+        uiEngine.start()
+        isRunning = true
+        run()
+    }
+
+    fun addGameObject(gameObject: GameEntity){
+        gameObjects.add(gameObject)
+    }
+
+    companion object {
+        private var ticksPerSecond: Int = 120
     }
 
 }
