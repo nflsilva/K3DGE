@@ -33,6 +33,7 @@ class RenderEngine {
         renderBatches[id]?.entityData?.add(EntityRenderData(shader, modelMatrix))
     }
     fun onFrame() {
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f)
         glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
         drawBatches()
     }
@@ -46,6 +47,7 @@ class RenderEngine {
             }
             unbindTexturedModelFromBatch()
         }
+        renderBatches.clear()
     }
     private fun bindTexturedModelFromBatch(batch: RenderBatchData){
         glBindVertexArray(batch.vao);

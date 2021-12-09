@@ -15,7 +15,6 @@ out vec3 normal;
 out vec3 lightVector;
 
 void main(){
-
     vec4 worldPosition = in_modelMatrix * vec4(in_position, 1.0);
     gl_Position = in_projectionMatrix * in_viewMatrix * worldPosition;
     texCoord = in_texCoord;

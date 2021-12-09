@@ -1,6 +1,7 @@
 import k3dge.core.CoreEngine
 import k3dge.core.CoreEngineDelegate
 import k3dge.core.GameEntity
+import k3dge.core.component.AutoSpinComponent
 import k3dge.core.component.TexturedMeshComponent
 import k3dge.render.model.MeshModel
 import k3dge.render.model.ShaderModel
@@ -9,10 +10,11 @@ import k3dge.tools.ResourceLoader
 import k3dge.ui.InputState
 import org.joml.Vector3f
 
+val engine = CoreEngine()
+
 fun main(args: Array<String>) {
 
     val gameLogic = GameLogic()
-    val engine = CoreEngine()
     engine.delegate = gameLogic
     engine.start()
 
@@ -44,6 +46,7 @@ class GameLogic : CoreEngineDelegate {
                 normals = listOf(
                     0.0f, 0.0f, -1.0f,
                     0.0f, 0.0f, -1.0f,
+                    0.0f, 0.0f, -1.0f,
                     0.0f, 0.0f, -1.0f
                 ),
                 indices = listOf(
@@ -60,14 +63,16 @@ class GameLogic : CoreEngineDelegate {
         val texture = TextureModel(textureData!!.width, textureData.height, textureData.data)
 
         val textMeshComponent = TexturedMeshComponent(mesh, texture)
-
-        val cube = GameEntity(
-            Vector3f(0f, 0f, 0f),
+        val quad = GameEntity(
+            Vector3f(0f, 0f, -2f),
             Vector3f(0f, 0f, 0f),
             Vector3f(1f, 1f, 1f),
             shader)
+        quad.addComponent(textMeshComponent)
+        quad.addComponent(AutoSpinComponent())
 
-        cube.addComponent(textMeshComponent)
+        engine.addGameObject(quad)
+
     }
 
     override fun onUpdate() {

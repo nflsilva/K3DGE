@@ -16,7 +16,9 @@ vec4 processLight(vec3 normal, vec3 lightVector, vec4 lightColor){
 
 void main()
 {
-    out_color = vec4(1.0, 0.5, 0.5, 1.0);
+    //out_color = vec4(1.0, 0.5, 0.5, 1.0);
+    out_color = texture(texture0, texCoord);
+
     //vec4 diffure = processLight(normal, lightVector, in_lightColor);
     //out_color = diffure * texture(texture0, texCoord);
 };

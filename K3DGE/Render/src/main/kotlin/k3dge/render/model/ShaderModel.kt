@@ -20,9 +20,14 @@ class ShaderModel(vertexSource: String, fragmentSource: String) {
         addShader(fragmentSource, GL_FRAGMENT_SHADER)
         linkProgram()
 
-        addUniform("in_modelMatrix")
-        addUniform("in_viewMatrix")
-        addUniform("in_projectionMatrix")
+        bindAttribute(0, "in_position");
+        bindAttribute(1, "in_texCoord");
+        bindAttribute(2, "in_normal");
+
+        addUniform(MODEL_MATRIX_UNIFORM)
+        addUniform(VIEW_MATRIX_UNIFORM)
+        addUniform(PROJECTION_MATRIX_UNIFORM)
+        addUniform("in_lightDirection")
     }
     fun bind(){
         glUseProgram(programId);
@@ -64,7 +69,7 @@ class ShaderModel(vertexSource: String, fragmentSource: String) {
     }
     fun setUniformMatrix4f(name: String, value: Matrix4f){
         uniforms[name]?.let {
-            val data = FloatBuffer.allocate(4 * 4)
+            val data = BufferUtils.createFloatBuffer(4*4)
             glUniformMatrix4fv(it, false, value.get(data))
         }
     }

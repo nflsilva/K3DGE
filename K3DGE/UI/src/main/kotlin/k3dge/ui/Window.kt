@@ -29,7 +29,7 @@ class Window(
         }
 
         glfwMakeContextCurrent(window)
-        glfwSwapInterval(0)
+        glfwSwapInterval(1)
     }
 
     fun open() {

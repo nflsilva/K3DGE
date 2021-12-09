@@ -42,7 +42,7 @@ class ResourceLoader {
                 var resourcePath = object {}::class.java.getResource(fileName).path
 
                 //Why do I need this hack?
-                resourcePath = resourcePath.drop(1)
+                //resourcePath = resourcePath.drop(1)
                 val data: ByteBuffer? = stbi_load(resourcePath, width, height, components, 4)
                 TextureData(width.get(), height.get(), components.get(), data!!)
             } catch (e: Exception) {

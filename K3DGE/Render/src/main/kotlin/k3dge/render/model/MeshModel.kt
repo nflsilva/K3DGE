@@ -1,5 +1,6 @@
 package k3dge.render.model
 
+import jdk.jfr.Unsigned
 import org.lwjgl.opengl.GL30.*
 
 class MeshModel(
@@ -14,10 +15,10 @@ class MeshModel(
 
     init {
         glBindVertexArray(vao)
-        loadIntoIndexBuffer(indices);
-        loadIntoAttributeList(0, 3, positions);
-        loadIntoAttributeList(1, 2, textureCoordinates);
-        loadIntoAttributeList(2, 3, normals);
+        loadIntoIndexBuffer(indices)
+        loadIntoAttributeList(0, 3, positions)
+        loadIntoAttributeList(1, 2, textureCoordinates)
+        loadIntoAttributeList(2, 3, normals)
         glBindVertexArray(0)
     }
     fun cleanUp(){
@@ -29,7 +30,7 @@ class MeshModel(
     private fun loadIntoAttributeList(location: Int, length: Int, data: Array<Float>) {
         val vbo: Int = glGenBuffers()
         glBindBuffer(GL_ARRAY_BUFFER, vbo)
-        glBufferData(GL_ARRAY_BUFFER, data.toFloatArray(), vbo)
+        glBufferData(GL_ARRAY_BUFFER, data.toFloatArray(), GL_STATIC_DRAW)
         glVertexAttribPointer(location, length, GL_FLOAT, false, 0, 0)
         glBindBuffer(GL_ARRAY_BUFFER, 0)
         vbos.add(vbo)
@@ -37,8 +38,7 @@ class MeshModel(
     private fun loadIntoIndexBuffer(data: Array<Int>) {
         val vbo: Int = glGenBuffers()
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo)
-        glBufferData(GL_ARRAY_BUFFER, data.toIntArray(), vbo)
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0)
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, data.toIntArray(), GL_STATIC_DRAW)
         vbos.add(vbo)
         size = data.size
     }
