@@ -1,10 +1,7 @@
 package k3dge.ui
 
-import org.lwjgl.glfw.GLFW
 import org.lwjgl.glfw.GLFW.*
-import org.lwjgl.glfw.GLFWVidMode
-import org.lwjgl.system.MemoryStack
-import java.nio.IntBuffer
+import org.lwjgl.opengl.GL.createCapabilities
 
 class Window(
     width: Int,
@@ -26,22 +23,8 @@ class Window(
         window = glfwCreateWindow(width, height, title, 0, 0)
 
         glfwSetKeyCallback(window) { window: Long, key: Int, _: Int, action: Int, _: Int ->
-            if (key == GLFW.GLFW_KEY_ESCAPE && action == GLFW.GLFW_RELEASE) {
-                GLFW.glfwSetWindowShouldClose(window, true)
-            }
-        }
-
-        MemoryStack.stackPush().use { stack ->
-            val pWidth: IntBuffer = stack.mallocInt(1)
-            val pHeight: IntBuffer = stack.mallocInt(1)
-            glfwGetWindowSize(window, pWidth, pHeight)
-            val videoMode: GLFWVidMode? = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor())
-            videoMode?.let {
-                GLFW.glfwSetWindowPos(
-                    window,
-                    (it.width() - pWidth.get(0)) / 2,
-                    (it.height() - pHeight.get(0)) / 2
-                )
+            if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
+                glfwSetWindowShouldClose(window, true)
             }
         }
 
@@ -50,6 +33,7 @@ class Window(
     }
 
     fun open() {
+        createCapabilities()
         glfwShowWindow(window)
     }
 

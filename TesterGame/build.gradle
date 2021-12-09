@@ -12,7 +12,13 @@ repositories {
 
 dependencies {
     testImplementation 'org.jetbrains.kotlin:kotlin-test:1.6.0'
+
+    implementation "org.joml:joml:1.10.2"
+
     implementation("pt.k3dge:Core")
+    implementation("pt.k3dge:Render")
+    implementation("pt.k3dge:Tools")
+    implementation("pt.k3dge:UI")
 }
 
 test {

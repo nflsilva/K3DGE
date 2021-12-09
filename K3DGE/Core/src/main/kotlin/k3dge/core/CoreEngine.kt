@@ -12,6 +12,7 @@ class CoreEngine {
     private var gameObjects: MutableList<GameEntity> = mutableListOf()
     private val uiEngine: UIEngine = UIEngine()
     private val renderEngine: RenderEngine = RenderEngine()
+    var delegate: CoreEngineDelegate? = null
 
     private fun run() {
 
@@ -61,6 +62,7 @@ class CoreEngine {
         for(go in gameObjects){
             go.onFrame(renderEngine)
         }
+        renderEngine.onFrame()
     }
     private fun onUpdate(elapsedTime: Double, input: InputState) {
         uiEngine.onUpdate()
@@ -68,7 +70,7 @@ class CoreEngine {
             go.onUpdate(elapsedTime, input)
         }
     }
-    private fun onCleanUp(){
+    private fun onCleanUp() {
         for(go in gameObjects){
             go.cleanUp()
         }
@@ -76,12 +78,11 @@ class CoreEngine {
 
     fun start() {
         if(isRunning) return
-
         uiEngine.start()
+        delegate?.onStart()
         isRunning = true
         run()
     }
-
     fun addGameObject(gameObject: GameEntity){
         gameObjects.add(gameObject)
     }
@@ -89,5 +90,4 @@ class CoreEngine {
     companion object {
         private var ticksPerSecond: Int = 120
     }
-
 }

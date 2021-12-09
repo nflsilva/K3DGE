@@ -4,18 +4,22 @@ import k3dge.core.GameEntity
 import k3dge.render.RenderEngine
 import k3dge.render.model.MeshModel
 import k3dge.render.model.TextureModel
+import k3dge.ui.InputState
 
-class TexturedMeshComponent(
-    private val mesh: MeshModel,
-    private val texture: TextureModel) {
+class TexturedMeshComponent(private val mesh: MeshModel,
+                            private val texture: TextureModel) : Component {
 
-    fun cleanUp(){
+    override fun cleanUp(){
         mesh.cleanUp()
         texture.cleanUp()
     }
 
-    fun onFrame(entity: GameEntity, renderEngine: RenderEngine){
-        renderEngine.drawTexturedMesh(mesh, texture, entity.position, entity.rotation, entity.scale)
+    override fun onFrame(entity: GameEntity, renderEngine: RenderEngine){
+        renderEngine.drawTexturedMesh(mesh, texture, entity.shader, entity.position, entity.rotation, entity.scale)
+    }
+
+    override fun onUpdate(elapsedTime: Double, input: InputState) {
+        //Does nothing...
     }
 
 }

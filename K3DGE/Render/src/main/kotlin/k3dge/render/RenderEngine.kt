@@ -3,6 +3,7 @@ package k3dge.render
 import k3dge.render.dho.EntityRenderData
 import k3dge.render.dho.RenderBatchData
 import k3dge.render.model.MeshModel
+import k3dge.render.model.ShaderModel
 import k3dge.render.model.TextureModel
 import org.joml.Matrix4f
 import org.joml.Vector3f
@@ -12,7 +13,13 @@ class RenderEngine {
 
     private val renderBatches: MutableMap<String, RenderBatchData> = mutableMapOf()
 
-    fun drawTexturedMesh(mesh: MeshModel, texture: TextureModel, position: Vector3f, rotation: Vector3f, scale: Vector3f){
+    fun drawTexturedMesh(mesh: MeshModel,
+                         texture: TextureModel,
+                         shader: ShaderModel,
+                         position: Vector3f,
+                         rotation: Vector3f,
+                         scale: Vector3f){
+
         val modelMatrix: Matrix4f = Matrix4f().translation(position)
         modelMatrix.rotate(rotation.x, Vector3f(1.0f, 0.0f, 0.0f))
         modelMatrix.rotate(rotation.y, Vector3f(0.0f, 1.0f, 0.0f))
@@ -23,20 +30,23 @@ class RenderEngine {
         if(!renderBatches.containsKey(id)){
             renderBatches[id] = RenderBatchData(mesh.vao, mesh.size, texture.id)
         }
-        renderBatches[id]?.entityData?.add(EntityRenderData(modelMatrix))
+        renderBatches[id]?.entityData?.add(EntityRenderData(shader, modelMatrix))
+    }
+    fun onFrame() {
+        glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
+        drawBatches()
     }
 
-    fun drawBatches(){
+    private fun drawBatches(){
         for(batch in renderBatches.values){
-
             bindTexturedModelFromBatch(batch)
-            for(modelMatrix in batch.entityData){
-
+            for(entity in batch.entityData){
+                prepareEntityShader(entity)
+                glDrawElements(GL_TRIANGLES, batch.meshSize, GL_UNSIGNED_INT, 0);
             }
             unbindTexturedModelFromBatch()
         }
     }
-
     private fun bindTexturedModelFromBatch(batch: RenderBatchData){
         glBindVertexArray(batch.vao);
         glEnableVertexAttribArray(0);
@@ -45,27 +55,28 @@ class RenderEngine {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, batch.textureId);
     }
-
     private fun unbindTexturedModelFromBatch(){
-        glDisableVertexAttribArray(0);
-        glDisableVertexAttribArray(1);
-        glDisableVertexAttribArray(2);
-        glBindVertexArray(0);
-        glBindTexture(GL_TEXTURE_2D, 0);
+        glDisableVertexAttribArray(0)
+        glDisableVertexAttribArray(1)
+        glDisableVertexAttribArray(2)
+        glBindVertexArray(0)
+        glBindTexture(GL_TEXTURE_2D, 0)
+    }
+    private fun prepareEntityShader(entity: EntityRenderData){
+        entity.shader.bind()
+        entity.shader.setModelMatrix(entity.modelMatrix)
+        entity.shader.setProjectionMatrix(Matrix4f()
+            .setPerspective(
+                70.0F,
+                SCREEN_WIDTH.toFloat() / SCREEN_HEIGHT.toFloat(),
+                0.1F,
+                100F))
+        entity.shader.setViewMatrix(Matrix4f().identity())
     }
 
-    private fun bindEntity(){
-
-    }
-
-
-
-    private fun renderTexturedModel(model: TextureModel){
-        /*
-
-        glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, 0);
-
-        */
+    companion object {
+        const val SCREEN_WIDTH: Int = 1280
+        const val SCREEN_HEIGHT: Int = 720
     }
 
 }

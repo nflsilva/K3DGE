@@ -4,26 +4,32 @@ import k3dge.tools.Log
 import org.joml.Matrix4f
 import org.joml.Vector3f
 import org.joml.Vector4f
+import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL20.*
 import java.nio.FloatBuffer
 import java.nio.IntBuffer
 
 class ShaderModel(vertexSource: String, fragmentSource: String) {
 
-    private val programId: Int = glCreateProgram()
+    val programId: Int = glCreateProgram()
     private val shaders: MutableList<Int> = mutableListOf()
     private val uniforms: MutableMap<String, Int> = mutableMapOf()
 
     init {
         addShader(vertexSource, GL_VERTEX_SHADER)
-        addShader(fragmentSource, GL_VERTEX_SHADER)
+        addShader(fragmentSource, GL_FRAGMENT_SHADER)
         linkProgram()
 
         addUniform("in_modelMatrix")
         addUniform("in_viewMatrix")
         addUniform("in_projectionMatrix")
     }
-
+    fun bind(){
+        glUseProgram(programId);
+    }
+    fun unbind(){
+        glUseProgram(0);
+    }
     fun bindAttribute(attribute: Int, variableName: String){
         glBindAttribLocation(programId, attribute, variableName);
     }
@@ -79,9 +85,9 @@ class ShaderModel(vertexSource: String, fragmentSource: String) {
             Log.e("Error creating shader")
             return
         }
-        glShaderSource(shader, sourceCode, null);
+        glShaderSource(shader, sourceCode)
 
-        val compileSuccess = IntBuffer.allocate(1)
+        val compileSuccess = BufferUtils.createIntBuffer(1)
         glCompileShader(shader);
         glGetShaderiv(shader, GL_COMPILE_STATUS, compileSuccess)
         if(compileSuccess.get() != GL_TRUE){
@@ -95,7 +101,7 @@ class ShaderModel(vertexSource: String, fragmentSource: String) {
     }
     private fun linkProgram(){
 
-        val success = IntBuffer.allocate(1)
+        var success = BufferUtils.createIntBuffer(1)
         glLinkProgram(programId);
         glGetProgramiv(programId, GL_LINK_STATUS, success)
         if(success.get() != GL_TRUE){
@@ -104,6 +110,7 @@ class ShaderModel(vertexSource: String, fragmentSource: String) {
             return
         }
 
+        success = BufferUtils.createIntBuffer(1)
         glValidateProgram(programId);
         glGetProgramiv(programId, GL_VALIDATE_STATUS, success)
         if(success.get() != GL_TRUE) {

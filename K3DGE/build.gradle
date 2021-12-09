@@ -1,7 +1,7 @@
 import org.gradle.internal.os.OperatingSystem
 
 buildscript {
-    ext.kotlinVersion = "1.5.10"
+    ext.kotlinVersion = "1.6.0"
     ext.lwjglVersion = "3.3.0"
     ext.jomlVersion = "1.10.2"
 
@@ -13,7 +13,10 @@ buildscript {
             ext.lwjglNatives = natives-macos
             break
         case OperatingSystem.WINDOWS:
-            ext.lwjglNatives = "natives-windows"
+            def osArch = System.getProperty("os.arch")
+            project.ext.lwjglNatives = osArch.contains("64")
+                    ? "natives-windows${osArch.startsWith("aarch64") ? "-arm64" : ""}"
+                    : "natives-windows-x86"
             break
     }
 
