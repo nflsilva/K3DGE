@@ -69,7 +69,7 @@ class RenderEngine {
         entity.shader.setModelMatrix(entity.modelMatrix)
         entity.shader.setProjectionMatrix(Matrix4f()
             .setPerspective(
-                70.0F,
+                1.25F,
                 SCREEN_WIDTH.toFloat() / SCREEN_HEIGHT.toFloat(),
                 0.1F,
                 100F))
