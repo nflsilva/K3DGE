@@ -1,6 +1,6 @@
 package k3dge.core.component
 
-import k3dge.core.GameEntity
+import k3dge.core.entity.GameEntity
 import k3dge.render.RenderEngine
 import k3dge.ui.InputState
 

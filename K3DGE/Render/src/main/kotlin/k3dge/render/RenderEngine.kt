@@ -32,6 +32,9 @@ class RenderEngine {
         }
         renderBatches[id]?.entityData?.add(EntityRenderData(shader, modelMatrix))
     }
+    fun onStart() {
+        glEnable(GL_DEPTH_TEST)
+    }
     fun onFrame() {
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f)
         glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
@@ -80,5 +83,4 @@ class RenderEngine {
         const val SCREEN_WIDTH: Int = 1280
         const val SCREEN_HEIGHT: Int = 720
     }
-
 }

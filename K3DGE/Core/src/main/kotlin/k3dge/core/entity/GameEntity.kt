@@ -1,4 +1,4 @@
-package k3dge.core
+package k3dge.core.entity
 
 import k3dge.core.component.BaseComponent
 import k3dge.render.RenderEngine

@@ -1,5 +1,6 @@
 package k3dge.core
 
+import k3dge.core.entity.GameEntity
 import k3dge.render.RenderEngine
 import k3dge.tools.Log
 
@@ -79,6 +80,7 @@ class CoreEngine {
     fun start() {
         if(isRunning) return
         uiEngine.start()
+        renderEngine.onStart()
         delegate?.onStart()
         isRunning = true
         run()
