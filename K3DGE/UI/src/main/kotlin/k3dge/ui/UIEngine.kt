@@ -1,12 +1,14 @@
 package k3dge.ui
 
+import org.lwjgl.glfw.GLFW.glfwGetTime
+
 class UIEngine {
 
     private val window: Window = Window(1280, 720, "Hello LWJGL!")
-    private val timer: Timer = Timer()
+    private val keyboard: Keyboard = Keyboard(window.id)
 
     fun getTime(): Double {
-        return timer.getTime()
+        return glfwGetTime()
     }
     fun start() {
         window.open()
@@ -18,8 +20,7 @@ class UIEngine {
         return window.isOpen()
     }
     fun getInputState(): InputState {
-        //TODO: Implement User Input
-        return InputState(arrayOf())
+        return InputState(keyboard.getPressedKeys())
     }
     fun onFrame() {
         window.onFrame()

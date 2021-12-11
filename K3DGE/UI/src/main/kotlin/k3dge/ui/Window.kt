@@ -8,47 +8,35 @@ class Window(
     height: Int,
     title: String) {
 
-    private val window: Long
+    val id: Long
 
     init {
 
         //GLFWErrorCallback.createPrint(Log.e).set()
 
         if (!glfwInit()) throw IllegalStateException("Unable to initialize GLFW")
-
         glfwDefaultWindowHints()
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE)
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE)
 
-        window = glfwCreateWindow(width, height, title, 0, 0)
+        id = glfwCreateWindow(width, height, title, 0, 0)
 
-        glfwSetKeyCallback(window) { window: Long, key: Int, _: Int, action: Int, _: Int ->
-            if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
-                glfwSetWindowShouldClose(window, true)
-            }
-        }
-
-        glfwMakeContextCurrent(window)
+        glfwMakeContextCurrent(id)
         glfwSwapInterval(0)
     }
-
     fun open() {
         createCapabilities()
-        glfwShowWindow(window)
+        glfwShowWindow(id)
     }
-
     fun close() {
-        glfwSetWindowShouldClose(window, true);
+        glfwSetWindowShouldClose(id, true);
     }
-
     fun isOpen(): Boolean {
-        return !glfwWindowShouldClose(window)
+        return !glfwWindowShouldClose(id)
     }
-
     fun onFrame() {
-        glfwSwapBuffers(window);
+        glfwSwapBuffers(id);
     }
-
     fun onUpdate() {
         glfwPollEvents();
     }

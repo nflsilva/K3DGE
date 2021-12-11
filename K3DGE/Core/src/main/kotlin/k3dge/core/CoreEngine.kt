@@ -1,17 +1,21 @@
 package k3dge.core
 
+import k3dge.core.entity.GameCamera
 import k3dge.core.entity.GameEntity
 import k3dge.render.RenderEngine
 import k3dge.tools.Log
 
 import k3dge.ui.InputState
 import k3dge.ui.UIEngine
+import org.joml.Vector3f
 import java.lang.Double.max
 
 class CoreEngine {
 
     private var isRunning: Boolean = false
     private var gameObjects: MutableList<GameEntity> = mutableListOf()
+    private var camera: GameCamera = GameCamera()
+
     private val uiEngine: UIEngine = UIEngine()
     private val renderEngine: RenderEngine = RenderEngine()
     var delegate: CoreEngineDelegate? = null
@@ -77,6 +81,7 @@ class CoreEngine {
         for(go in gameObjects){
             go.onFrame(renderEngine)
         }
+        renderEngine.renderCamera(camera.position, camera.forward, camera.up)
         renderEngine.onFrame()
     }
     private fun onUpdate(elapsedTime: Double, input: InputState) {
@@ -84,6 +89,7 @@ class CoreEngine {
         for(go in gameObjects){
             go.onUpdate(elapsedTime, input)
         }
+        camera.onUpdate(elapsedTime, input)
     }
     private fun onCleanUp() {
         for(go in gameObjects){
@@ -101,6 +107,9 @@ class CoreEngine {
     }
     fun addGameObject(gameObject: GameEntity){
         gameObjects.add(gameObject)
+    }
+    fun addCamera(camera: GameCamera){
+        this.camera = camera
     }
 
     companion object {

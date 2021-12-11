@@ -56,16 +56,20 @@ class GameLogic : CoreEngineDelegate {
             teddy.addComponent(spinComp)
             engine.addGameObject(teddy)
         }
-    }
 
+        val camera = Camera(
+            Vector3f(0.0f, 0.0f, 0.0f),
+            Vector3f(0.0f, 0.0f, -1.0f),
+            Vector3f(0.0f, 1.0f, 0.0f))
+        engine.addCamera(camera)
+
+    }
     override fun onUpdate() {
 
     }
-
     override fun onFrame(elapsedTime: Double, input: InputState) {
 
     }
-
     override fun onCleanUp() {
 
     }

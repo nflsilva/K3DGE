@@ -12,6 +12,6 @@ class TexturedMeshComponent(private val mesh: MeshModel,
         texture.cleanUp()
     }
     override fun onFrame(entity: GameEntity, renderEngine: RenderEngine){
-        renderEngine.drawTexturedMesh(mesh, texture, entity.shader, entity.position, entity.rotation, entity.scale)
+        renderEngine.renderTexturedMesh(mesh, texture, entity.shader, entity.position, entity.rotation, entity.scale)
     }
 }

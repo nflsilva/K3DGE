@@ -12,13 +12,25 @@ import org.lwjgl.opengl.GL30.*
 class RenderEngine {
 
     private val renderBatches: MutableMap<String, RenderBatchData> = mutableMapOf()
+    private var projectionMatrix: Matrix4f = Matrix4f()
+        .setPerspective(
+            1.25F,
+            SCREEN_WIDTH.toFloat() / SCREEN_HEIGHT.toFloat(),
+            0.1F,
+            100F)
 
-    fun drawTexturedMesh(mesh: MeshModel,
-                         texture: TextureModel,
-                         shader: ShaderModel,
-                         position: Vector3f,
-                         rotation: Vector3f,
-                         scale: Vector3f){
+    private var viewMatrix: Matrix4f = Matrix4f().identity()
+
+    fun renderCamera(position: Vector3f, lookAt: Vector3f, up: Vector3f){
+        viewMatrix = Matrix4f().lookAt(position, lookAt, up)
+    }
+
+    fun renderTexturedMesh(mesh: MeshModel,
+                           texture: TextureModel,
+                           shader: ShaderModel,
+                           position: Vector3f,
+                           rotation: Vector3f,
+                           scale: Vector3f){
 
         val modelMatrix: Matrix4f = Matrix4f().translation(position)
         modelMatrix.rotate(rotation.x, Vector3f(1.0f, 0.0f, 0.0f))
@@ -70,13 +82,8 @@ class RenderEngine {
     private fun prepareEntityShader(entity: EntityRenderData){
         entity.shader.bind()
         entity.shader.setModelMatrix(entity.modelMatrix)
-        entity.shader.setProjectionMatrix(Matrix4f()
-            .setPerspective(
-                1.25F,
-                SCREEN_WIDTH.toFloat() / SCREEN_HEIGHT.toFloat(),
-                0.1F,
-                100F))
-        entity.shader.setViewMatrix(Matrix4f().identity())
+        entity.shader.setProjectionMatrix(projectionMatrix)
+        entity.shader.setViewMatrix(viewMatrix)
     }
 
     companion object {
