@@ -32,7 +32,7 @@ class GameLogic : CoreEngineDelegate {
             .loadShaderSourceFromFile("/shader/static/fragment.glsl")
         val shader = ShaderModel(vertexSource!!, fragmentSource!!)
 
-        val meshData = ResourceLoader.loadMeshFromFile("/mesh/teddy.obj")!!
+        val meshData = ResourceLoader.loadMeshFromFile("/mesh/cube.obj")!!
         val mesh = MeshModel(
             meshData.vertices.toTypedArray(),
             meshData.textureCoordinates.toTypedArray(),
@@ -46,17 +46,16 @@ class GameLogic : CoreEngineDelegate {
         val spinComp = AutoSpinComponent(0.5F)
 
         val r = Random()
-        for(i in 0 until 1000) {
+        for(i in 0 until 100) {
             val teddy = GameEntity(
                 Vector3f((r.nextFloat() * 2 - 1) * 10, (r.nextFloat() * 2 - 1) * 10, -(r.nextFloat() * 10)),
                 Vector3f(r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1),
-                Vector3f(0.025f, 0.025f, 0.025f),
+                Vector3f(1f, 1f, 1f),
                 shader)
             teddy.addComponent(cubeMeshComp)
             teddy.addComponent(spinComp)
             engine.addGameObject(teddy)
         }
-
     }
 
     override fun onUpdate() {

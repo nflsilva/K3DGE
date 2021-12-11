@@ -6,6 +6,7 @@ import k3dge.tools.Log
 
 import k3dge.ui.InputState
 import k3dge.ui.UIEngine
+import java.lang.Double.max
 
 class CoreEngine {
 
@@ -17,43 +18,56 @@ class CoreEngine {
 
     private fun run() {
 
-        var nowTime: Double
-        var deltaTime: Double
-        var lastTime = 0.0
-        var timeToTick = 0.0
+        var frameStart: Double = 0.0
+        var frameEnd: Double = 0.0
+        var frameDelta: Double = 0.0
 
         var frames = 0
-        var updates = 0
-        var seconds = 0
+        var ticks = 0
 
-        val tickTime: Double = 1.0 / ticksPerSecond
+        val tickTime: Double = 1.0 / ticksPerSecondCap
+        val frameTime: Double = 1.0 / framePerSecondCap
+        val printTime: Double = 1.0 / printsPerSecondCap
+
+        var timeSinceTick: Double = 0.0
+        var timeSinceFrame: Double = 0.0
+        var timeSincePrint: Double = 0.0
 
         while(isRunning) {
 
-            nowTime = uiEngine.getTime()
-            deltaTime = (nowTime - lastTime);
-            timeToTick -= deltaTime;
-            lastTime = nowTime;
+            frameStart = uiEngine.getTime()
 
-            if(timeToTick <= 0) {
-                onUpdate(deltaTime, uiEngine.getInputState())
-                updates++
-                timeToTick = tickTime
+            if(timeSinceTick >= tickTime) {
+                onUpdate(tickTime, uiEngine.getInputState())
+                ticks++
+                timeSinceTick = 0.0
             }
 
-            onFrame()
-            frames++
+            if(timeSinceFrame >= frameTime) {
+                onFrame()
+                frames++
+                timeSinceFrame = 0.0
+            }
 
-            if(uiEngine.getTime() > seconds) {
-                Log.d("$frames $deltaTime $updates")
-                updates = 0
+            if(timeSincePrint >= printTime) {
+                Log.d("FramesPerSecond: $frames\t\tFrameTime: ${frameDelta * 1000}\t\tTicks: $ticks")
+                ticks = 0
                 frames = 0
-                seconds++
+                timeSincePrint = 0.0
             }
-
             if(!uiEngine.isRunning()) {
                 isRunning = false
             }
+
+            //val timeToSleep = max(frameTime-frameDelta, 0.0) / 2
+            //Thread.sleep(0, (timeToSleep * 1000).toInt())
+
+            frameEnd = uiEngine.getTime()
+            frameDelta = frameEnd - frameStart
+            timeSinceTick += frameDelta
+            timeSinceFrame += frameDelta
+            timeSincePrint += frameDelta
+
         }
 
         onCleanUp()
@@ -90,6 +104,8 @@ class CoreEngine {
     }
 
     companion object {
-        private var ticksPerSecond: Int = 120
+        private var printsPerSecondCap: Int = 1
+        private var ticksPerSecondCap: Int = 128
+        private var framePerSecondCap: Int = 500
     }
 }

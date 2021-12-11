@@ -27,7 +27,7 @@ class ResourceLoader {
             object{}::class.java.getResource(fileName)?.let { url->
                 var resourcePath = url.path
                 //Why do I need this hack in windows?
-                resourcePath = resourcePath.drop(1)
+                //resourcePath = resourcePath.drop(1)
                 return resourcePath
             }
             Log.e("Error loading resource $fileName.")
@@ -35,7 +35,7 @@ class ResourceLoader {
         }
         fun loadShaderSourceFromFile(fileName: String): String? {
             getResourceURLFromFile(fileName)?.let { resourcePath->
-                val url = URL("file:/$resourcePath")
+                val url = object{}::class.java.getResource(fileName)
                 return url.readText()
             }
             return null
