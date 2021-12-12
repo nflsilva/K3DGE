@@ -3,7 +3,7 @@ package k3dge.core.entity
 import k3dge.core.component.BaseComponent
 import k3dge.render.RenderEngine
 import k3dge.render.model.ShaderModel
-import k3dge.ui.dto.InputState
+import k3dge.ui.dto.InputStateData
 import org.joml.Vector3f
 
 open class GameEntity(val position: Vector3f,
@@ -16,7 +16,7 @@ open class GameEntity(val position: Vector3f,
     fun addComponent(component: BaseComponent){
         components.add(component)
     }
-    open fun onUpdate(elapsedTime: Double, input: InputState) {
+    open fun onUpdate(elapsedTime: Double, input: InputStateData) {
         for(c in components) {
             c.onUpdate(this, elapsedTime, input)
         }

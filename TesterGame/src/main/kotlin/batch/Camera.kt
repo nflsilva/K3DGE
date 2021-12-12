@@ -1,7 +1,7 @@
 package batch
 
 import k3dge.core.entity.GameCamera
-import k3dge.ui.dto.InputState
+import k3dge.ui.dto.InputStateData
 import org.joml.Vector3f
 
 class Camera(position: Vector3f,
@@ -10,18 +10,18 @@ class Camera(position: Vector3f,
 
     private var velocity: Vector3f = Vector3f(0.0f, 0.0f, 0.0f)
 
-    override fun onUpdate(elapsedTime: Double, input: InputState) {
+    override fun onUpdate(elapsedTime: Double, input: InputStateData) {
 
-        if(input.pressedKeys.contains(65)) {
+        if(input.isKeyPressed(InputStateData.KEY_A)) {
             velocity.x -= 5.0f
         }
-        else if(input.pressedKeys.contains(68)) {
+        else if(input.isKeyPressed(InputStateData.KEY_D)) {
             velocity.x += 5.0f
         }
-        if(input.pressedKeys.contains(87)) {
+        if(input.isKeyPressed(InputStateData.KEY_W)) {
             velocity.z -= 5.0f
         }
-        else if(input.pressedKeys.contains(83)) {
+        else if(input.isKeyPressed(InputStateData.KEY_S)) {
             velocity.z += 5.0f
         }
 

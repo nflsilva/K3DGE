@@ -1,6 +1,6 @@
 package k3dge.ui
 
-import k3dge.ui.dto.InputState
+import k3dge.ui.dto.InputStateData
 import k3dge.ui.input.Keyboard
 import k3dge.ui.input.Mouse
 import org.lwjgl.glfw.GLFW.glfwGetTime
@@ -23,17 +23,14 @@ class UIEngine {
     fun isRunning(): Boolean {
         return window.isOpen()
     }
-    fun getInputState(): InputState {
-        return InputState(
-            keyboard.pressedKeys,
-            mouse.pressedButtons,
-            mouse.positionX,
-            mouse.positionY)
+    fun getInputState(): InputStateData {
+        return InputStateData(keyboard, mouse)
     }
     fun onFrame() {
         window.onFrame()
     }
     fun onUpdate() {
+        mouse.onUpdate()
         window.onUpdate()
     }
 }

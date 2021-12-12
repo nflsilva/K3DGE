@@ -1,12 +1,25 @@
 package k3dge.ui.dto
 
+import k3dge.ui.input.Keyboard
+import k3dge.ui.input.Mouse
 import org.lwjgl.glfw.GLFW
 
-data class InputState(
-    val pressedKeys: Set<Int>,
-    val pressedButtons: Set<Int>,
-    val mouseX: Int,
-    val mouseY: Int){
+class InputStateData(keyboard: Keyboard, mouse: Mouse){
+    private val pressedKeys: Set<Int> = keyboard.pressedKeys
+    private val pressedButtons: Set<Int> = mouse.pressedButtons
+    val mouseX: Int = mouse.positionX
+    val mouseY: Int = mouse.positionY
+    var dragDeltaX: Int = mouse.dragDeltaX
+    var dragDeltaY: Int = mouse.dragDeltaY
+    var scrollX: Int = mouse.scrollX
+    var scrollY: Int = mouse.scrollY
+
+    fun isKeyPressed(key: Int): Boolean{
+        return pressedKeys.contains(key)
+    }
+    fun isMousePressed(button: Int): Boolean {
+        return pressedButtons.contains(button)
+    }
 
     companion object {
         const val KEY_SPACE = 32

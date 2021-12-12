@@ -3,10 +3,12 @@ package k3dge.core
 import k3dge.core.entity.GameCamera
 import k3dge.core.entity.GameEntity
 import k3dge.render.RenderEngine
+import k3dge.render.dto.CameraRenderData
 import k3dge.tools.Log
 
-import k3dge.ui.dto.InputState
+import k3dge.ui.dto.InputStateData
 import k3dge.ui.UIEngine
+import org.joml.Vector3f
 
 class CoreEngine {
 
@@ -79,15 +81,17 @@ class CoreEngine {
         for(go in gameObjects){
             go.onFrame(renderEngine)
         }
-        renderEngine.renderCamera(camera.position, camera.forward, camera.up)
+        val cameraRenderData = CameraRenderData(camera.position, camera.forward, camera.up, camera.lookAt)
+        renderEngine.renderCamera(cameraRenderData)
         renderEngine.onFrame()
     }
-    private fun onUpdate(elapsedTime: Double, input: InputState) {
+    private fun onUpdate(elapsedTime: Double, input: InputStateData) {
         uiEngine.onUpdate()
         for(go in gameObjects){
             go.onUpdate(elapsedTime, input)
         }
         camera.onUpdate(elapsedTime, input)
+
     }
     private fun onCleanUp() {
         for(go in gameObjects){

@@ -8,7 +8,7 @@ import k3dge.render.model.MeshModel
 import k3dge.render.model.ShaderModel
 import k3dge.render.model.TextureModel
 import k3dge.tools.ResourceLoader
-import k3dge.ui.dto.InputState
+import k3dge.ui.dto.InputStateData
 import org.joml.Vector3f
 
 val engine = CoreEngine()
@@ -39,29 +39,62 @@ class GameLogic : CoreEngineDelegate {
             terrainMeshData.normals.toTypedArray(),
             terrainMeshData.indices.toTypedArray())
 
+        val cubeMeshData = ResourceLoader.loadMeshFromFile("/mesh/cube.obj")!!
+        val cubeMesh = MeshModel(
+            cubeMeshData.vertices.toTypedArray(),
+            cubeMeshData.textureCoordinates.toTypedArray(),
+            cubeMeshData.normals.toTypedArray(),
+            cubeMeshData.indices.toTypedArray())
+
         val terrainTextureData = ResourceLoader.loadTextureFromFile("/texture/cube.png")!!
         val terrainTexture = TextureModel(terrainTextureData.width, terrainTextureData.height, terrainTextureData.data)
 
+        val fluffyTextureData = ResourceLoader.loadTextureFromFile("/texture/bear.jpg")!!
+        val fluffyTexture = TextureModel(fluffyTextureData.width, fluffyTextureData.height, fluffyTextureData.data)
+
         val terrainMeshComp = TexturedMeshComponent(terrainMesh, terrainTexture)
         val terrain = GameEntity(
-            Vector3f(0f, 0f, -2f),
+            Vector3f(0f, 0f, 0f),
             Vector3f(0f, 0f, 0f),
             Vector3f(1f, 1f, 1f),
             shader)
         terrain.addComponent(terrainMeshComp)
+
+        val cubeMeshComp = TexturedMeshComponent(cubeMesh, fluffyTexture)
+        val cube = GameEntity(
+            Vector3f(5f, 0.0f, 5f),
+            Vector3f(0f, 0f, 0f),
+            Vector3f(1f, 1f, 1f),
+            shader)
+        cube.addComponent(cubeMeshComp)
+
+        val wallMeshComp = TexturedMeshComponent(cubeMesh, terrainTexture)
+
+
+        for(z in 0 until 10) {
+            val wall = GameEntity(
+                Vector3f(0.0f, 0.0f, z * 1.0f),
+                Vector3f(0f, 0f, 0f),
+                Vector3f(0.1f, 3f, 1f),
+                shader)
+            wall.addComponent(wallMeshComp)
+            engine.addGameObject(wall)
+        }
+
+        engine.addGameObject(cube)
         engine.addGameObject(terrain)
 
         val camera = Camera(
-            Vector3f(0.0f, 0.0f, 0.0f),
-            Vector3f(0.0f, -0.5f, -0.5f),
-            Vector3f(0.0f, 0.5f, -0.5f))
+            Vector3f(0.0f, 1.0f, 10.0f),
+            Vector3f(0.0f, 0.0f, -0.5f),
+            Vector3f(0.0f, 1.0f, 0.0f))
         engine.addCamera(camera)
 
     }
     override fun onUpdate() {
 
     }
-    override fun onFrame(elapsedTime: Double, input: InputState) {
+    override fun onFrame(elapsedTime: Double, input: InputStateData) {
 
     }
     override fun onCleanUp() {

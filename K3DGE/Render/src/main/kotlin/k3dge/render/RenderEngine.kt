@@ -1,7 +1,8 @@
 package k3dge.render
 
-import k3dge.render.dho.EntityRenderData
-import k3dge.render.dho.RenderBatchData
+import k3dge.render.dto.CameraRenderData
+import k3dge.render.dto.EntityRenderData
+import k3dge.render.dto.RenderBatchData
 import k3dge.render.model.MeshModel
 import k3dge.render.model.ShaderModel
 import k3dge.render.model.TextureModel
@@ -21,8 +22,8 @@ class RenderEngine {
 
     private var viewMatrix: Matrix4f = Matrix4f().identity()
 
-    fun renderCamera(position: Vector3f, forward: Vector3f, up: Vector3f){
-        viewMatrix = Matrix4f().lookAt(position, Vector3f(forward).add(position), up)
+    fun renderCamera(cameraData: CameraRenderData){
+        viewMatrix = Matrix4f().lookAt(cameraData.position, cameraData.lookAt, cameraData.up)
     }
 
     fun renderTexturedMesh(mesh: MeshModel,
@@ -32,7 +33,9 @@ class RenderEngine {
                            rotation: Vector3f,
                            scale: Vector3f){
 
-        val modelMatrix: Matrix4f = Matrix4f().translation(position)
+        val modelMatrix = Matrix4f()
+
+        modelMatrix.translation(position)
         modelMatrix.rotate(rotation.x, Vector3f(1.0f, 0.0f, 0.0f))
         modelMatrix.rotate(rotation.y, Vector3f(0.0f, 1.0f, 0.0f))
         modelMatrix.rotate(rotation.z, Vector3f(0.0f, 0.0f, 1.0f))

@@ -9,7 +9,7 @@ import k3dge.render.model.MeshModel
 import k3dge.render.model.ShaderModel
 import k3dge.render.model.TextureModel
 import k3dge.tools.ResourceLoader
-import k3dge.ui.dto.InputState
+import k3dge.ui.dto.InputStateData
 import org.joml.Random
 import org.joml.Vector3f
 
@@ -91,7 +91,7 @@ class GameLogic : CoreEngineDelegate {
     override fun onUpdate() {
 
     }
-    override fun onFrame(elapsedTime: Double, input: InputState) {
+    override fun onFrame(elapsedTime: Double, input: InputStateData) {
 
     }
     override fun onCleanUp() {

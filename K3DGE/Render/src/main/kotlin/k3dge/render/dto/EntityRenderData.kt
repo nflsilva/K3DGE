@@ -1,4 +1,4 @@
-package k3dge.render.dho
+package k3dge.render.dto
 
 import k3dge.render.model.ShaderModel
 import org.joml.Matrix4f

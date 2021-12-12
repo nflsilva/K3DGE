@@ -1,4 +1,4 @@
-package k3dge.render.dho
+package k3dge.render.dto
 
 data class RenderBatchData(
     val vao: Int,
