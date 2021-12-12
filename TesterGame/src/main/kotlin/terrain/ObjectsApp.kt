@@ -2,8 +2,13 @@ package terrain
 
 import k3dge.core.CoreEngine
 import k3dge.core.CoreEngineDelegate
-import k3dge.core.component.TexturedMeshComponent
+import k3dge.core.camera.GameCamera
+import k3dge.core.camera.component.RotateComponent
+import k3dge.core.camera.component.TranslateComponent
+import k3dge.core.camera.component.ZoomComponent
+import k3dge.core.entity.component.TexturedMeshComponent
 import k3dge.core.entity.GameEntity
+import k3dge.core.entity.component.SpinComponent
 import k3dge.render.model.MeshModel
 import k3dge.render.model.ShaderModel
 import k3dge.render.model.TextureModel
@@ -46,11 +51,12 @@ class GameLogic : CoreEngineDelegate {
             cubeMeshData.normals.toTypedArray(),
             cubeMeshData.indices.toTypedArray())
 
-        val terrainTextureData = ResourceLoader.loadTextureFromFile("/texture/cube.png")!!
+        val terrainTextureData = ResourceLoader.loadTextureFromFile("/texture/grass.png")!!
         val terrainTexture = TextureModel(terrainTextureData.width, terrainTextureData.height, terrainTextureData.data)
-
-        val fluffyTextureData = ResourceLoader.loadTextureFromFile("/texture/bear.jpg")!!
-        val fluffyTexture = TextureModel(fluffyTextureData.width, fluffyTextureData.height, fluffyTextureData.data)
+        val wallTextureData = ResourceLoader.loadTextureFromFile("/texture/wall.jpg")!!
+        val wallTexture = TextureModel(wallTextureData.width, wallTextureData.height, wallTextureData.data)
+        val boxTextureData = ResourceLoader.loadTextureFromFile("/texture/box.jpg")!!
+        val boxTexture = TextureModel(boxTextureData.width, boxTextureData.height, boxTextureData.data)
 
         val terrainMeshComp = TexturedMeshComponent(terrainMesh, terrainTexture)
         val terrain = GameEntity(
@@ -59,18 +65,18 @@ class GameLogic : CoreEngineDelegate {
             Vector3f(1f, 1f, 1f),
             shader)
         terrain.addComponent(terrainMeshComp)
+        engine.addGameObject(terrain)
 
-        val cubeMeshComp = TexturedMeshComponent(cubeMesh, fluffyTexture)
-        val cube = GameEntity(
+        val boxMeshComp = TexturedMeshComponent(cubeMesh, boxTexture)
+        val box = GameEntity(
             Vector3f(5f, 0.0f, 5f),
             Vector3f(0f, 0f, 0f),
             Vector3f(1f, 1f, 1f),
             shader)
-        cube.addComponent(cubeMeshComp)
+        box.addComponent(boxMeshComp)
+        engine.addGameObject(box)
 
-        val wallMeshComp = TexturedMeshComponent(cubeMesh, terrainTexture)
-
-
+        val wallMeshComp = TexturedMeshComponent(cubeMesh, wallTexture)
         for(z in 0 until 10) {
             val wall = GameEntity(
                 Vector3f(0.0f, 0.0f, z * 1.0f),
@@ -81,13 +87,13 @@ class GameLogic : CoreEngineDelegate {
             engine.addGameObject(wall)
         }
 
-        engine.addGameObject(cube)
-        engine.addGameObject(terrain)
-
-        val camera = Camera(
+        val camera = GameCamera(
             Vector3f(0.0f, 1.0f, 10.0f),
-            Vector3f(0.0f, 0.0f, -0.5f),
+            Vector3f(0.0f, -0.5f, -0.5f),
             Vector3f(0.0f, 1.0f, 0.0f))
+        camera.addComponent(TranslateComponent(5.0f))
+        camera.addComponent(ZoomComponent(15.0f))
+        camera.addComponent(RotateComponent(1.0f,-0.85f, -0.25f))
         engine.addCamera(camera)
 
     }

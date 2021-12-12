@@ -2,9 +2,13 @@ package batch
 
 import k3dge.core.CoreEngine
 import k3dge.core.CoreEngineDelegate
+import k3dge.core.camera.GameCamera
+import k3dge.core.camera.component.RotateComponent
+import k3dge.core.camera.component.TranslateComponent
+import k3dge.core.camera.component.ZoomComponent
 import k3dge.core.entity.GameEntity
-import k3dge.core.component.AutoSpinComponent
-import k3dge.core.component.TexturedMeshComponent
+import k3dge.core.entity.component.SpinComponent
+import k3dge.core.entity.component.TexturedMeshComponent
 import k3dge.render.model.MeshModel
 import k3dge.render.model.ShaderModel
 import k3dge.render.model.TextureModel
@@ -56,7 +60,7 @@ class GameLogic : CoreEngineDelegate {
 
         val cubeMeshComp = TexturedMeshComponent(cubeMesh, cubeTexture)
         val teddyMeshComp = TexturedMeshComponent(teddyMesh, teddyTexture)
-        val spinComp = AutoSpinComponent(0.5F)
+        val spinComp = SpinComponent(0.5F)
 
         val r = Random()
         for(i in 0 until 100) {
@@ -79,12 +83,13 @@ class GameLogic : CoreEngineDelegate {
             engine.addGameObject(teddy)
         }
 
-
-
-        val camera = Camera(
+        val camera = GameCamera(
             Vector3f(0.0f, 0.0f, 0.0f),
             Vector3f(0.0f, 0.0f, -1.0f),
             Vector3f(0.0f, 1.0f, 0.0f))
+        camera.addComponent(TranslateComponent(5.0f))
+        camera.addComponent(ZoomComponent(15.0f))
+        camera.addComponent(RotateComponent(5.0f,0.85f, 0.25f))
         engine.addCamera(camera)
 
     }

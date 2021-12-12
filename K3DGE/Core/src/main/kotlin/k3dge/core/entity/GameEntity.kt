@@ -1,6 +1,6 @@
 package k3dge.core.entity
 
-import k3dge.core.component.BaseComponent
+import k3dge.core.entity.component.EntityComponent
 import k3dge.render.RenderEngine
 import k3dge.render.model.ShaderModel
 import k3dge.ui.dto.InputStateData
@@ -11,9 +11,9 @@ open class GameEntity(val position: Vector3f,
                       val scale: Vector3f,
                       val shader: ShaderModel) {
 
-    private val components: MutableList<BaseComponent> = mutableListOf()
+    private val components: MutableList<EntityComponent> = mutableListOf()
 
-    fun addComponent(component: BaseComponent){
+    fun addComponent(component: EntityComponent){
         components.add(component)
     }
     open fun onUpdate(elapsedTime: Double, input: InputStateData) {

@@ -1,0 +1,5 @@
+[X] Implement a smooth camera.
+[] Implement a component / blueprint manager.
+[] Lights
+[] Maybe we should make the camera a game entity. 
+[] How about we have components and their data separated. This way, components can communication between each other.
