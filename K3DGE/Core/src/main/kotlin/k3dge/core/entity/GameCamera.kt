@@ -1,6 +1,6 @@
 package k3dge.core.entity
 
-import k3dge.ui.InputState
+import k3dge.ui.dto.InputState
 import org.joml.Vector3f
 
 open class GameCamera(

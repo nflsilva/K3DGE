@@ -21,8 +21,8 @@ class RenderEngine {
 
     private var viewMatrix: Matrix4f = Matrix4f().identity()
 
-    fun renderCamera(position: Vector3f, lookAt: Vector3f, up: Vector3f){
-        viewMatrix = Matrix4f().lookAt(position, lookAt, up)
+    fun renderCamera(position: Vector3f, forward: Vector3f, up: Vector3f){
+        viewMatrix = Matrix4f().lookAt(position, Vector3f(forward).add(position), up)
     }
 
     fun renderTexturedMesh(mesh: MeshModel,
@@ -46,6 +46,8 @@ class RenderEngine {
     }
     fun onStart() {
         glEnable(GL_DEPTH_TEST)
+        glEnable(GL_CULL_FACE)
+        glCullFace(GL_BACK)
     }
     fun onFrame() {
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f)

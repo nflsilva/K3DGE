@@ -5,10 +5,8 @@ import k3dge.core.entity.GameEntity
 import k3dge.render.RenderEngine
 import k3dge.tools.Log
 
-import k3dge.ui.InputState
+import k3dge.ui.dto.InputState
 import k3dge.ui.UIEngine
-import org.joml.Vector3f
-import java.lang.Double.max
 
 class CoreEngine {
 

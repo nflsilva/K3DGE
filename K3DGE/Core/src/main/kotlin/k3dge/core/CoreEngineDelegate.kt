@@ -1,6 +1,6 @@
 package k3dge.core
 
-import k3dge.ui.InputState
+import k3dge.ui.dto.InputState
 
 interface CoreEngineDelegate {
     fun onStart()

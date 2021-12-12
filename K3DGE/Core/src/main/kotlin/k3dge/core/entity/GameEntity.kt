@@ -3,7 +3,7 @@ package k3dge.core.entity
 import k3dge.core.component.BaseComponent
 import k3dge.render.RenderEngine
 import k3dge.render.model.ShaderModel
-import k3dge.ui.InputState
+import k3dge.ui.dto.InputState
 import org.joml.Vector3f
 
 open class GameEntity(val position: Vector3f,
