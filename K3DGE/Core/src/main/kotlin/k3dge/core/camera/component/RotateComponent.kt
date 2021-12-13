@@ -1,6 +1,7 @@
 package k3dge.core.camera.component
 
 import k3dge.core.camera.GameCamera
+import k3dge.core.common.BaseEntity
 import k3dge.core.common.ComponentSignal
 import k3dge.ui.dto.InputStateData
 import org.joml.Vector2f
@@ -31,6 +32,7 @@ class RotateComponent(
                 }
             }
         }
+
         if (rotateSpeed.x != 0.0f && isRotating){
             camera.rotateAroundPoint(
                 rotateSpeed.x * elapsedTime.toFloat(),
@@ -38,6 +40,7 @@ class RotateComponent(
                 rotationLookAt)
             rotateSpeed.x = slowDown(rotateSpeed.x)
         }
+
         if (rotateSpeed.y != 0.0f && isRotating){
 
             val isWithinYLimits = (camera.forward.y >= upperLimit && rotateSpeed.y < 0)
@@ -54,7 +57,13 @@ class RotateComponent(
                 0.0f
             }
         }
-        isRotating = rotateSpeed.x != 0.0f || rotateSpeed.y != 0.0f
+
+        if(rotateSpeed.x != 0.0f || rotateSpeed.y != 0.0f){
+            isRotating = true
+            camera.forward = Vector3f(rotationLookAt).sub(camera.position)
+            camera.forward.normalize()
+        }
+
         camera.lookForward()
     }
     override fun onSignal(signal: ComponentSignal) {

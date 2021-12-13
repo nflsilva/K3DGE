@@ -2,6 +2,7 @@ package k3dge.core
 
 import k3dge.core.camera.GameCamera
 import k3dge.core.entity.GameEntity
+import k3dge.core.light.DirectionalLight
 import k3dge.render.RenderEngine
 import k3dge.render.dto.CameraRenderData
 import k3dge.tools.Log
@@ -12,6 +13,7 @@ class CoreEngine {
 
     private var isRunning: Boolean = false
     private var gameObjects: MutableList<GameEntity> = mutableListOf()
+    private var gameLights: MutableList<DirectionalLight> = mutableListOf()
     private var camera: GameCamera = GameCamera()
 
     private val uiEngine: UIEngine = UIEngine()
@@ -105,11 +107,14 @@ class CoreEngine {
         isRunning = true
         run()
     }
-    fun addGameObject(gameObject: GameEntity){
+    fun addEntity(gameObject: GameEntity){
         gameObjects.add(gameObject)
     }
-    fun addCamera(camera: GameCamera){
+    fun addEntity(camera: GameCamera){
         this.camera = camera
+    }
+    fun addEntity(light: DirectionalLight){
+        gameLights.add(light)
     }
 
     companion object {

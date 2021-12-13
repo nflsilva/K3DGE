@@ -6,7 +6,7 @@ import k3dge.render.model.MeshModel
 import k3dge.render.model.TextureModel
 
 class TexturedMeshComponent(private val mesh: MeshModel,
-                            private val texture: TextureModel) : EntityComponent {
+                            private val texture: TextureModel) : EntityComponent() {
     override fun cleanUp(){
         mesh.cleanUp()
         texture.cleanUp()
