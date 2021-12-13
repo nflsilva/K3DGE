@@ -5,9 +5,8 @@ import k3dge.core.entity.GameEntity
 import k3dge.render.RenderEngine
 import k3dge.render.dto.CameraRenderData
 import k3dge.tools.Log
-
-import k3dge.ui.dto.InputStateData
 import k3dge.ui.UIEngine
+import k3dge.ui.dto.InputStateData
 
 class CoreEngine {
 

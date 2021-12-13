@@ -1,8 +1,7 @@
 package k3dge.tools
 
 import org.lwjgl.BufferUtils
-import org.lwjgl.stb.STBImage.*
-import java.net.URL
+import org.lwjgl.stb.STBImage.stbi_load
 import java.nio.ByteBuffer
 import java.nio.IntBuffer
 

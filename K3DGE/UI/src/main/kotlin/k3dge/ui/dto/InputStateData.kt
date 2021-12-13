@@ -2,7 +2,6 @@ package k3dge.ui.dto
 
 import k3dge.ui.input.Keyboard
 import k3dge.ui.input.Mouse
-import org.lwjgl.glfw.GLFW
 
 class InputStateData(keyboard: Keyboard, mouse: Mouse){
     private val pressedKeys: Set<Int> = keyboard.pressedKeys

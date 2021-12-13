@@ -1,6 +1,5 @@
 package k3dge.render.model
 
-import jdk.jfr.Unsigned
 import org.lwjgl.opengl.GL30.*
 
 class MeshModel(

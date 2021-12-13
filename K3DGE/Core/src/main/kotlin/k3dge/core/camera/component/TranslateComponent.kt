@@ -1,12 +1,9 @@
 package k3dge.core.camera.component
 
 import k3dge.core.camera.GameCamera
-import k3dge.core.camera.component.CameraComponent.Companion.slowDown
 import k3dge.core.common.ComponentSignal
 import k3dge.ui.dto.InputStateData
 import org.joml.Vector3f
-import kotlin.math.abs
-import kotlin.math.log
 
 class TranslateComponent(private var speed: Float): CameraComponent() {
 

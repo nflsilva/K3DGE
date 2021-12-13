@@ -1,6 +1,5 @@
 package k3dge.ui.input
 
-import org.lwjgl.glfw.GLFW
 import org.lwjgl.glfw.GLFW.*
 
 class Keyboard(window: Long) {

@@ -85,11 +85,11 @@ class GameLogic : CoreEngineDelegate {
 
         val camera = GameCamera(
             Vector3f(0.0f, 0.0f, 0.0f),
-            Vector3f(0.0f, 0.0f, -1.0f),
+            Vector3f(0.0f, -0.25f, -1.0f),
             Vector3f(0.0f, 1.0f, 0.0f))
         camera.addComponent(TranslateComponent(5.0f))
-        camera.addComponent(ZoomComponent(15.0f))
-        camera.addComponent(RotateComponent(5.0f,0.85f, 0.25f))
+        camera.addComponent(ZoomComponent(1.0f))
+        camera.addComponent(RotateComponent(1.0f,0.85f, 0.25f))
         engine.addCamera(camera)
 
     }

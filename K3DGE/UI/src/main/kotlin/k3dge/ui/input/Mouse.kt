@@ -1,6 +1,5 @@
 package k3dge.ui.input
 
-import k3dge.tools.Log
 import org.lwjgl.glfw.GLFW
 import org.lwjgl.glfw.GLFW.GLFW_PRESS
 import org.lwjgl.glfw.GLFW.GLFW_RELEASE

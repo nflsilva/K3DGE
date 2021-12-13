@@ -1,9 +1,7 @@
 package k3dge.core.camera.component
 
 import k3dge.core.camera.GameCamera
-import k3dge.core.camera.component.CameraComponent.Companion.slowDown
 import k3dge.core.common.ComponentSignal
-import k3dge.tools.Log
 import k3dge.ui.dto.InputStateData
 import org.joml.Vector2f
 import org.joml.Vector3f
@@ -26,6 +24,7 @@ class RotateComponent(
                 val xPlane = Vector3f(0.0f, 0.0f, 0.0f)
                 val mRay = Vector3f(camera.forward)
                 val t = Vector3f(nPlane).dot(xPlane.sub(camera.position)) / Vector3f(nPlane).dot(mRay)
+                // TODO: I need to fix this...
                 if(t > 0 && t < 1000){
                     rotationLookAt = Vector3f(camera.forward).mul(t).add(camera.position)
                     isRotating = true
@@ -40,15 +39,20 @@ class RotateComponent(
             rotateSpeed.x = slowDown(rotateSpeed.x)
         }
         if (rotateSpeed.y != 0.0f && isRotating){
+
             val isWithinYLimits = (camera.forward.y >= upperLimit && rotateSpeed.y < 0)
             val isWithinXLimits = (camera.forward.y <= lowerLimit && rotateSpeed.y > 0)
-            if(isWithinYLimits || isWithinXLimits) {
+
+            rotateSpeed.y = if(isWithinYLimits || isWithinXLimits) {
                 camera.rotateAroundPoint(
                     rotateSpeed.y * elapsedTime.toFloat(),
                     Vector3f(camera.forward).cross(camera.up),
                     rotationLookAt)
+                slowDown(rotateSpeed.y)
             }
-            rotateSpeed.y = slowDown(rotateSpeed.y)
+            else {
+                0.0f
+            }
         }
         isRotating = rotateSpeed.x != 0.0f || rotateSpeed.y != 0.0f
         camera.lookForward()
