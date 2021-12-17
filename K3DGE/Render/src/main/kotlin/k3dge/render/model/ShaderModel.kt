@@ -25,7 +25,6 @@ class ShaderModel(vertexSource: String, fragmentSource: String) {
         addUniform(MODEL_MATRIX_UNIFORM)
         addUniform(VIEW_MATRIX_UNIFORM)
         addUniform(PROJECTION_MATRIX_UNIFORM)
-        addUniform("in_lightDirection")
     }
     fun bind(){
         glUseProgram(programId);

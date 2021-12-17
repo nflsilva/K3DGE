@@ -71,7 +71,7 @@ class GameLogic : CoreEngineDelegate {
                 shader)
             cube.addComponent(cubeMeshComp)
             cube.addComponent(spinComp)
-            engine.addGameObject(cube)
+            engine.addEntity(cube)
 
             val teddy = GameEntity(
                 Vector3f((r.nextFloat() * 2 - 1) * 10, (r.nextFloat() * 2 - 1) * 10, -(r.nextFloat() * 10)),
@@ -80,7 +80,7 @@ class GameLogic : CoreEngineDelegate {
                 shader)
             teddy.addComponent(teddyMeshComp)
             teddy.addComponent(spinComp)
-            engine.addGameObject(teddy)
+            engine.addEntity(teddy)
         }
 
         val camera = GameCamera(
@@ -90,7 +90,7 @@ class GameLogic : CoreEngineDelegate {
         camera.addComponent(TranslateComponent(5.0f))
         camera.addComponent(ZoomComponent(1.0f))
         camera.addComponent(RotateComponent(1.0f,0.85f, 0.25f))
-        engine.addCamera(camera)
+        engine.addEntity(camera)
 
     }
     override fun onUpdate() {

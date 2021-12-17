@@ -83,6 +83,8 @@ class CoreEngine {
         }
         val cameraRenderData = CameraRenderData(camera.position, camera.forward, camera.up, camera.lookAt)
         renderEngine.renderCamera(cameraRenderData)
+
+
         renderEngine.onFrame()
     }
     private fun onUpdate(elapsedTime: Double, input: InputStateData) {

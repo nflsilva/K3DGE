@@ -1,11 +1,9 @@
 package k3dge.render
 
 import k3dge.render.dto.CameraRenderData
-import k3dge.render.dto.EntityRenderData
-import k3dge.render.dto.RenderBatchData
-import k3dge.render.model.MeshModel
+import k3dge.render.dto.LightRenderData
+import k3dge.render.dto.TexturedMeshRenderData
 import k3dge.render.model.ShaderModel
-import k3dge.render.model.TextureModel
 import org.joml.Matrix4f
 import org.joml.Vector3f
 import org.lwjgl.opengl.GL30.*
@@ -25,27 +23,23 @@ class RenderEngine {
     fun renderCamera(cameraData: CameraRenderData){
         viewMatrix = Matrix4f().lookAt(cameraData.position, cameraData.lookAt, cameraData.up)
     }
+    fun renderDirectionalLight(lights: LightRenderData) {
 
-    fun renderTexturedMesh(mesh: MeshModel,
-                           texture: TextureModel,
-                           shader: ShaderModel,
-                           position: Vector3f,
-                           rotation: Vector3f,
-                           scale: Vector3f){
+    }
+    fun renderTexturedMesh(model: TexturedMeshRenderData){
 
         val modelMatrix = Matrix4f()
+        modelMatrix.translation(model.position)
+        modelMatrix.rotate(model.rotation.x, Vector3f(1.0f, 0.0f, 0.0f))
+        modelMatrix.rotate(model.rotation.y, Vector3f(0.0f, 1.0f, 0.0f))
+        modelMatrix.rotate(model.rotation.z, Vector3f(0.0f, 0.0f, 1.0f))
+        modelMatrix.scale(model.scale)
 
-        modelMatrix.translation(position)
-        modelMatrix.rotate(rotation.x, Vector3f(1.0f, 0.0f, 0.0f))
-        modelMatrix.rotate(rotation.y, Vector3f(0.0f, 1.0f, 0.0f))
-        modelMatrix.rotate(rotation.z, Vector3f(0.0f, 0.0f, 1.0f))
-        modelMatrix.scale(scale)
-
-        val id = "${mesh.vao}-${texture.id}"
+        val id = "${model.mesh.vao}-${model.texture.id}"
         if(!renderBatches.containsKey(id)){
-            renderBatches[id] = RenderBatchData(mesh.vao, mesh.size, texture.id)
+            renderBatches[id] = RenderBatchData(model.mesh.vao, model.mesh.size, model.texture.id)
         }
-        renderBatches[id]?.entityData?.add(EntityRenderData(shader, modelMatrix))
+        renderBatches[id]?.entityData?.add(EntityRenderData(model.shader, modelMatrix))
     }
     fun onStart() {
         glEnable(GL_DEPTH_TEST)
@@ -90,6 +84,17 @@ class RenderEngine {
         entity.shader.setProjectionMatrix(projectionMatrix)
         entity.shader.setViewMatrix(viewMatrix)
     }
+
+    private data class EntityRenderData(
+        val shader: ShaderModel,
+        val modelMatrix: Matrix4f
+    )
+    private data class RenderBatchData(
+        val vao: Int,
+        val meshSize: Int,
+        val textureId: Int,
+        val entityData: MutableList<EntityRenderData> = mutableListOf()
+    )
 
     companion object {
         const val SCREEN_WIDTH: Int = 1280

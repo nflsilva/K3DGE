@@ -35,6 +35,8 @@ class GameLogic : CoreEngineDelegate {
         val fragmentSource = ResourceLoader
             .loadShaderSourceFromFile("/shader/static/fragment.glsl")
         val shader = ShaderModel(vertexSource!!, fragmentSource!!)
+        shader.addUniform("in_lightDirection")
+        shader.addUniform("in_lightColor")
 
         val terrainMeshData = ResourceLoader.loadMeshFromFile("/mesh/terrain.obj")!!
         val terrainMesh = MeshModel(
@@ -64,7 +66,7 @@ class GameLogic : CoreEngineDelegate {
             Vector3f(1f, 1f, 1f),
             shader)
         terrain.addComponent(terrainMeshComp)
-        engine.addGameObject(terrain)
+        engine.addEntity(terrain)
 
         val boxMeshComp = TexturedMeshComponent(cubeMesh, boxTexture)
         val box = GameEntity(
@@ -73,7 +75,7 @@ class GameLogic : CoreEngineDelegate {
             Vector3f(1f, 1f, 1f),
             shader)
         box.addComponent(boxMeshComp)
-        engine.addGameObject(box)
+        engine.addEntity(box)
 
         val wallMeshComp = TexturedMeshComponent(cubeMesh, wallTexture)
         for(z in 0 until 10) {
@@ -83,7 +85,7 @@ class GameLogic : CoreEngineDelegate {
                 Vector3f(0.1f, 3f, 1f),
                 shader)
             wall.addComponent(wallMeshComp)
-            engine.addGameObject(wall)
+            engine.addEntity(wall)
         }
 
         val camera = GameCamera(
@@ -93,7 +95,7 @@ class GameLogic : CoreEngineDelegate {
         camera.addComponent(TranslateComponent(5.0f))
         camera.addComponent(ZoomComponent(15.0f, 2.0f, 15.0f))
         camera.addComponent(RotateComponent(1.0f,-0.85f, -0.25f))
-        engine.addCamera(camera)
+        engine.addEntity(camera)
 
     }
     override fun onUpdate() {

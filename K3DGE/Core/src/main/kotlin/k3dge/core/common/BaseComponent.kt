@@ -1,5 +1,6 @@
 package k3dge.core.common
 
+import k3dge.render.RenderEngine
 import k3dge.ui.dto.InputStateData
 import java.util.*
 
