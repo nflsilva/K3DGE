@@ -103,11 +103,11 @@ class GameLogic : CoreEngineDelegate {
         engine.addEntity(camera)
 
         val sun = GameLight(
-            Vector3f(0.0f, 1.0f, 0.0f),
+            Vector3f(0.0f, -1.0f, 0.0f),
             Vector4f(1.0f, 1.0f, 1.0f, 1.0f)
         )
         sun.addComponent(DirectionalComponent())
-        sun.addComponent(LightRotateComponent(1.0f))
+        sun.addComponent(LightRotateComponent(0.5f))
         sun.addComponent(ColorComponent())
         engine.addEntity(sun)
 
