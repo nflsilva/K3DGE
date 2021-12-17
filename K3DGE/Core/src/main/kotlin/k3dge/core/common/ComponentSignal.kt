@@ -1,7 +1,9 @@
 package k3dge.core.common
 
+import java.util.*
+
 class ComponentSignal(
-    val senderId: String,
+    val senderId: UUID,
     val type: Type) {
 
     enum class Type(value: Int) {

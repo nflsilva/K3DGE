@@ -8,12 +8,17 @@ import k3dge.core.camera.component.TranslateComponent
 import k3dge.core.camera.component.ZoomComponent
 import k3dge.core.entity.GameEntity
 import k3dge.core.entity.component.TexturedMeshComponent
+import k3dge.core.light.GameLight
+import k3dge.core.light.component.ColorComponent
+import k3dge.core.light.component.DirectionalComponent
+import k3dge.core.light.component.LightRotateComponent
 import k3dge.render.model.MeshModel
 import k3dge.render.model.ShaderModel
 import k3dge.render.model.TextureModel
 import k3dge.tools.ResourceLoader
 import k3dge.ui.dto.InputStateData
 import org.joml.Vector3f
+import org.joml.Vector4f
 
 val engine = CoreEngine()
 
@@ -96,6 +101,15 @@ class GameLogic : CoreEngineDelegate {
         camera.addComponent(ZoomComponent(15.0f, 2.0f, 15.0f))
         camera.addComponent(RotateComponent(1.0f,-0.85f, -0.25f))
         engine.addEntity(camera)
+
+        val sun = GameLight(
+            Vector3f(0.0f, 1.0f, 0.0f),
+            Vector4f(1.0f, 1.0f, 1.0f, 1.0f)
+        )
+        sun.addComponent(DirectionalComponent())
+        sun.addComponent(LightRotateComponent(1.0f))
+        sun.addComponent(ColorComponent())
+        engine.addEntity(sun)
 
     }
     override fun onUpdate() {

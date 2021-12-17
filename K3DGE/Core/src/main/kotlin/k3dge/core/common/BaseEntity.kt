@@ -1,14 +1,17 @@
 package k3dge.core.common
 
+import k3dge.render.RenderEngine
 import k3dge.tools.Util
 import k3dge.ui.dto.InputStateData
 import org.joml.Matrix4f
 import org.joml.Quaternionf
 import org.joml.Vector3f
 import org.joml.Vector4f
+import java.util.*
 
 abstract class BaseEntity(var position: Vector3f) {
 
+    val uid: UUID = UUID.randomUUID()
     protected val components: MutableList<BaseComponent> = mutableListOf()
     private val signals: MutableList<ComponentSignal> = mutableListOf()
 
@@ -32,6 +35,7 @@ abstract class BaseEntity(var position: Vector3f) {
             c.cleanUp()
         }
     }
+    abstract fun onFrame(graphics: RenderEngine)
 
     fun rotateAroundPoint(delta: Float, axis: Vector3f, point: Vector3f){
         val angle = Util.degreeToRadian(delta)

@@ -7,10 +7,12 @@ import k3dge.render.model.ShaderModel
 import org.joml.Matrix4f
 import org.joml.Vector3f
 import org.lwjgl.opengl.GL30.*
+import java.util.*
 
 class RenderEngine {
 
     private val renderBatches: MutableMap<String, RenderBatchData> = mutableMapOf()
+    private val directionalLights: MutableList<LightRenderData> = mutableListOf()
     private var projectionMatrix: Matrix4f = Matrix4f()
         .setPerspective(
             1.25F,
@@ -23,8 +25,8 @@ class RenderEngine {
     fun renderCamera(cameraData: CameraRenderData){
         viewMatrix = Matrix4f().lookAt(cameraData.position, cameraData.lookAt, cameraData.up)
     }
-    fun renderDirectionalLight(lights: LightRenderData) {
-
+    fun renderDirectionalLight(light: LightRenderData) {
+        directionalLights.add(light)
     }
     fun renderTexturedMesh(model: TexturedMeshRenderData){
 
@@ -35,11 +37,11 @@ class RenderEngine {
         modelMatrix.rotate(model.rotation.z, Vector3f(0.0f, 0.0f, 1.0f))
         modelMatrix.scale(model.scale)
 
-        val id = "${model.mesh.vao}-${model.texture.id}"
-        if(!renderBatches.containsKey(id)){
-            renderBatches[id] = RenderBatchData(model.mesh.vao, model.mesh.size, model.texture.id)
+        val batchId = model.componentId.toString()
+        if(!renderBatches.containsKey(batchId)){
+            renderBatches[batchId] = RenderBatchData(model.mesh.vao, model.mesh.size, model.texture.id)
         }
-        renderBatches[id]?.entityData?.add(EntityRenderData(model.shader, modelMatrix))
+        renderBatches[batchId]?.entityData?.add(EntityRenderData(model.entityId, model.shader, modelMatrix))
     }
     fun onStart() {
         glEnable(GL_DEPTH_TEST)
@@ -61,6 +63,7 @@ class RenderEngine {
             }
             unbindTexturedModelFromBatch()
         }
+        directionalLights.clear()
         renderBatches.clear()
     }
     private fun bindTexturedModelFromBatch(batch: RenderBatchData){
@@ -83,9 +86,14 @@ class RenderEngine {
         entity.shader.setModelMatrix(entity.modelMatrix)
         entity.shader.setProjectionMatrix(projectionMatrix)
         entity.shader.setViewMatrix(viewMatrix)
+        directionalLights.forEach { light ->
+            entity.shader.setLightDirection(light.position)
+            entity.shader.setLightColor(light.color)
+        }
     }
 
     private data class EntityRenderData(
+        val id: UUID,
         val shader: ShaderModel,
         val modelMatrix: Matrix4f
     )

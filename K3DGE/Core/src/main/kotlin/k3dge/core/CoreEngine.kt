@@ -2,9 +2,8 @@ package k3dge.core
 
 import k3dge.core.camera.GameCamera
 import k3dge.core.entity.GameEntity
-import k3dge.core.light.DirectionalLight
+import k3dge.core.light.GameLight
 import k3dge.render.RenderEngine
-import k3dge.render.dto.CameraRenderData
 import k3dge.tools.Log
 import k3dge.ui.UIEngine
 import k3dge.ui.dto.InputStateData
@@ -13,7 +12,7 @@ class CoreEngine {
 
     private var isRunning: Boolean = false
     private var gameObjects: MutableList<GameEntity> = mutableListOf()
-    private var gameLights: MutableList<DirectionalLight> = mutableListOf()
+    private var gameLights: MutableList<GameLight> = mutableListOf()
     private var camera: GameCamera = GameCamera()
 
     private val uiEngine: UIEngine = UIEngine()
@@ -78,26 +77,28 @@ class CoreEngine {
     }
     private fun onFrame() {
         uiEngine.onFrame()
-        for(go in gameObjects){
-            go.onFrame(renderEngine)
+        gameObjects.forEach { o ->
+            o.onFrame(renderEngine)
         }
-        val cameraRenderData = CameraRenderData(camera.position, camera.forward, camera.up, camera.lookAt)
-        renderEngine.renderCamera(cameraRenderData)
-
-
+        gameLights.forEach { l ->
+            l.onFrame(renderEngine)
+        }
+        camera.onFrame(renderEngine)
         renderEngine.onFrame()
     }
     private fun onUpdate(elapsedTime: Double, input: InputStateData) {
         uiEngine.onUpdate()
-        for(go in gameObjects){
-            go.onUpdate(elapsedTime, input)
+        gameObjects.forEach { o ->
+            o.onUpdate(elapsedTime, input)
+        }
+        gameLights.forEach { l ->
+            l.onUpdate(elapsedTime, input)
         }
         camera.onUpdate(elapsedTime, input)
-
     }
     private fun onCleanUp() {
-        for(go in gameObjects){
-            go.cleanUp()
+        gameObjects.forEach { o ->
+            o.cleanUp()
         }
     }
 
@@ -115,7 +116,7 @@ class CoreEngine {
     fun addEntity(camera: GameCamera){
         this.camera = camera
     }
-    fun addEntity(light: DirectionalLight){
+    fun addEntity(light: GameLight){
         gameLights.add(light)
     }
 

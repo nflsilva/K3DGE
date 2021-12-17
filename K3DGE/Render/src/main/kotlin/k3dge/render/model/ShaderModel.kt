@@ -18,9 +18,9 @@ class ShaderModel(vertexSource: String, fragmentSource: String) {
         addShader(fragmentSource, GL_FRAGMENT_SHADER)
         linkProgram()
 
-        bindAttribute(0, "in_position");
-        bindAttribute(1, "in_texCoord");
-        bindAttribute(2, "in_normal");
+        bindAttribute(0, POSITION_ATTRIBUTE);
+        bindAttribute(1, TEXTCOORDS_ATTRIBUTE);
+        bindAttribute(2, NORMAL_ATTRIBUTE);
 
         addUniform(MODEL_MATRIX_UNIFORM)
         addUniform(VIEW_MATRIX_UNIFORM)
@@ -79,6 +79,12 @@ class ShaderModel(vertexSource: String, fragmentSource: String) {
     fun setProjectionMatrix(value: Matrix4f){
         setUniformMatrix4f(PROJECTION_MATRIX_UNIFORM, value)
     }
+    fun setLightDirection(value: Vector3f){
+        setUniform3f(LIGHT_DIRECTION_UNIFORM, value)
+    }
+    fun setLightColor(value: Vector4f){
+        setUniform4f(LIGHT_COLOR_UNIFORM, value)
+    }
 
     private fun addShader(sourceCode: String, type: Int){
 
@@ -123,9 +129,15 @@ class ShaderModel(vertexSource: String, fragmentSource: String) {
     }
 
     companion object {
+        const val POSITION_ATTRIBUTE = "in_position"
+        const val TEXTCOORDS_ATTRIBUTE = "in_texCoord"
+        const val NORMAL_ATTRIBUTE = "in_normal"
+
         const val MODEL_MATRIX_UNIFORM = "in_modelMatrix"
         const val VIEW_MATRIX_UNIFORM = "in_viewMatrix"
         const val PROJECTION_MATRIX_UNIFORM = "in_projectionMatrix"
+        const val LIGHT_DIRECTION_UNIFORM = "in_lightDirection"
+        const val LIGHT_COLOR_UNIFORM = "in_lightColor"
     }
 
 }

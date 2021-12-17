@@ -8,7 +8,6 @@ import k3dge.render.RenderEngine
 import k3dge.ui.dto.InputStateData
 
 abstract class EntityComponent: BaseComponent() {
-
     override fun cleanUp(){}
     override fun onSignal(signal: ComponentSignal) {}
     final override fun onUpdate(entity: BaseEntity, elapsedTime: Double, input: InputStateData) {

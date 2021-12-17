@@ -6,7 +6,7 @@ import java.util.*
 
 abstract class BaseComponent {
 
-    protected val uid: String = UUID.randomUUID().toString()
+    protected val uid: UUID = UUID.randomUUID()
 
     abstract fun cleanUp()
     abstract fun onUpdate(entity: BaseEntity, elapsedTime: Double, input: InputStateData)

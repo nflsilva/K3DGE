@@ -12,10 +12,9 @@ open class GameEntity(position: Vector3f,
                       val scale: Vector3f,
                       val shader: ShaderModel): BaseEntity(position) {
 
-    open fun onFrame(graphics: RenderEngine) {
+    override fun onFrame(graphics: RenderEngine) {
         for(c in components) {
             (c as? EntityComponent)?.onFrame(this, graphics)
         }
     }
-
 }

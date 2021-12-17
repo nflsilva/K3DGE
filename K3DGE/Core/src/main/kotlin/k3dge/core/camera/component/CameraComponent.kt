@@ -4,6 +4,9 @@ import k3dge.core.camera.GameCamera
 import k3dge.core.common.BaseComponent
 import k3dge.core.common.BaseEntity
 import k3dge.core.common.ComponentSignal
+import k3dge.core.entity.GameEntity
+import k3dge.render.RenderEngine
+import k3dge.render.dto.LightRenderData
 import k3dge.ui.dto.InputStateData
 import kotlin.math.abs
 import kotlin.math.log
