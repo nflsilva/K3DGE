@@ -1,8 +1,9 @@
 package k3dge.core.common
 
-import k3dge.render.RenderEngine
+import k3dge.core.common.observer.CleanupObserver
+import k3dge.core.common.observer.SignalObserver
+import k3dge.core.common.observer.UpdateObserver
 import k3dge.tools.Util
-import k3dge.ui.dto.InputStateData
 import org.joml.Matrix4f
 import org.joml.Quaternionf
 import org.joml.Vector3f
@@ -12,30 +13,25 @@ import java.util.*
 abstract class BaseEntity(var position: Vector3f) {
 
     val uid: UUID = UUID.randomUUID()
-    protected val components: MutableList<BaseComponent> = mutableListOf()
-    private val signals: MutableList<ComponentSignal> = mutableListOf()
+    private val updateObservers: MutableList<UpdateObserver> = mutableListOf()
+    private val signalObservers: MutableList<SignalObserver> = mutableListOf()
+    private val cleanupObservers: MutableList<CleanupObserver> = mutableListOf()
 
-    fun addComponent(component: BaseComponent){
-        components.add(component)
-    }
-    fun onUpdate(elapsedTime: Double, input: InputStateData) {
-        for(c in components) {
-            for(s in signals){
-                c.onSignal(s)
-            }
-            c.onUpdate(this, elapsedTime, input)
+    fun onUpdate(context: UpdateContext) {
+        for(c in updateObservers) {
+            c.onUpdate(context)
         }
-        signals.clear()
     }
-    fun onSignal(message: ComponentSignal){
-        signals.add(message)
+    fun onSignal(signal: ComponentSignal){
+        for(s in signalObservers){
+            s.onSignal(signal)
+        }
     }
     fun cleanUp() {
-        for(c in components) {
-            c.cleanUp()
+        for(c in cleanupObservers) {
+            c.onCleanup()
         }
     }
-    abstract fun onFrame(graphics: RenderEngine)
 
     fun rotateAroundPoint(delta: Float, axis: Vector3f, point: Vector3f){
         val angle = Util.degreeToRadian(delta)
@@ -47,4 +43,11 @@ abstract class BaseEntity(var position: Vector3f) {
         position.y = newPosition.y
         position.z = newPosition.z
     }
+
+    fun addComponent(component: BaseComponent){
+        component.updateObserver?.let { o -> updateObservers.add(o) }
+        component.signalObserver?.let { o -> signalObservers.add(o) }
+        component.cleanupObserver?.let { o -> cleanupObservers.add(o) }
+    }
+
 }

@@ -63,8 +63,6 @@ class RenderEngine {
             }
             unbindTexturedModelFromBatch()
         }
-        directionalLights.clear()
-        renderBatches.clear()
     }
     private fun bindTexturedModelFromBatch(batch: RenderBatchData){
         glBindVertexArray(batch.vao);

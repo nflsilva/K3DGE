@@ -1,8 +1,9 @@
 package k3dge.core
 
-import k3dge.core.camera.GameCamera
-import k3dge.core.entity.GameEntity
-import k3dge.core.light.GameLight
+import k3dge.core.camera.Camera
+import k3dge.core.common.UpdateContext
+import k3dge.core.entity.Entity
+import k3dge.core.light.Light
 import k3dge.render.RenderEngine
 import k3dge.tools.Log
 import k3dge.ui.UIEngine
@@ -11,9 +12,9 @@ import k3dge.ui.dto.InputStateData
 class CoreEngine {
 
     private var isRunning: Boolean = false
-    private var gameObjects: MutableList<GameEntity> = mutableListOf()
-    private var gameLights: MutableList<GameLight> = mutableListOf()
-    private var camera: GameCamera = GameCamera()
+    private var gameObjects: MutableList<Entity> = mutableListOf()
+    private var gameLights: MutableList<Light> = mutableListOf()
+    private var camera: Camera = Camera()
 
     private val uiEngine: UIEngine = UIEngine()
     private val renderEngine: RenderEngine = RenderEngine()
@@ -77,24 +78,17 @@ class CoreEngine {
     }
     private fun onFrame() {
         uiEngine.onFrame()
-        gameObjects.forEach { o ->
-            o.onFrame(renderEngine)
-        }
-        gameLights.forEach { l ->
-            l.onFrame(renderEngine)
-        }
-        camera.onFrame(renderEngine)
         renderEngine.onFrame()
     }
     private fun onUpdate(elapsedTime: Double, input: InputStateData) {
         uiEngine.onUpdate()
         gameObjects.forEach { o ->
-            o.onUpdate(elapsedTime, input)
+            o.onUpdate(UpdateContext(elapsedTime, input, renderEngine, entity = o))
         }
         gameLights.forEach { l ->
-            l.onUpdate(elapsedTime, input)
+            l.onUpdate(UpdateContext(elapsedTime, input, renderEngine, light = l))
         }
-        camera.onUpdate(elapsedTime, input)
+        camera.onUpdate(UpdateContext(elapsedTime, input, renderEngine, camera = camera))
     }
     private fun onCleanUp() {
         gameObjects.forEach { o ->
@@ -110,13 +104,13 @@ class CoreEngine {
         isRunning = true
         run()
     }
-    fun addEntity(gameObject: GameEntity){
+    fun addEntity(gameObject: Entity){
         gameObjects.add(gameObject)
     }
-    fun addEntity(camera: GameCamera){
+    fun addEntity(camera: Camera){
         this.camera = camera
     }
-    fun addEntity(light: GameLight){
+    fun addEntity(light: Light){
         gameLights.add(light)
     }
 

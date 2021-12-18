@@ -2,16 +2,16 @@ package terrain
 
 import k3dge.core.CoreEngine
 import k3dge.core.CoreEngineDelegate
-import k3dge.core.camera.GameCamera
-import k3dge.core.camera.component.RotateComponent
-import k3dge.core.camera.component.TranslateComponent
-import k3dge.core.camera.component.ZoomComponent
-import k3dge.core.entity.GameEntity
-import k3dge.core.entity.component.TexturedMeshComponent
-import k3dge.core.light.GameLight
-import k3dge.core.light.component.ColorComponent
-import k3dge.core.light.component.DirectionalComponent
-import k3dge.core.light.component.LightRotateComponent
+import k3dge.core.camera.Camera
+import k3dge.core.camera.component.RotateCameraComponent
+import k3dge.core.camera.component.TranslateCameraComponent
+import k3dge.core.camera.component.ZoomCameraComponent
+import k3dge.core.entity.Entity
+import k3dge.core.entity.component.TexturedMeshEntityComponent
+import k3dge.core.light.Light
+import k3dge.core.light.component.ColorLightComponent
+import k3dge.core.light.component.DirectionalLightComponent
+import k3dge.core.light.component.LightRotateLightComponent
 import k3dge.render.model.MeshModel
 import k3dge.render.model.ShaderModel
 import k3dge.render.model.TextureModel
@@ -64,8 +64,8 @@ class GameLogic : CoreEngineDelegate {
         val boxTextureData = ResourceLoader.loadTextureFromFile("/texture/box.jpg")!!
         val boxTexture = TextureModel(boxTextureData.width, boxTextureData.height, boxTextureData.data)
 
-        val terrainMeshComp = TexturedMeshComponent(terrainMesh, terrainTexture)
-        val terrain = GameEntity(
+        val terrainMeshComp = TexturedMeshEntityComponent(terrainMesh, terrainTexture)
+        val terrain = Entity(
             Vector3f(0f, 0f, 0f),
             Vector3f(0f, 0f, 0f),
             Vector3f(1f, 1f, 1f),
@@ -73,8 +73,8 @@ class GameLogic : CoreEngineDelegate {
         terrain.addComponent(terrainMeshComp)
         engine.addEntity(terrain)
 
-        val boxMeshComp = TexturedMeshComponent(cubeMesh, boxTexture)
-        val box = GameEntity(
+        val boxMeshComp = TexturedMeshEntityComponent(cubeMesh, boxTexture)
+        val box = Entity(
             Vector3f(5f, 0.0f, 5f),
             Vector3f(0f, 0f, 0f),
             Vector3f(1f, 1f, 1f),
@@ -82,9 +82,9 @@ class GameLogic : CoreEngineDelegate {
         box.addComponent(boxMeshComp)
         engine.addEntity(box)
 
-        val wallMeshComp = TexturedMeshComponent(cubeMesh, wallTexture)
+        val wallMeshComp = TexturedMeshEntityComponent(cubeMesh, wallTexture)
         for(z in 0 until 10) {
-            val wall = GameEntity(
+            val wall = Entity(
                 Vector3f(4.9f, 0.0f, z * 1.0f),
                 Vector3f(0f, 0f, 0f),
                 Vector3f(0.1f, 3f, 1f),
@@ -93,22 +93,22 @@ class GameLogic : CoreEngineDelegate {
             engine.addEntity(wall)
         }
 
-        val camera = GameCamera(
+        val camera = Camera(
             Vector3f(0.0f, 1.0f, 10.0f),
             Vector3f(0.0f, -0.5f, -0.5f),
             Vector3f(0.0f, 1.0f, 0.0f))
-        camera.addComponent(TranslateComponent(5.0f))
-        camera.addComponent(ZoomComponent(15.0f, 2.0f, 15.0f))
-        camera.addComponent(RotateComponent(1.0f,-0.85f, -0.25f))
+        camera.addComponent(TranslateCameraComponent(5.0f))
+        camera.addComponent(ZoomCameraComponent(15.0f, 2.0f, 15.0f))
+        camera.addComponent(RotateCameraComponent(1.0f,-0.85f, -0.25f))
         engine.addEntity(camera)
 
-        val sun = GameLight(
+        val sun = Light(
             Vector3f(0.0f, -1.0f, 0.0f),
             Vector4f(0.0f, 1.0f, 0.0f, 1.0f)
         )
-        sun.addComponent(DirectionalComponent())
-        sun.addComponent(LightRotateComponent(0.5f))
-        sun.addComponent(ColorComponent())
+        sun.addComponent(DirectionalLightComponent())
+        sun.addComponent(LightRotateLightComponent(0.5f))
+        sun.addComponent(ColorLightComponent())
         engine.addEntity(sun)
 
     }
