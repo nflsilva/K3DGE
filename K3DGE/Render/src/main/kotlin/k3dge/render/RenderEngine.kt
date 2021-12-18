@@ -38,10 +38,19 @@ class RenderEngine {
         modelMatrix.scale(model.scale)
 
         val batchId = model.componentId.toString()
+        val entityId = model.entityId.toString()
+
         if(!renderBatches.containsKey(batchId)){
             renderBatches[batchId] = RenderBatchData(model.mesh.vao, model.mesh.size, model.texture.id)
         }
-        renderBatches[batchId]?.entityData?.add(EntityRenderData(model.entityId, model.shader, modelMatrix))
+        val batchData: RenderBatchData = renderBatches[batchId]!!
+        if(!batchData.entityData.containsKey(entityId)) {
+            renderBatches[batchId]!!.entityData[entityId] = EntityRenderData(model.entityId, model.shader, modelMatrix)
+        }
+        else {
+            renderBatches[batchId]!!.entityData[entityId]!!.modelMatrix = modelMatrix
+        }
+
     }
     fun onStart() {
         glEnable(GL_DEPTH_TEST)
@@ -58,7 +67,7 @@ class RenderEngine {
         for(batch in renderBatches.values){
             bindTexturedModelFromBatch(batch)
             for(entity in batch.entityData){
-                prepareEntityShader(entity)
+                prepareEntityShader(entity.value)
                 glDrawElements(GL_TRIANGLES, batch.meshSize, GL_UNSIGNED_INT, 0);
             }
             unbindTexturedModelFromBatch()
@@ -93,13 +102,13 @@ class RenderEngine {
     private data class EntityRenderData(
         val id: UUID,
         val shader: ShaderModel,
-        val modelMatrix: Matrix4f
+        var modelMatrix: Matrix4f
     )
     private data class RenderBatchData(
         val vao: Int,
         val meshSize: Int,
         val textureId: Int,
-        val entityData: MutableList<EntityRenderData> = mutableListOf()
+        val entityData: MutableMap<String, EntityRenderData> = mutableMapOf()
     )
 
     companion object {

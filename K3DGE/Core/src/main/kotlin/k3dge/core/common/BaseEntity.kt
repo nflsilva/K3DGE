@@ -43,11 +43,9 @@ abstract class BaseEntity(var position: Vector3f) {
         position.y = newPosition.y
         position.z = newPosition.z
     }
-
     fun addComponent(component: BaseComponent){
         component.updateObserver?.let { o -> updateObservers.add(o) }
         component.signalObserver?.let { o -> signalObservers.add(o) }
         component.cleanupObserver?.let { o -> cleanupObservers.add(o) }
     }
-
 }

@@ -9,5 +9,4 @@ class Entity(position: Vector3f,
              val rotation: Vector3f,
              val scale: Vector3f,
              val shader: ShaderModel): BaseEntity(position) {
-
 }
