@@ -85,7 +85,7 @@ class GameLogic : CoreEngineDelegate {
         val wallMeshComp = TexturedMeshComponent(cubeMesh, wallTexture)
         for(z in 0 until 10) {
             val wall = GameEntity(
-                Vector3f(0.0f, 0.0f, z * 1.0f),
+                Vector3f(4.9f, 0.0f, z * 1.0f),
                 Vector3f(0f, 0f, 0f),
                 Vector3f(0.1f, 3f, 1f),
                 shader)
@@ -104,7 +104,7 @@ class GameLogic : CoreEngineDelegate {
 
         val sun = GameLight(
             Vector3f(0.0f, -1.0f, 0.0f),
-            Vector4f(1.0f, 1.0f, 1.0f, 1.0f)
+            Vector4f(0.0f, 1.0f, 0.0f, 1.0f)
         )
         sun.addComponent(DirectionalComponent())
         sun.addComponent(LightRotateComponent(0.5f))

@@ -19,7 +19,7 @@ void main()
     //out_color = vec4(1.0, 0.5, 0.5, 1.0);
     //out_color = texture(texture0, texCoord);
 
-    vec4 diffure = processLight(normal, lightVector, in_lightColor);
+    vec4 diffuseColor = processLight(normal, lightVector, in_lightColor);
     vec4 textColor = texture(texture0, texCoord);
-    out_color = mix(diffure * textColor, textColor, 0.25);
+    out_color = mix(diffuseColor * textColor, textColor, 0.25);
 };
