@@ -19,7 +19,6 @@ class RenderEngine {
             SCREEN_WIDTH.toFloat() / SCREEN_HEIGHT.toFloat(),
             0.1F,
             100F)
-
     private var viewMatrix: Matrix4f = Matrix4f().identity()
 
     fun renderCamera(cameraData: CameraRenderData){
