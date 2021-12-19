@@ -1,5 +1,6 @@
 package k3dge.render.model
 
+import k3dge.render.dto.ShaderUniformData
 import k3dge.tools.Log
 import org.joml.Matrix4f
 import org.joml.Vector3f
@@ -7,7 +8,7 @@ import org.joml.Vector4f
 import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL20.*
 
-class ShaderModel(vertexSource: String, fragmentSource: String) {
+abstract class ShaderModel(vertexSource: String, fragmentSource: String) {
 
     val programId: Int = glCreateProgram()
     private val shaders: MutableList<Int> = mutableListOf()
@@ -17,14 +18,6 @@ class ShaderModel(vertexSource: String, fragmentSource: String) {
         addShader(vertexSource, GL_VERTEX_SHADER)
         addShader(fragmentSource, GL_FRAGMENT_SHADER)
         linkProgram()
-
-        bindAttribute(0, POSITION_ATTRIBUTE);
-        bindAttribute(1, TEXTCOORDS_ATTRIBUTE);
-        bindAttribute(2, NORMAL_ATTRIBUTE);
-
-        addUniform(MODEL_MATRIX_UNIFORM)
-        addUniform(VIEW_MATRIX_UNIFORM)
-        addUniform(PROJECTION_MATRIX_UNIFORM)
     }
     fun bind(){
         glUseProgram(programId);
@@ -70,21 +63,10 @@ class ShaderModel(vertexSource: String, fragmentSource: String) {
             glUniformMatrix4fv(it, false, value.get(data))
         }
     }
-    fun setModelMatrix(value: Matrix4f){
-        setUniformMatrix4f(MODEL_MATRIX_UNIFORM, value)
-    }
-    fun setViewMatrix(value: Matrix4f){
-        setUniformMatrix4f(VIEW_MATRIX_UNIFORM, value)
-    }
-    fun setProjectionMatrix(value: Matrix4f){
-        setUniformMatrix4f(PROJECTION_MATRIX_UNIFORM, value)
-    }
-    fun setLightDirection(value: Vector3f){
-        setUniform3f(LIGHT_DIRECTION_UNIFORM, value)
-    }
-    fun setLightColor(value: Vector4f){
-        setUniform4f(LIGHT_COLOR_UNIFORM, value)
-    }
+
+    abstract fun updateUniforms(data: ShaderUniformData)
+    protected abstract fun bindAttributes()
+    protected abstract fun createUniforms()
 
     private fun addShader(sourceCode: String, type: Int){
 
@@ -126,18 +108,6 @@ class ShaderModel(vertexSource: String, fragmentSource: String) {
             Log.e(message)
             return
         }
-    }
-
-    companion object {
-        const val POSITION_ATTRIBUTE = "in_position"
-        const val TEXTCOORDS_ATTRIBUTE = "in_texCoord"
-        const val NORMAL_ATTRIBUTE = "in_normal"
-
-        const val MODEL_MATRIX_UNIFORM = "in_modelMatrix"
-        const val VIEW_MATRIX_UNIFORM = "in_viewMatrix"
-        const val PROJECTION_MATRIX_UNIFORM = "in_projectionMatrix"
-        const val LIGHT_DIRECTION_UNIFORM = "in_lightDirection"
-        const val LIGHT_COLOR_UNIFORM = "in_lightColor"
     }
 
 }

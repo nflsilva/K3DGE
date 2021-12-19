@@ -3,10 +3,9 @@ package k3dge.render.model
 import org.lwjgl.opengl.GL13.*
 import java.nio.ByteBuffer
 
-class TextureModel(
-    width: Int,
-    height: Int,
-    data: ByteBuffer) {
+class TextureModel(width: Int,
+                   height: Int,
+                   data: ByteBuffer) {
 
     val id = glGenTextures()
 

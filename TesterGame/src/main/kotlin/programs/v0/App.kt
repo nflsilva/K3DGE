@@ -1,5 +1,6 @@
-package batch
+package programs.v0
 
+import common.shader.StaticShader
 import k3dge.core.CoreEngine
 import k3dge.core.CoreEngineDelegate
 import k3dge.core.camera.Camera
@@ -9,8 +10,7 @@ import k3dge.core.camera.component.ZoomCameraComponent
 import k3dge.core.entity.Entity
 import k3dge.core.entity.component.SpinEntityComponent
 import k3dge.core.entity.component.TexturedMeshEntityComponent
-import k3dge.render.model.MeshModel
-import k3dge.render.model.ShaderModel
+import k3dge.render.model.Mesh3DModel
 import k3dge.render.model.TextureModel
 import k3dge.tools.ResourceLoader
 import k3dge.ui.dto.InputStateData
@@ -32,21 +32,17 @@ class GameLogic : CoreEngineDelegate {
 
     override fun onStart() {
 
-        val vertexSource = ResourceLoader
-            .loadShaderSourceFromFile("/shader/static/vertex.glsl")
-        val fragmentSource = ResourceLoader
-            .loadShaderSourceFromFile("/shader/static/fragment.glsl")
-        val shader = ShaderModel(vertexSource!!, fragmentSource!!)
+        val shader = StaticShader()
 
         val cubeMeshData = ResourceLoader.loadMeshFromFile("/mesh/cube.obj")!!
-        val cubeMesh = MeshModel(
+        val cubeMesh = Mesh3DModel(
             cubeMeshData.vertices.toTypedArray(),
             cubeMeshData.textureCoordinates.toTypedArray(),
             cubeMeshData.normals.toTypedArray(),
             cubeMeshData.indices.toTypedArray())
 
         val teddyMeshData = ResourceLoader.loadMeshFromFile("/mesh/teddy.obj")!!
-        val teddyMesh = MeshModel(
+        val teddyMesh = Mesh3DModel(
             teddyMeshData.vertices.toTypedArray(),
             teddyMeshData.textureCoordinates.toTypedArray(),
             teddyMeshData.normals.toTypedArray(),
@@ -58,8 +54,8 @@ class GameLogic : CoreEngineDelegate {
         val cubeTextureData = ResourceLoader.loadTextureFromFile("/texture/cube.png")!!
         val cubeTexture = TextureModel(cubeTextureData.width, cubeTextureData.height, cubeTextureData.data)
 
-        val cubeMeshComp = TexturedMeshEntityComponent(cubeMesh, cubeTexture)
-        val teddyMeshComp = TexturedMeshEntityComponent(teddyMesh, teddyTexture)
+        val cubeMeshComp = TexturedMeshEntityComponent(cubeMesh, cubeTexture, shader)
+        val teddyMeshComp = TexturedMeshEntityComponent(teddyMesh, teddyTexture, shader)
         val spinComp = SpinEntityComponent(0.5F)
 
         val r = Random()
@@ -67,8 +63,7 @@ class GameLogic : CoreEngineDelegate {
             val cube = Entity(
                 Vector3f((r.nextFloat() * 2 - 1) * 10, (r.nextFloat() * 2 - 1) * 10, -(r.nextFloat() * 10)),
                 Vector3f(r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1),
-                Vector3f(1f, 1f, 1f),
-                shader)
+                Vector3f(1f, 1f, 1f))
             cube.addComponent(cubeMeshComp)
             cube.addComponent(spinComp)
             engine.addEntity(cube)
@@ -76,8 +71,7 @@ class GameLogic : CoreEngineDelegate {
             val teddy = Entity(
                 Vector3f((r.nextFloat() * 2 - 1) * 10, (r.nextFloat() * 2 - 1) * 10, -(r.nextFloat() * 10)),
                 Vector3f(r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1),
-                Vector3f(0.05f, 0.05f, 0.05f),
-                shader)
+                Vector3f(0.05f, 0.05f, 0.05f))
             teddy.addComponent(teddyMeshComp)
             teddy.addComponent(spinComp)
             engine.addEntity(teddy)

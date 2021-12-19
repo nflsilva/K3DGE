@@ -1,5 +1,6 @@
 package k3dge.core.common
 
+import k3dge.core.common.dto.UpdateData
 import k3dge.core.common.observer.CleanupObserver
 import k3dge.core.common.observer.SignalObserver
 import k3dge.core.common.observer.UpdateObserver
@@ -17,7 +18,7 @@ abstract class BaseEntity(var position: Vector3f) {
     private val signalObservers: MutableList<SignalObserver> = mutableListOf()
     private val cleanupObservers: MutableList<CleanupObserver> = mutableListOf()
 
-    fun onUpdate(context: UpdateContext) {
+    fun onUpdate(context: UpdateData) {
         for(c in updateObservers) {
             c.onUpdate(context)
         }

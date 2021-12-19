@@ -2,7 +2,7 @@ package k3dge.render
 
 import k3dge.render.dto.CameraRenderData
 import k3dge.render.dto.LightRenderData
-import k3dge.render.dto.TexturedMeshRenderData
+import k3dge.render.dto.ShaderUniformData
 import k3dge.render.model.ShaderModel
 import org.joml.Matrix4f
 import org.joml.Vector3f
@@ -11,8 +11,10 @@ import java.util.*
 
 class RenderEngine {
 
-    private val renderBatches: MutableMap<String, RenderBatchData> = mutableMapOf()
-    private val directionalLights: MutableList<LightRenderData> = mutableListOf()
+    private val texturedBatches: MutableMap<String, RenderBatchData> = mutableMapOf()
+    private val guiBatches: MutableMap<String, RenderBatchData> = mutableMapOf()
+    private val lights: MutableMap<String, LightRenderData> = mutableMapOf()
+
     private var projectionMatrix: Matrix4f = Matrix4f()
         .setPerspective(
             1.25F,
@@ -25,32 +27,44 @@ class RenderEngine {
         viewMatrix = Matrix4f().lookAt(cameraData.position, cameraData.lookAt, cameraData.up)
     }
     fun renderDirectionalLight(light: LightRenderData) {
-        directionalLights.add(light)
+        lights[light.uid.toString()] = light
     }
-    fun renderTexturedMesh(model: TexturedMeshRenderData){
 
-        val modelMatrix = Matrix4f()
-        modelMatrix.translation(model.position)
-        modelMatrix.rotate(model.rotation.x, Vector3f(1.0f, 0.0f, 0.0f))
-        modelMatrix.rotate(model.rotation.y, Vector3f(0.0f, 1.0f, 0.0f))
-        modelMatrix.rotate(model.rotation.z, Vector3f(0.0f, 0.0f, 1.0f))
-        modelMatrix.scale(model.scale)
+    //TODO: Refactor these 2 methods into one
+    fun renderTexturedMesh(model: k3dge.render.dto.EntityRenderData){
 
+        val modelMatrix = computeModelMatrix(model.position, model.rotation, model.scale)
         val batchId = model.componentId.toString()
         val entityId = model.entityId.toString()
 
-        if(!renderBatches.containsKey(batchId)){
-            renderBatches[batchId] = RenderBatchData(model.mesh.vao, model.mesh.size, model.texture.id)
+        if(!texturedBatches.containsKey(batchId)){
+            texturedBatches[batchId] = RenderBatchData(model.mesh.vao, model.mesh.size, model.texture.id)
         }
-        val batchData: RenderBatchData = renderBatches[batchId]!!
+        val batchData: RenderBatchData = texturedBatches[batchId]!!
         if(!batchData.entityData.containsKey(entityId)) {
-            renderBatches[batchId]!!.entityData[entityId] = EntityRenderData(model.entityId, model.shader, modelMatrix)
+            texturedBatches[batchId]!!.entityData[entityId] = EntityRenderData(model.entityId, model.shader, modelMatrix)
         }
         else {
-            renderBatches[batchId]!!.entityData[entityId]!!.modelMatrix = modelMatrix
+            texturedBatches[batchId]!!.entityData[entityId]!!.modelMatrix = modelMatrix
         }
-
     }
+    fun renderGui(model: k3dge.render.dto.EntityRenderData){
+        val modelMatrix = computeModelMatrix(model.position, model.rotation, model.scale)
+        val batchId = model.componentId.toString()
+        val entityId = model.entityId.toString()
+
+        if(!guiBatches.containsKey(batchId)){
+            guiBatches[batchId] = RenderBatchData(model.mesh.vao, model.mesh.size, model.texture.id)
+        }
+        val batchData: RenderBatchData = guiBatches[batchId]!!
+        if(!batchData.entityData.containsKey(entityId)) {
+            guiBatches[batchId]!!.entityData[entityId] = EntityRenderData(model.entityId, model.shader, modelMatrix)
+        }
+        else {
+            guiBatches[batchId]!!.entityData[entityId]!!.modelMatrix = modelMatrix
+        }
+    }
+
     fun onStart() {
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_CULL_FACE)
@@ -60,14 +74,25 @@ class RenderEngine {
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f)
         glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
         drawBatches()
+        drawGuis()
     }
 
     private fun drawBatches(){
-        for(batch in renderBatches.values){
+        for(batch in texturedBatches.values){
             bindTexturedModelFromBatch(batch)
             for(entity in batch.entityData){
-                prepareEntityShader(entity.value)
+                prepareShader(entity.value)
                 glDrawElements(GL_TRIANGLES, batch.meshSize, GL_UNSIGNED_INT, 0);
+            }
+            unbindTexturedModelFromBatch()
+        }
+    }
+    private fun drawGuis(){
+        for(batch in guiBatches.values){
+            bindTexturedModelFromBatch(batch)
+            for(entity in batch.entityData){
+                prepareShader(entity.value)
+                glDrawElements(GL_TRIANGLE_STRIP, batch.meshSize, GL_UNSIGNED_INT, 0);
             }
             unbindTexturedModelFromBatch()
         }
@@ -87,15 +112,29 @@ class RenderEngine {
         glBindVertexArray(0)
         glBindTexture(GL_TEXTURE_2D, 0)
     }
-    private fun prepareEntityShader(entity: EntityRenderData){
+    private fun prepareShader(entity: EntityRenderData){
         entity.shader.bind()
-        entity.shader.setModelMatrix(entity.modelMatrix)
-        entity.shader.setProjectionMatrix(projectionMatrix)
-        entity.shader.setViewMatrix(viewMatrix)
-        directionalLights.forEach { light ->
-            entity.shader.setLightDirection(light.position)
-            entity.shader.setLightColor(light.color)
-        }
+        //TODO: We may need multiple lights in the future...
+        var light: LightRenderData? = null
+        lights.keys.forEach { light = lights[it] }
+
+        entity.shader.updateUniforms(ShaderUniformData(
+            entity.modelMatrix,
+            viewMatrix,
+            projectionMatrix,
+            light?.position,
+            light?.color
+        ))
+    }
+
+    private fun computeModelMatrix(position: Vector3f, rotation: Vector3f, scale: Vector3f): Matrix4f{
+        val modelMatrix = Matrix4f()
+        modelMatrix.translation(position)
+        modelMatrix.rotate(rotation.x, Vector3f(1.0f, 0.0f, 0.0f))
+        modelMatrix.rotate(rotation.y, Vector3f(0.0f, 1.0f, 0.0f))
+        modelMatrix.rotate(rotation.z, Vector3f(0.0f, 0.0f, 1.0f))
+        modelMatrix.scale(scale)
+        return modelMatrix
     }
 
     private data class EntityRenderData(

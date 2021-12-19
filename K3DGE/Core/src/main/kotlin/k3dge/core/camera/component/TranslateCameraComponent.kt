@@ -2,7 +2,7 @@ package k3dge.core.camera.component
 
 import k3dge.core.common.BaseComponent
 import k3dge.core.common.ComponentSignal
-import k3dge.core.common.UpdateContext
+import k3dge.core.common.dto.UpdateData
 import k3dge.tools.Util
 import k3dge.ui.dto.InputStateData
 import org.joml.Vector3f
@@ -14,7 +14,7 @@ class TranslateCameraComponent(private var speed: Float): BaseComponent() {
     init {
         setUpdateObserver { context -> onUpdate(context) }
     }
-    private fun onUpdate(context: UpdateContext) {
+    private fun onUpdate(context: UpdateData) {
         context.camera?.let { camera ->
             if(context.input.isKeyPressed(InputStateData.KEY_A)) {
                 moveSpeed.x -= speed

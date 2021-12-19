@@ -1,5 +1,6 @@
 package k3dge.core.common
 
+import k3dge.core.common.dto.UpdateData
 import k3dge.core.common.observer.CleanupObserver
 import k3dge.core.common.observer.SignalObserver
 import k3dge.core.common.observer.UpdateObserver
@@ -11,9 +12,9 @@ abstract class BaseComponent {
     var signalObserver: SignalObserver? = null
     var cleanupObserver: CleanupObserver? = null
 
-    protected fun setUpdateObserver(observerMethod: (context: UpdateContext) -> Unit) {
+    protected fun setUpdateObserver(observerMethod: (context: UpdateData) -> Unit) {
         updateObserver = object: UpdateObserver {
-            override fun onUpdate(context: UpdateContext) {
+            override fun onUpdate(context: UpdateData) {
                 observerMethod(context)
             }
         }

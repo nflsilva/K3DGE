@@ -2,7 +2,7 @@ package k3dge.core.camera.component
 
 import k3dge.core.common.BaseComponent
 import k3dge.core.common.ComponentSignal
-import k3dge.core.common.UpdateContext
+import k3dge.core.common.dto.UpdateData
 import k3dge.tools.Util
 import k3dge.ui.dto.InputStateData
 import org.joml.Vector2f
@@ -20,7 +20,7 @@ class RotateCameraComponent(private val speed: Float,
         setUpdateObserver { context -> onUpdate(context) }
         setSignalObserver { signal -> onSignal(signal) }
     }
-    private fun onUpdate(context: UpdateContext) {
+    private fun onUpdate(context: UpdateData) {
         context.camera?.let { camera ->
             val input = context.input
             val elapsedTime = context.elapsedTime

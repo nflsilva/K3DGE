@@ -3,13 +3,14 @@ package k3dge.core.entity.component
 import k3dge.core.common.BaseComponent
 import k3dge.core.common.dto.UpdateData
 import k3dge.render.dto.EntityRenderData
-import k3dge.render.model.Mesh3DModel
+import k3dge.render.model.MeshGuiModel
 import k3dge.render.model.ShaderModel
 import k3dge.render.model.TextureModel
 
-class TexturedMeshEntityComponent(private val mesh: Mesh3DModel,
-                                  private val texture: TextureModel,
-                                  private val shader: ShaderModel) : BaseComponent() {
+class GuiEntityComponent(private val texture: TextureModel,
+                         private val shader: ShaderModel): BaseComponent()  {
+
+    private val model = MeshGuiModel()
 
     init {
         setUpdateObserver { context -> onUpdate(context) }
@@ -17,10 +18,10 @@ class TexturedMeshEntityComponent(private val mesh: Mesh3DModel,
     }
     private fun onUpdate(context: UpdateData){
         context.entity?.let { entity ->
-            context.graphics.renderTexturedMesh(
+            context.graphics.renderGui(
                 EntityRenderData(
                     uid,
-                    mesh,
+                    model,
                     texture,
                     shader,
                     entity.uid,
@@ -31,7 +32,7 @@ class TexturedMeshEntityComponent(private val mesh: Mesh3DModel,
         }
     }
     private fun cleanUp(){
-        mesh.cleanUp()
+        model.cleanUp()
         texture.cleanUp()
     }
 }

@@ -6,7 +6,7 @@ import k3dge.render.model.TextureModel
 import org.joml.Vector3f
 import java.util.*
 
-data class TexturedMeshRenderData(
+data class EntityRenderData(
     val componentId: UUID,
     val mesh: MeshModel,
     val texture: TextureModel,

@@ -1,9 +1,7 @@
 package k3dge.core.light.component
 
 import k3dge.core.common.BaseComponent
-import k3dge.core.common.UpdateContext
-import k3dge.core.light.Light
-import k3dge.ui.dto.InputStateData
+import k3dge.core.common.dto.UpdateData
 import org.joml.Vector3f
 import org.joml.Vector4f
 import java.lang.Float.max
@@ -17,7 +15,7 @@ class ColorLightComponent: BaseComponent() {
     init {
         setUpdateObserver { context -> onUpdate(context) }
     }
-    private fun onUpdate(context: UpdateContext) {
+    private fun onUpdate(context: UpdateData) {
         context.light?.let { light ->
             val floorNormal = Vector3f(0.0f, 1.0f, 0.0f)
             val floorParallel = Vector3f(1.0f, 0.0f, 0.0f)

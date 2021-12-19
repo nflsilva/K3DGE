@@ -1,7 +1,7 @@
 package k3dge.core
 
 import k3dge.core.camera.Camera
-import k3dge.core.common.UpdateContext
+import k3dge.core.common.dto.UpdateData
 import k3dge.core.entity.Entity
 import k3dge.core.light.Light
 import k3dge.render.RenderEngine
@@ -83,12 +83,12 @@ class CoreEngine {
     private fun onUpdate(elapsedTime: Double, input: InputStateData) {
         uiEngine.onUpdate()
         gameObjects.forEach { o ->
-            o.onUpdate(UpdateContext(elapsedTime, input, renderEngine, entity = o))
+            o.onUpdate(UpdateData(elapsedTime, input, renderEngine, entity = o))
         }
         gameLights.forEach { l ->
-            l.onUpdate(UpdateContext(elapsedTime, input, renderEngine, light = l))
+            l.onUpdate(UpdateData(elapsedTime, input, renderEngine, light = l))
         }
-        camera.onUpdate(UpdateContext(elapsedTime, input, renderEngine, camera = camera))
+        camera.onUpdate(UpdateData(elapsedTime, input, renderEngine, camera = camera))
     }
     private fun onCleanUp() {
         gameObjects.forEach { o ->

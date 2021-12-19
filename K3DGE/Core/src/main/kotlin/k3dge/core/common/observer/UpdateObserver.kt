@@ -1,7 +1,7 @@
 package k3dge.core.common.observer
 
-import k3dge.core.common.UpdateContext
+import k3dge.core.common.dto.UpdateData
 
 interface UpdateObserver {
-    fun onUpdate(context: UpdateContext)
+    fun onUpdate(context: UpdateData)
 }

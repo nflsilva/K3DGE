@@ -1,7 +1,7 @@
 package k3dge.core.camera.component
 
 import k3dge.core.common.BaseComponent
-import k3dge.core.common.UpdateContext
+import k3dge.core.common.dto.UpdateData
 import k3dge.tools.Util
 import org.joml.Vector3f
 
@@ -14,7 +14,7 @@ class ZoomCameraComponent(private val speed: Float,
     init {
         setUpdateObserver { context -> onUpdate(context) }
     }
-    private fun onUpdate(context: UpdateContext) {
+    private fun onUpdate(context: UpdateData) {
         context.camera?.let { camera ->
             if(context.input.scrollY != 0){
                 zoomSpeed += speed * context.input.scrollY.toFloat()
