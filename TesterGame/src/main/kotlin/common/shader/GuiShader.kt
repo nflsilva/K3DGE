@@ -22,7 +22,7 @@ class GuiShader: ShaderModel(ResourceLoader.loadShaderSourceFromFile("/shader/gu
     }
 
     companion object {
-        const val POSITION_ATTRIBUTE = "in_position"
-        const val MODEL_MATRIX_UNIFORM = "in_modelMatrix"
+        private const val POSITION_ATTRIBUTE = "in_position"
+        private const val MODEL_MATRIX_UNIFORM = "in_modelMatrix"
     }
 }

@@ -34,7 +34,7 @@ class StaticShader():ShaderModel(ResourceLoader.loadShaderSourceFromFile("/shade
 
     companion object {
         const val POSITION_ATTRIBUTE = "in_position"
-        const val TEXTCOORDS_ATTRIBUTE = "d"
+        const val TEXTCOORDS_ATTRIBUTE = "in_textureCoords"
         const val NORMAL_ATTRIBUTE = "in_normal"
 
         const val MODEL_MATRIX_UNIFORM = "in_modelMatrix"

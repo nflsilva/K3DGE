@@ -98,6 +98,7 @@ class RenderEngine {
         }
     }
     private fun bindTexturedModelFromBatch(batch: RenderBatchData){
+        //TODO: Should this be added to the model?
         glBindVertexArray(batch.vao);
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
