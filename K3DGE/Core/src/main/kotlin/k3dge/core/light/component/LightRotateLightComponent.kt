@@ -2,6 +2,7 @@ package k3dge.core.light.component
 
 import k3dge.core.common.BaseComponent
 import k3dge.core.common.dto.UpdateData
+import k3dge.tools.Log
 import k3dge.tools.Util
 import org.joml.Matrix4f
 import org.joml.Vector3f
@@ -20,6 +21,7 @@ class LightRotateLightComponent(private var speed: Float): BaseComponent() {
             light.position.x = newPosition.x
             light.position.y = newPosition.y
             light.position.z = newPosition.z
+            //Log.d("${light.position}")
         }
     }
 }

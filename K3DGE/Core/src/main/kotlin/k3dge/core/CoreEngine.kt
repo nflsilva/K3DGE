@@ -55,6 +55,7 @@ class CoreEngine {
 
             if(timeSincePrint >= printTime) {
                 Log.d("FramesPerSecond: $frames\t\tFrameTime: ${frameDelta * 1000}\t\tTicks: $ticks")
+                //Log.d("Camera: ${camera.position}")
                 ticks = 0
                 frames = 0
                 timeSincePrint = 0.0

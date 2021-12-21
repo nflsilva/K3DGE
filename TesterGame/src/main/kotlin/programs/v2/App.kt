@@ -62,14 +62,20 @@ class GameLogic : CoreEngineDelegate {
 
         val r = Random()
         val pineTreeMeshComp = TexturedMeshEntityComponent(pineTreeMesh, lowPolyAtlasTexture, staticShader)
-        for(z in 0 until 100) {
-            val pineTree = Entity(
-                Vector3f(r.nextFloat() * 100f, 0f, r.nextFloat() * 100f),
-                Vector3f(0f, 0f, 0f),
-                Vector3f(1f, 1f, 1f)).apply {
-                addComponent(pineTreeMeshComp)
+        for(x in 1 until 10) {
+            for(y in 1 until 10)
+            {
+                if(r.nextInt(5) == 0){
+                    val pineTree = Entity(
+                        Vector3f( x.toFloat(), 0f, y.toFloat()),
+                        Vector3f(0f, 0f, 0f),
+                        Vector3f(0.5f, 0.5f, 0.5f)).apply {
+                        addComponent(pineTreeMeshComp)
+                    }
+                    engine.addEntity(pineTree)
+                }
             }
-            engine.addEntity(pineTree)
+
         }
 
         val terrainMeshComp = TexturedMeshEntityComponent(terrainMesh, lowPolyAtlasTexture, staticShader)
@@ -81,13 +87,13 @@ class GameLogic : CoreEngineDelegate {
         val gui = Entity(
             Vector2f(0.5f, 0.5f),
             0.0f,
-            Vector2f(0.2f, 0.2f)).apply {
+            Vector2f(0.25f, 0.25f)).apply {
             addComponent(guiComp)
         }
-        engine.addEntity(gui)
+        //engine.addEntity(gui)
 
-        val camera = Camera(Vector3f(0.0f, 1.0f, 10.0f),
-            Vector3f(0.0f, -0.5f, -0.5f),
+        val camera = Camera(Vector3f(5.0f, 5.0f, 10.0f),
+            Vector3f(0f, -0.25f, -0.5f),
             Vector3f(0.0f, 1.0f, 0.0f)).apply {
             addComponent(TranslateCameraComponent(5.0f))
             addComponent(ZoomCameraComponent(15.0f, 2.0f, 20.0f))
@@ -96,10 +102,10 @@ class GameLogic : CoreEngineDelegate {
         engine.addEntity(camera)
 
         val sun = Light(
-            Vector3f(0.0f, 1.0f, 0.0f),
-            Vector4f(0.0f, 1.0f, 0.0f, 1.0f)).apply {
+            Vector3f(-50.0f, -1.0f, 0.0f),
+            Vector4f(1.0f, 1.0f, 1.0f, 1.0f)).apply {
             addComponent(DirectionalLightComponent())
-            addComponent(LightRotateLightComponent(0.1f))
+            addComponent(LightRotateLightComponent(-0.025f))
             addComponent(ColorLightComponent())
         }
         engine.addEntity(sun)

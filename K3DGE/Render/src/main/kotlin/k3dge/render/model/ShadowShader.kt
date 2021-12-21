@@ -1,7 +1,6 @@
-package common.shader
+package k3dge.render.model
 
 import k3dge.render.dto.ShaderUniformData
-import k3dge.render.model.ShaderModel
 import k3dge.tools.ResourceLoader
 
 class ShadowShader: ShaderModel(
