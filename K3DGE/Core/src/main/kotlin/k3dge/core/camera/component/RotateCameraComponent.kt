@@ -33,8 +33,10 @@ class RotateCameraComponent(private val speed: Float,
                     val xPlane = Vector3f(0.0f, 0.0f, 0.0f)
                     val mRay = Vector3f(camera.forward)
                     val t = Vector3f(nPlane).dot(xPlane.sub(camera.position)) / Vector3f(nPlane).dot(mRay)
-                    // TODO: I need to fix this...
-                    if(t > 0 && t < 1000){
+
+                    // NOTE: t may be infinite or invalid.
+                    // This check will prevent unwanted behaviours when this is the case.
+                    if(t > 0 && t < Int.MAX_VALUE){
                         rotationLookAt = Vector3f(camera.forward).mul(t).add(camera.position)
                         isRotating = true
                     }

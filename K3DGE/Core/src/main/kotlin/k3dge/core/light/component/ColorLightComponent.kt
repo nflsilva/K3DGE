@@ -22,10 +22,10 @@ class ColorLightComponent: BaseComponent() {
             val floorNormal = Vector3f(0.0f, 1.0f, 0.0f)
             val dotPositionNormal = Vector3f(light.position).normalize().dot(floorNormal)
 
-            val intensity = min(1.0f, max(light.position.y, 0.0f))
+            val intensity = min(1.0f, max(-light.position.y, 0.0f))
             val colorGradient = abs(dotPositionNormal)
 
-            Log.d("${light.position.y} || $intensity || $colorGradient")
+            //Log.d("${light.position.y} || $intensity || $colorGradient")
 
             val newColor = Vector4f(color0).mul(colorGradient)
                 .add(Vector4f(color1).mul(1 - colorGradient))

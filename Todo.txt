@@ -2,7 +2,8 @@
 [X] Lights 1
 [X] Maybe we should make the camera a game entity. 
 [X] How about we have components and their data separated. This way, components can communication between each other.
-[] [Engine][Investigation] Render object shadows
+[X] [Engine][Investigation] Render object shadows
+[X] [Tool][Implementation] Move this text document into a Trello board
 [] [Engine][Implementation] Render basic UI
 [] [Engine][Implementation] A manager that could store components / blueprints to prevent allocating the same data multiple times.
 [] [Engine][Investigation] Maybe also shaders could have components
@@ -11,4 +12,3 @@
 [] [Engine][Implementation] Click and Select
 [] [Game][Investigation] Find a few good 3D low polly assets
 [] [Game][Implementation] Create a basic, cool scene to show off
-[] [Tool][Implementation] Move this text document into a Trello board

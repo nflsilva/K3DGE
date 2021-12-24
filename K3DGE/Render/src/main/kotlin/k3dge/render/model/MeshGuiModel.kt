@@ -7,7 +7,7 @@ class MeshGuiModel: MeshModel() {
     init {
         glBindVertexArray(vao)
         loadIntoIndexBuffer(arrayOf(0, 1, 2, 3))
-        loadIntoAttributeList(0, 2, arrayOf(-1F, 1F, -1F, -1F, 1F, 1F, 1F, -1F))
+        loadIntoAttributeArray(0, 2, arrayOf(-1F, 1F, -1F, -1F, 1F, 1F, 1F, -1F))
         glBindVertexArray(0)
     }
 }

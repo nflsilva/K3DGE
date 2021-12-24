@@ -6,6 +6,9 @@ abstract class MeshModel() {
 
     val vao: Int = glGenVertexArrays()
     var size: Int = 0
+    val attributeArrays: Int
+        get() = vbos.size
+
     private val vbos: MutableList<Int> = mutableListOf()
 
     fun cleanUp(){
@@ -14,7 +17,7 @@ abstract class MeshModel() {
         glDeleteBuffers(vbos.toIntArray())
     }
 
-    protected fun loadIntoAttributeList(location: Int, length: Int, data: Array<Float>) {
+    protected fun loadIntoAttributeArray(location: Int, length: Int, data: Array<Float>) {
         val vbo: Int = glGenBuffers()
         glBindBuffer(GL_ARRAY_BUFFER, vbo)
         glBufferData(GL_ARRAY_BUFFER, data.toFloatArray(), GL_STATIC_DRAW)

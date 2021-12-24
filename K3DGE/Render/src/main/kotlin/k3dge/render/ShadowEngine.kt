@@ -2,12 +2,17 @@ package k3dge.render
 
 import k3dge.render.dto.ShaderUniformData
 import k3dge.render.model.ShadowShader
+import k3dge.tools.Log
 import org.joml.Matrix4f
+import org.joml.Vector2f
 import org.joml.Vector3f
-import org.joml.Vector4f
 import org.lwjgl.opengl.GL30.*
 import org.lwjgl.opengl.GL32.GL_TEXTURE_BORDER_COLOR
 import org.lwjgl.opengl.GL32.glFramebufferTexture
+import kotlin.math.acos
+import kotlin.math.atan
+import kotlin.math.pow
+
 
 class ShadowEngine {
 
@@ -15,6 +20,9 @@ class ShadowEngine {
     var lightSpaceMatrix: Matrix4f = Matrix4f().identity()
     private val frameBuffer: Int = glGenFramebuffers()
     private val shadowShader: ShadowShader = ShadowShader()
+    //TODO:[Shadows] Optimize this light projection.
+
+
 
     init {
         createFrameBuffer()
@@ -30,18 +38,26 @@ class ShadowEngine {
         shadowShader.unbind()
         glBindFramebuffer(GL_FRAMEBUFFER, 0)
     }
-    fun bindDepthMap(){
+    fun bindDepthMap(slot : Int){
+        glActiveTexture(GL_TEXTURE0 + slot)
         glBindTexture(GL_TEXTURE_2D, depthMap);
     }
 
-    fun prepareLightSpaceMatrix(lightDirection: Vector3f, cameraPosition: Vector3f){
-        //TODO: Optimize this light projection.
-        val projectionMatrix = Matrix4f().ortho(-15.0F, 15.0F, -15.0F, 15.0F, 1.0F, 300.0F)
-        val viewMatrix = Matrix4f().lookAt(
-            Vector3f(lightDirection),
-            Vector3f(5.0f),
+    fun updateLightSpaceMatrix(lightDirection: Vector3f, cameraPosition: Vector3f){
+        val scale = cameraPosition.y
+        //Log.d("$scale")
+        val projectionMatrix = Matrix4f().ortho(
+            -3.0F * scale,
+            3.0F * scale,
+            -3.0F * scale,
+            3.0F * scale,
+            0.1F,
+            3.0F * scale)
+        val position = Vector3f(cameraPosition).add(Vector3f(lightDirection).mul(-scale))
+        lightSpaceMatrix = Matrix4f(projectionMatrix).lookAt(
+            position,
+            Vector3f(cameraPosition),
             Vector3f(0.0f, 1.0f, 0.0f))
-        lightSpaceMatrix = projectionMatrix.mul(viewMatrix)
     }
     fun updateUniforms(modelMatrix: Matrix4f){
         shadowShader.updateUniforms(ShaderUniformData(Matrix4f(lightSpaceMatrix).mul(modelMatrix)))
@@ -64,7 +80,9 @@ class ShadowEngine {
     }
 
     companion object {
-        val SHADOW_WIDTH = 1024 * 2
-        val SHADOW_HEIGHT = 1024 * 2
+        //TODO:[Config File]
+        const val SHADOW_DISTANCE = 100
+        const val SHADOW_WIDTH = 1024 * 2
+        const val SHADOW_HEIGHT = 1024 * 2
     }
 }

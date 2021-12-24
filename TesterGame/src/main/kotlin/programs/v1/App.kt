@@ -50,7 +50,7 @@ class GameLogic : CoreEngineDelegate {
             cubeMeshData.normals.toTypedArray(),
             cubeMeshData.indices.toTypedArray())
 
-        val terrainTextureData = ResourceLoader.loadTextureFromFile("/texture/grass.png")!!
+        val terrainTextureData = ResourceLoader.loadTextureFromFile("/texture/lowPolyAtlas.png")!!
         val terrainTexture = TextureModel(terrainTextureData.width, terrainTextureData.height, terrainTextureData.data)
         val wallTextureData = ResourceLoader.loadTextureFromFile("/texture/wall.jpg")!!
         val wallTexture = TextureModel(wallTextureData.width, wallTextureData.height, wallTextureData.data)
@@ -93,11 +93,11 @@ class GameLogic : CoreEngineDelegate {
         engine.addEntity(camera)
 
         val sun = Light(
-            Vector3f(0.0f, 1.0f, 0.0f),
+            Vector3f(0.0f, 10.0f, 0.0f),
             Vector4f(0.0f, 1.0f, 0.0f, 1.0f)
         )
         sun.addComponent(DirectionalLightComponent())
-        sun.addComponent(LightRotateLightComponent(0.1f))
+        sun.addComponent(LightRotateLightComponent(0.5f))
         sun.addComponent(ColorLightComponent())
         engine.addEntity(sun)
 

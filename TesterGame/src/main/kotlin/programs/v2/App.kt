@@ -92,8 +92,9 @@ class GameLogic : CoreEngineDelegate {
         }
         //engine.addEntity(gui)
 
-        val camera = Camera(Vector3f(5.0f, 5.0f, 10.0f),
-            Vector3f(0f, -0.25f, -0.5f),
+        val camera = Camera(
+            Vector3f(5.0f, 5.0f, 0.0f),
+            Vector3f(0f, -0.25f, 0.5f),
             Vector3f(0.0f, 1.0f, 0.0f)).apply {
             addComponent(TranslateCameraComponent(5.0f))
             addComponent(ZoomCameraComponent(15.0f, 2.0f, 20.0f))
@@ -102,10 +103,10 @@ class GameLogic : CoreEngineDelegate {
         engine.addEntity(camera)
 
         val sun = Light(
-            Vector3f(-50.0f, -1.0f, 0.0f),
+            Vector3f(-1.0f, 0.0f, 0.0f),
             Vector4f(1.0f, 1.0f, 1.0f, 1.0f)).apply {
             addComponent(DirectionalLightComponent())
-            addComponent(LightRotateLightComponent(-0.025f))
+            addComponent(LightRotateLightComponent(0.10f))
             addComponent(ColorLightComponent())
         }
         engine.addEntity(sun)

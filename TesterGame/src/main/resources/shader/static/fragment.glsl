@@ -16,18 +16,27 @@ vec4 processLight(float dotNormalLight){
 	return diffuseComponent * in_lightColor;
 }
 float processShadow(float dotNormalLight){
+
     vec3 fragPosLightSpace = shadowCoords.xyz * 0.5 + 0.5;
-    float lightDepth = texture(depthMap, fragPosLightSpace.xy).r;
     float fragDepth = min(fragPosLightSpace.z, 1.0);
-    //TODO: I should further improve this mess of a bias computation...
-    float bias = max(0.00025 * (1.0 - dotNormalLight), 0.0001);
 
-    return (lightDepth + bias) < fragDepth ? 0.0 : 1.0;
+    float bias = max(0.05 * (1.0 - dotNormalLight), 0.005);
+
+    float shadow = 0.0;
+    vec2 texelSize = 2.0 / textureSize(depthMap, 0);
+    for(int x = -2; x <= 2; ++x)
+    {
+        for(int y = -2; y <= 2; ++y)
+        {
+            float lightDepth = texture(depthMap, fragPosLightSpace.xy + vec2(x, y) * texelSize).r;
+            shadow += (lightDepth + bias) < fragDepth ? 0.0 : 1.0;
+        }
+    }
+    return shadow /= 18.0;
 }
-
 void main()
 {
-    float dotNormalLight = dot(normalize(normal), normalize(lightVector));
+    float dotNormalLight = dot(normalize(normal), normalize(-lightVector));
 
     float ambientCoefficient = 0.25;
     vec4 diffuseComponent = processLight(dotNormalLight);
