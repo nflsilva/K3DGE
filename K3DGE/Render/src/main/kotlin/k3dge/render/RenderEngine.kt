@@ -1,5 +1,6 @@
 package k3dge.render
 
+import k3dge.configuration.EngineConfiguration
 import k3dge.render.dto.CameraRenderData
 import k3dge.render.dto.EntityRenderData
 import k3dge.render.dto.LightRenderData
@@ -11,7 +12,7 @@ import org.joml.Vector4f
 import org.lwjgl.opengl.GL30.*
 import java.util.*
 
-class RenderEngine {
+class RenderEngine(private val configuration: EngineConfiguration) {
 
     private val texturedBatches: MutableMap<String, BatchRenderData> = mutableMapOf()
     private val guiBatches: MutableMap<String, BatchRenderData> = mutableMapOf()
@@ -24,9 +25,9 @@ class RenderEngine {
     private var projectionMatrix: Matrix4f = Matrix4f()
         .setPerspective(
             1.25F,
-            SCREEN_WIDTH.toFloat() / SCREEN_HEIGHT.toFloat(),
+            configuration.resolutionWidth.toFloat() / configuration.resolutionHeight.toFloat(),
             0.1F,
-            100F)
+            configuration.renderDistance.toFloat())
     private var viewMatrix: Matrix4f = Matrix4f().identity()
 
     fun renderCamera(cameraData: CameraRenderData){
@@ -64,7 +65,7 @@ class RenderEngine {
     }
 
     fun onStart() {
-        shadowRenderer = ShadowEngine()
+        shadowRenderer = ShadowEngine(configuration.shadowResolutionWidth, configuration.shadowResolutionHeight)
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_CULL_FACE)
     }
@@ -73,8 +74,7 @@ class RenderEngine {
         glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, backgroundColor.w)
         computeShadowMap()
 
-        //TODO:[Config File]
-        glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
+        glViewport(0, 0, configuration.resolutionWidth, configuration.resolutionHeight)
         glBindFramebuffer(GL_FRAMEBUFFER, 0)
         glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
         glCullFace(GL_BACK)
@@ -119,8 +119,6 @@ class RenderEngine {
     private fun drawGuis(){
         for(batch in guiBatches.values){
             batch.bind()
-            shadowRenderer?.bindDepthMap(0)
-
             for(entity in batch.entityData){
                 prepareShader(entity.value)
                 glDrawElements(GL_TRIANGLE_STRIP, batch.meshSize, GL_UNSIGNED_INT, 0);
@@ -179,9 +177,4 @@ class RenderEngine {
         }
     }
 
-    companion object {
-        //TODO: [Config File]
-        const val SCREEN_WIDTH: Int = 1280
-        const val SCREEN_HEIGHT: Int = 720
-    }
 }

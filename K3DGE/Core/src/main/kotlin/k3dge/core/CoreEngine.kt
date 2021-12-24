@@ -2,6 +2,7 @@ package k3dge.core
 
 import k3dge.core.camera.Camera
 import k3dge.core.common.dto.UpdateData
+import k3dge.configuration.EngineConfiguration
 import k3dge.core.entity.Entity
 import k3dge.core.light.Light
 import k3dge.render.RenderEngine
@@ -9,16 +10,23 @@ import k3dge.tools.Log
 import k3dge.ui.UIEngine
 import k3dge.ui.dto.InputStateData
 
-class CoreEngine {
+class CoreEngine(configuration: EngineConfiguration? = null) {
 
     private var isRunning: Boolean = false
     private var gameObjects: MutableList<Entity> = mutableListOf()
     private var gameLights: MutableList<Light> = mutableListOf()
     private var camera: Camera = Camera()
 
-    private val uiEngine: UIEngine = UIEngine()
-    private val renderEngine: RenderEngine = RenderEngine()
+    private val uiEngine: UIEngine
+    private val renderEngine: RenderEngine
+    private val configuration: EngineConfiguration
     var delegate: CoreEngineDelegate? = null
+
+    init {
+        this.configuration = configuration ?: EngineConfiguration.default()
+        renderEngine = RenderEngine(this.configuration)
+        uiEngine = UIEngine(this.configuration)
+    }
 
     private fun run() {
 
@@ -63,9 +71,6 @@ class CoreEngine {
             if(!uiEngine.isRunning()) {
                 isRunning = false
             }
-
-            //val timeToSleep = max(frameTime-frameDelta, 0.0) / 2
-            //Thread.sleep(0, (timeToSleep * 1000).toInt())
 
             frameEnd = uiEngine.getTime()
             frameDelta = frameEnd - frameStart

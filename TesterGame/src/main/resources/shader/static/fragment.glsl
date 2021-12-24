@@ -34,6 +34,7 @@ float processShadow(float dotNormalLight){
     }
     return shadow /= 18.0;
 }
+
 void main()
 {
     float dotNormalLight = dot(normalize(normal), normalize(-lightVector));

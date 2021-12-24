@@ -42,7 +42,7 @@ class GameLogic : CoreEngineDelegate {
         val staticShader = StaticShader()
         val guiShader = GuiShader()
 
-        val terrainMeshData = ResourceLoader.loadMeshFromFile("/mesh/terrainRandomElevation.obj")!!
+        val terrainMeshData = ResourceLoader.loadMeshFromFile("/mesh/terrainRandomElevation30.obj")!!
         val terrainMesh = Mesh3DModel(
             terrainMeshData.vertices.toTypedArray(),
             terrainMeshData.textureCoordinates.toTypedArray(),
@@ -62,8 +62,8 @@ class GameLogic : CoreEngineDelegate {
 
         val r = Random()
         val pineTreeMeshComp = TexturedMeshEntityComponent(pineTreeMesh, lowPolyAtlasTexture, staticShader)
-        for(x in 1 until 10) {
-            for(y in 1 until 10)
+        for(x in 1 until 30) {
+            for(y in 1 until 30)
             {
                 if(r.nextInt(5) == 0){
                     val pineTree = Entity(

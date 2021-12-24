@@ -2,27 +2,19 @@ package k3dge.render
 
 import k3dge.render.dto.ShaderUniformData
 import k3dge.render.model.ShadowShader
-import k3dge.tools.Log
 import org.joml.Matrix4f
-import org.joml.Vector2f
 import org.joml.Vector3f
 import org.lwjgl.opengl.GL30.*
 import org.lwjgl.opengl.GL32.GL_TEXTURE_BORDER_COLOR
 import org.lwjgl.opengl.GL32.glFramebufferTexture
-import kotlin.math.acos
-import kotlin.math.atan
-import kotlin.math.pow
 
-
-class ShadowEngine {
+class ShadowEngine(private val shadowWidth: Int,
+                   private val shadowHeight: Int) {
 
     private val depthMap: Int = glGenTextures()
     var lightSpaceMatrix: Matrix4f = Matrix4f().identity()
     private val frameBuffer: Int = glGenFramebuffers()
     private val shadowShader: ShadowShader = ShadowShader()
-    //TODO:[Shadows] Optimize this light projection.
-
-
 
     init {
         createFrameBuffer()
@@ -32,7 +24,7 @@ class ShadowEngine {
     fun bindFramebuffer(){
         shadowShader.bind()
         glBindFramebuffer(GL_FRAMEBUFFER, depthMap)
-        glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT)
+        glViewport(0, 0, shadowWidth, shadowHeight)
     }
     fun unbindFramebuffer(){
         shadowShader.unbind()
@@ -52,7 +44,7 @@ class ShadowEngine {
             -3.0F * scale,
             3.0F * scale,
             0.1F,
-            3.0F * scale)
+            5.0F * scale)
         val position = Vector3f(cameraPosition).add(Vector3f(lightDirection).mul(-scale))
         lightSpaceMatrix = Matrix4f(projectionMatrix).lookAt(
             position,
@@ -65,7 +57,7 @@ class ShadowEngine {
 
     private fun createDepthAttachment(){
         glBindTexture(GL_TEXTURE_2D, depthMap);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, null as FloatArray?)
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, shadowWidth, shadowHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, null as FloatArray?)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER)
@@ -77,12 +69,5 @@ class ShadowEngine {
         glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer)
         glDrawBuffer(GL_NONE)
         glReadBuffer(GL_NONE)
-    }
-
-    companion object {
-        //TODO:[Config File]
-        const val SHADOW_DISTANCE = 100
-        const val SHADOW_WIDTH = 1024 * 2
-        const val SHADOW_HEIGHT = 1024 * 2
     }
 }
