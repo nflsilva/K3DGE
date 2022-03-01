@@ -1,4 +1,4 @@
-package common.shader
+package k3dge.render.shader
 
 import k3dge.render.dto.ShaderUniformData
 import k3dge.render.model.ShaderModel
@@ -25,6 +25,8 @@ class StaticShader():ShaderModel(ResourceLoader.loadShaderSourceFromFile("/shade
         addUniform(LIGHT_SPACE_MATRIX_UNIFORM)
         addUniform(TEXTURE_0_UNIFORM)
         addUniform(DEPTH_MAP_UNIFORM)
+        addUniform(AMBIENT_COEFFICIENT_UNIFORM)
+        addUniform(SHADOWS_ENABLED_UNIFORM)
     }
     override fun updateUniforms(data: ShaderUniformData) {
         setUniformMatrix4f(MODEL_MATRIX_UNIFORM, data.modelMatrix)
@@ -35,6 +37,8 @@ class StaticShader():ShaderModel(ResourceLoader.loadShaderSourceFromFile("/shade
         setUniformMatrix4f(LIGHT_SPACE_MATRIX_UNIFORM, data.lightSpaceMatrix)
         setUniformi(TEXTURE_0_UNIFORM, 0)
         setUniformi(DEPTH_MAP_UNIFORM, 1)
+        setUniformf(AMBIENT_COEFFICIENT_UNIFORM, data.ambientCoefficient)
+        setUniformi(SHADOWS_ENABLED_UNIFORM, if(data.shadowsEnabled) { 1 } else { 0 })
     }
 
     companion object {
@@ -48,6 +52,8 @@ class StaticShader():ShaderModel(ResourceLoader.loadShaderSourceFromFile("/shade
         private const val LIGHT_DIRECTION_UNIFORM = "in_lightDirection"
         private const val LIGHT_COLOR_UNIFORM = "in_lightColor"
         private const val LIGHT_SPACE_MATRIX_UNIFORM = "in_lightSpaceMatrix"
+        private const val AMBIENT_COEFFICIENT_UNIFORM = "in_ambientCoefficient"
+        private const val SHADOWS_ENABLED_UNIFORM = "in_shadowsEnabled"
 
         private const val TEXTURE_0_UNIFORM = "texture0"
         private const val DEPTH_MAP_UNIFORM = "depthMap"

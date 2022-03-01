@@ -1,4 +1,4 @@
-package common.shader
+package k3dge.render.shader
 
 import k3dge.render.dto.ShaderUniformData
 import k3dge.render.model.ShaderModel

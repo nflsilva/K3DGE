@@ -11,7 +11,7 @@ class UIEngine(configuration: EngineConfiguration) {
     private val window: Window = Window(
         configuration.resolutionWidth,
         configuration.resolutionHeight,
-        "Hello LWJGL!",
+        configuration.windowTitle,
         configuration.enableVsync)
     private val keyboard: Keyboard = Keyboard(window.id)
     private val mouse: Mouse = Mouse(window.id)

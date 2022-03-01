@@ -1,7 +1,7 @@
 package programs.v2
 
-import common.shader.GuiShader
-import common.shader.StaticShader
+import k3dge.render.shader.GuiShader
+import k3dge.render.shader.StaticShader
 import k3dge.core.CoreEngine
 import k3dge.core.CoreEngineDelegate
 import k3dge.core.camera.Camera
@@ -75,7 +75,6 @@ class GameLogic : CoreEngineDelegate {
                     engine.addEntity(pineTree)
                 }
             }
-
         }
 
         val terrainMeshComp = TexturedMeshEntityComponent(terrainMesh, lowPolyAtlasTexture, staticShader)
@@ -90,7 +89,7 @@ class GameLogic : CoreEngineDelegate {
             Vector2f(0.25f, 0.25f)).apply {
             addComponent(guiComp)
         }
-        //engine.addEntity(gui)
+        engine.addEntity(gui)
 
         val camera = Camera(
             Vector3f(5.0f, 5.0f, 0.0f),

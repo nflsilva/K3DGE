@@ -1,6 +1,6 @@
 package programs.v1
 
-import common.shader.StaticShader
+import k3dge.render.shader.StaticShader
 import k3dge.core.CoreEngine
 import k3dge.core.CoreEngineDelegate
 import k3dge.core.camera.Camera

@@ -65,7 +65,9 @@ class RenderEngine(private val configuration: EngineConfiguration) {
     }
 
     fun onStart() {
-        shadowRenderer = ShadowEngine(configuration.shadowResolutionWidth, configuration.shadowResolutionHeight)
+        if(configuration.enableShadows){
+            shadowRenderer = ShadowEngine(configuration.shadowResolutionWidth, configuration.shadowResolutionHeight)
+        }
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_CULL_FACE)
     }
@@ -157,9 +159,7 @@ class RenderEngine(private val configuration: EngineConfiguration) {
                                        val attribArrays: Int,
                                        val meshSize: Int,
                                        val textureId: Int,
-                                       val entityData: MutableMap<String, BatchEntityRenderData> = mutableMapOf()
-    ){
-
+                                       val entityData: MutableMap<String, BatchEntityRenderData> = mutableMapOf()){
         fun bind(){
             glBindVertexArray(vao)
             for (i in 0 until attribArrays) {

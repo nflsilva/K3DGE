@@ -1,6 +1,7 @@
 package k3dge.configuration
 
-class EngineConfiguration(var resolutionWidth: Int,
+class EngineConfiguration(var windowTitle: String,
+                          var resolutionWidth: Int,
                           var resolutionHeight: Int,
                           var enableShadows: Boolean,
                           var shadowResolutionWidth: Int,
@@ -11,12 +12,13 @@ class EngineConfiguration(var resolutionWidth: Int,
     companion object {
         fun default(): EngineConfiguration{
             return EngineConfiguration(
-                1920,
-                1080,
+                "K3DGE",
+                1280,
+                720,
                 true,
                 1920 * 2,
                 1080 * 2,
-                100,
+                1000,
                 true)
         }
     }
