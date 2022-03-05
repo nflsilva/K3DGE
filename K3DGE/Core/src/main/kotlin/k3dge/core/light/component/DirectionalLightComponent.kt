@@ -2,7 +2,7 @@ package k3dge.core.light.component
 
 import k3dge.core.common.BaseComponent
 import k3dge.core.common.dto.UpdateData
-import k3dge.render.dto.LightRenderData
+import k3dge.render.renderer3d.dto.LightRenderData
 
 class DirectionalLightComponent: BaseComponent() {
 

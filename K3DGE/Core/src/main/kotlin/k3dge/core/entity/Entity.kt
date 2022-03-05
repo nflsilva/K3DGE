@@ -1,7 +1,6 @@
 package k3dge.core.entity
 
 import k3dge.core.common.BaseEntity
-import k3dge.render.model.ShaderModel
 import org.joml.Vector2f
 import org.joml.Vector3f
 

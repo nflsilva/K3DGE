@@ -1,15 +1,15 @@
-package k3dge.render
+package k3dge.render.renderer3d
 
-import k3dge.render.dto.ShaderUniformData
-import k3dge.render.model.ShadowShader
+import k3dge.render.renderer3d.dto.ShaderUniformData
+import k3dge.render.renderer3d.model.ShadowShader
 import org.joml.Matrix4f
 import org.joml.Vector3f
 import org.lwjgl.opengl.GL30.*
 import org.lwjgl.opengl.GL32.GL_TEXTURE_BORDER_COLOR
 import org.lwjgl.opengl.GL32.glFramebufferTexture
 
-class ShadowEngine(private val shadowWidth: Int,
-                   private val shadowHeight: Int) {
+class RendererShadow(private val shadowWidth: Int,
+                     private val shadowHeight: Int) {
 
     private val depthMap: Int = glGenTextures()
     var lightSpaceMatrix: Matrix4f = Matrix4f().identity()

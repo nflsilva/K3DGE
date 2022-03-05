@@ -2,8 +2,6 @@ package k3dge.core.camera
 
 import k3dge.core.camera.component.RenderCameraComponent
 import k3dge.core.common.BaseEntity
-import k3dge.render.RenderEngine
-import k3dge.render.dto.CameraRenderData
 import org.joml.Vector3f
 
 class Camera(position: Vector3f = Vector3f(0.0f, 0.0f, 0.0f),

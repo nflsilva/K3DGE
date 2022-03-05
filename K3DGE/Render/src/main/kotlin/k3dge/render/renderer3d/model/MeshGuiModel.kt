@@ -1,4 +1,4 @@
-package k3dge.render.model
+package k3dge.render.renderer3d.model
 
 import org.lwjgl.opengl.GL30.*
 

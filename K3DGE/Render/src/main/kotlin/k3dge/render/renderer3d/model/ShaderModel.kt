@@ -1,6 +1,6 @@
-package k3dge.render.model
+package k3dge.render.renderer3d.model
 
-import k3dge.render.dto.ShaderUniformData
+import k3dge.render.renderer3d.dto.ShaderUniformData
 import k3dge.tools.Log
 import org.joml.Matrix4f
 import org.joml.Vector3f

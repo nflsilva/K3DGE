@@ -2,7 +2,7 @@ package k3dge.core.camera.component
 
 import k3dge.core.common.BaseComponent
 import k3dge.core.common.dto.UpdateData
-import k3dge.render.dto.CameraRenderData
+import k3dge.render.renderer3d.dto.CameraRenderData
 
 class RenderCameraComponent: BaseComponent() {
     init {

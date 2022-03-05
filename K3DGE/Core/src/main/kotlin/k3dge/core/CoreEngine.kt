@@ -1,11 +1,11 @@
 package k3dge.core
 
+import k3dge.render.RenderEngine
 import k3dge.core.camera.Camera
 import k3dge.core.common.dto.UpdateData
 import k3dge.configuration.EngineConfiguration
 import k3dge.core.entity.Entity
 import k3dge.core.light.Light
-import k3dge.render.RenderEngine
 import k3dge.tools.Log
 import k3dge.ui.UIEngine
 import k3dge.ui.dto.InputStateData

@@ -1,8 +1,8 @@
-package k3dge.render.dto
+package k3dge.render.renderer3d.dto
 
-import k3dge.render.model.MeshModel
-import k3dge.render.model.ShaderModel
-import k3dge.render.model.TextureModel
+import k3dge.render.renderer3d.model.MeshModel
+import k3dge.render.renderer3d.model.ShaderModel
+import k3dge.render.renderer3d.model.TextureModel
 import org.joml.Vector3f
 import java.util.*
 

@@ -1,7 +1,7 @@
 package programs.v2
 
-import k3dge.render.shader.GuiShader
-import k3dge.render.shader.StaticShader
+import k3dge.render.renderer3d.shader.GuiShader
+import k3dge.render.renderer3d.shader.StaticShader
 import k3dge.core.CoreEngine
 import k3dge.core.CoreEngineDelegate
 import k3dge.core.camera.Camera
@@ -15,8 +15,8 @@ import k3dge.core.light.Light
 import k3dge.core.light.component.ColorLightComponent
 import k3dge.core.light.component.DirectionalLightComponent
 import k3dge.core.light.component.LightRotateLightComponent
-import k3dge.render.model.Mesh3DModel
-import k3dge.render.model.TextureModel
+import k3dge.render.renderer3d.model.Mesh3DModel
+import k3dge.render.renderer3d.model.TextureModel
 import k3dge.tools.ResourceLoader
 import k3dge.ui.dto.InputStateData
 import org.joml.Random
