@@ -1,5 +1,6 @@
 package k3dge.render.renderer3d.model
 
+import k3dge.render.common.model.ShaderModel
 import k3dge.render.renderer3d.dto.ShaderUniformData
 import k3dge.tools.ResourceLoader
 

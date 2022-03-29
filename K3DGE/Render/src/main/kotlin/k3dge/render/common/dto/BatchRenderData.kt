@@ -1,4 +1,4 @@
-package k3dge.render.dto
+package k3dge.render.common.dto
 
 import org.lwjgl.opengl.GL11.GL_TEXTURE_2D
 import org.lwjgl.opengl.GL11.glBindTexture

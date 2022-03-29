@@ -1,7 +1,7 @@
 package k3dge.render
 
-import k3dge.render.dto.BatchEntityRenderData
-import k3dge.render.dto.BatchRenderData
+import k3dge.render.common.dto.BatchEntityRenderData
+import k3dge.render.common.dto.BatchRenderData
 import k3dge.render.renderer3d.dto.EntityRenderData
 import org.joml.Matrix4f
 import org.joml.Vector3f
@@ -18,13 +18,17 @@ open class BaseRenderer {
         if(!renderBatches.containsKey(batchId)){
             renderBatches[batchId] = BatchRenderData(model.mesh.vao, model.mesh.attributeArrays, model.mesh.size, model.texture.id)
         }
-        val batchData: BatchRenderData = renderBatches[batchId]!!
-        if(!batchData.entityData.containsKey(entityId)) {
-            renderBatches[batchId]!!.entityData[entityId] = BatchEntityRenderData(model.entityId, model.shader, modelMatrix)
+        renderBatches[batchId]?.let { batchData ->
+            if(!batchData.entityData.containsKey(entityId)) {
+                renderBatches[batchId]?.entityData?.set(entityId,
+                    BatchEntityRenderData(model.entityId, model.shader, modelMatrix)
+                )
+            }
+            else {
+                renderBatches[batchId]?.entityData?.get(entityId)?.modelMatrix = modelMatrix
+            }
         }
-        else {
-            renderBatches[batchId]!!.entityData[entityId]!!.modelMatrix = modelMatrix
-        }
+
     }
 
     private fun computeModelMatrix(position: Vector3f, rotation: Vector3f, scale: Vector3f): Matrix4f {

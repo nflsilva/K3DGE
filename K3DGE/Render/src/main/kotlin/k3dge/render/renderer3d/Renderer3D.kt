@@ -2,18 +2,13 @@ package k3dge.render.renderer3d
 
 import k3dge.configuration.EngineConfiguration
 import k3dge.render.BaseRenderer
-import k3dge.render.dto.BatchEntityRenderData
-import k3dge.render.dto.BatchRenderData
-import k3dge.render.renderer3d.dto.CameraRenderData
+import k3dge.render.common.dto.CameraRenderData
 import k3dge.render.renderer3d.dto.EntityRenderData
 import k3dge.render.renderer3d.dto.LightRenderData
 import k3dge.render.renderer3d.dto.ShaderUniformData
-import k3dge.render.renderer3d.model.ShaderModel
 import org.joml.Matrix4f
 import org.joml.Vector3f
-import org.joml.Vector4f
 import org.lwjgl.opengl.GL30.*
-import java.util.*
 
 class Renderer3D(private val configuration: EngineConfiguration): BaseRenderer() {
 
@@ -92,7 +87,8 @@ class Renderer3D(private val configuration: EngineConfiguration): BaseRenderer()
                                     projectionMatrix,
                                     light?.position,
                                     light?.color,
-                                    shadowRenderer?.lightSpaceMatrix))
+                                    shadowRenderer?.lightSpaceMatrix)
+                )
                 glDrawElements(GL_TRIANGLES, batch.meshSize, GL_UNSIGNED_INT, 0);
             }
             batch.unbind()

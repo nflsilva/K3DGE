@@ -1,7 +1,7 @@
-package k3dge.render.renderer3d.shader
+package k3dge.render.renderergui.shader
 
 import k3dge.render.renderer3d.dto.ShaderUniformData
-import k3dge.render.renderer3d.model.ShaderModel
+import k3dge.render.common.model.ShaderModel
 import k3dge.tools.ResourceLoader
 
 class GuiShader: ShaderModel(ResourceLoader.loadShaderSourceFromFile("/shader/gui/vertex.glsl")!!,

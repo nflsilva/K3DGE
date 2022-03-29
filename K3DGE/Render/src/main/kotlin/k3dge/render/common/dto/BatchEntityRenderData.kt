@@ -1,7 +1,7 @@
-package k3dge.render.dto
+package k3dge.render.common.dto
 
+import k3dge.render.common.model.ShaderModel
 import k3dge.render.renderer3d.dto.ShaderUniformData
-import k3dge.render.renderer3d.model.ShaderModel
 import org.joml.Matrix4f
 import java.util.*
 

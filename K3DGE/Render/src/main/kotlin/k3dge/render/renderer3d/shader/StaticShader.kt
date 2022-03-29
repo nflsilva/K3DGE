@@ -1,7 +1,7 @@
 package k3dge.render.renderer3d.shader
 
 import k3dge.render.renderer3d.dto.ShaderUniformData
-import k3dge.render.renderer3d.model.ShaderModel
+import k3dge.render.common.model.ShaderModel
 import k3dge.tools.ResourceLoader
 
 class StaticShader(): ShaderModel(ResourceLoader.loadShaderSourceFromFile("/shader/static/vertex.glsl")!!,

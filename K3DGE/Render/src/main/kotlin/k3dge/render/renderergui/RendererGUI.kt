@@ -2,7 +2,6 @@ package k3dge.render.renderergui
 
 import k3dge.configuration.EngineConfiguration
 import k3dge.render.BaseRenderer
-import k3dge.render.dto.BatchRenderData
 import k3dge.render.renderer3d.dto.EntityRenderData
 import k3dge.render.renderer3d.dto.ShaderUniformData
 import org.lwjgl.opengl.GL11.*

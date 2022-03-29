@@ -1,4 +1,4 @@
-package programs.v0
+package programs.d3.v0
 
 import k3dge.render.renderer3d.shader.StaticShader
 import k3dge.core.CoreEngine
@@ -9,9 +9,9 @@ import k3dge.core.camera.component.TranslateCameraComponent
 import k3dge.core.camera.component.ZoomCameraComponent
 import k3dge.core.entity.Entity
 import k3dge.core.entity.component.SpinEntityComponent
-import k3dge.core.entity.component.TexturedMeshEntityComponent
+import k3dge.core.entity.component3d.TexturedMeshEntityComponent
 import k3dge.render.renderer3d.model.Mesh3DModel
-import k3dge.render.renderer3d.model.TextureModel
+import k3dge.render.common.model.TextureModel
 import k3dge.tools.ResourceLoader
 import k3dge.ui.dto.InputStateData
 import org.joml.Random

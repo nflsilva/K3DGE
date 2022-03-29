@@ -4,7 +4,7 @@ import org.joml.Matrix4f
 import org.joml.Vector3f
 import org.joml.Vector4f
 
-class ShaderUniformData(val modelMatrix: Matrix4f,
+class ShaderUniformData(modelMatrix: Matrix4f? = null,
                         viewMatrix: Matrix4f? = null,
                         projectionMatrix: Matrix4f? = null,
                         lightDirection: Vector3f? = null,
@@ -13,6 +13,7 @@ class ShaderUniformData(val modelMatrix: Matrix4f,
                         ambientCoefficient: Float? = null,
                         shadowsEnabled: Boolean? = null) {
 
+    val modelMatrix: Matrix4f
     val viewMatrix: Matrix4f
     val projectionMatrix: Matrix4f
     val lightDirection: Vector3f
@@ -22,6 +23,7 @@ class ShaderUniformData(val modelMatrix: Matrix4f,
     val shadowsEnabled: Boolean
 
     init {
+        this.modelMatrix = modelMatrix ?: Matrix4f().identity()
         this.viewMatrix = viewMatrix ?: Matrix4f().identity()
         this.projectionMatrix = projectionMatrix ?: Matrix4f().identity()
         this.lightDirection = lightDirection ?: Vector3f(1.0F)

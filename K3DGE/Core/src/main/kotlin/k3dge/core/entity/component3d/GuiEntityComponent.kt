@@ -1,16 +1,18 @@
-package k3dge.core.entity.component
+package k3dge.core.entity.component3d
 
 import k3dge.core.common.BaseComponent
 import k3dge.core.common.dto.UpdateData
 import k3dge.render.renderer3d.dto.EntityRenderData
-import k3dge.render.renderer3d.model.Mesh3DModel
-import k3dge.render.renderer3d.model.ShaderModel
-import k3dge.render.renderer3d.model.TextureModel
+import k3dge.render.renderergui.model.MeshGuiModel
+import k3dge.render.common.model.ShaderModel
+import k3dge.render.common.model.TextureModel
+import k3dge.render.renderergui.shader.GuiShader
 
-class TexturedMeshEntityComponent(private val mesh: Mesh3DModel,
-                                  private val texture: TextureModel,
-                                  private val shader: ShaderModel
-) : BaseComponent() {
+class GuiEntityComponent(private val texture: TextureModel,
+                         private val shader: ShaderModel = GuiShader()
+): BaseComponent()  {
+
+    private val model = MeshGuiModel()
 
     init {
         setUpdateObserver { context -> onUpdate(context) }
@@ -18,10 +20,10 @@ class TexturedMeshEntityComponent(private val mesh: Mesh3DModel,
     }
     private fun onUpdate(context: UpdateData){
         context.entity?.let { entity ->
-            context.graphics.renderTexturedMesh(
+            context.graphics.renderGui(
                 EntityRenderData(
                     uid,
-                    mesh,
+                    model,
                     texture,
                     shader,
                     entity.uid,
@@ -32,7 +34,7 @@ class TexturedMeshEntityComponent(private val mesh: Mesh3DModel,
         }
     }
     private fun cleanUp(){
-        mesh.cleanUp()
+        model.cleanUp()
         texture.cleanUp()
     }
 }

@@ -1,4 +1,4 @@
-package k3dge.render.renderer3d.model
+package k3dge.render.common.model
 
 import org.lwjgl.opengl.GL13.*
 import java.nio.ByteBuffer

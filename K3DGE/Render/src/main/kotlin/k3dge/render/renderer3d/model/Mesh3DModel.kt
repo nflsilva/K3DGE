@@ -1,5 +1,6 @@
 package k3dge.render.renderer3d.model
 
+import k3dge.render.common.model.MeshModel
 import org.lwjgl.opengl.GL30
 
 class Mesh3DModel(positions: Array<Float>,

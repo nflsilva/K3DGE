@@ -88,6 +88,7 @@ class CoreEngine(configuration: EngineConfiguration? = null) {
     }
     private fun onUpdate(elapsedTime: Double, input: InputStateData) {
         uiEngine.onUpdate()
+        renderEngine.onUpdate()
         gameObjects.forEach { o ->
             o.onUpdate(UpdateData(elapsedTime, input, renderEngine, entity = o))
         }

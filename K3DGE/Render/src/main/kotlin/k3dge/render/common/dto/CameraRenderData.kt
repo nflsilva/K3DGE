@@ -1,4 +1,4 @@
-package k3dge.render.renderer3d.dto
+package k3dge.render.common.dto
 
 import org.joml.Vector3f
 

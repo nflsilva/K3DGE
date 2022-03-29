@@ -6,8 +6,9 @@ class EngineConfiguration(var windowTitle: String,
                           var enableShadows: Boolean,
                           var shadowResolutionWidth: Int,
                           var shadowResolutionHeight: Int,
-                          val renderDistance: Int,
-                          val enableVsync: Boolean) {
+                          var is3D: Boolean,
+                          var renderDistance: Int,
+                          var enableVsync: Boolean) {
 
     companion object {
         fun default(): EngineConfiguration{
@@ -18,6 +19,7 @@ class EngineConfiguration(var windowTitle: String,
                 true,
                 1920 * 2,
                 1080 * 2,
+                true,
                 1000,
                 true)
         }

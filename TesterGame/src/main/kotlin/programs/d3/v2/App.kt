@@ -1,7 +1,5 @@
-package programs.v2
+package programs.d3.v2
 
-import k3dge.render.renderer3d.shader.GuiShader
-import k3dge.render.renderer3d.shader.StaticShader
 import k3dge.core.CoreEngine
 import k3dge.core.CoreEngineDelegate
 import k3dge.core.camera.Camera
@@ -9,14 +7,14 @@ import k3dge.core.camera.component.RotateCameraComponent
 import k3dge.core.camera.component.TranslateCameraComponent
 import k3dge.core.camera.component.ZoomCameraComponent
 import k3dge.core.entity.Entity
-import k3dge.core.entity.component.GuiEntityComponent
-import k3dge.core.entity.component.TexturedMeshEntityComponent
+import k3dge.core.entity.component3d.GuiEntityComponent
+import k3dge.core.entity.component3d.TexturedMeshEntityComponent
 import k3dge.core.light.Light
 import k3dge.core.light.component.ColorLightComponent
 import k3dge.core.light.component.DirectionalLightComponent
 import k3dge.core.light.component.LightRotateLightComponent
 import k3dge.render.renderer3d.model.Mesh3DModel
-import k3dge.render.renderer3d.model.TextureModel
+import k3dge.render.common.model.TextureModel
 import k3dge.tools.ResourceLoader
 import k3dge.ui.dto.InputStateData
 import org.joml.Random
@@ -39,9 +37,6 @@ class GameLogic : CoreEngineDelegate {
 
     override fun onStart() {
 
-        val staticShader = StaticShader()
-        val guiShader = GuiShader()
-
         val terrainMeshData = ResourceLoader.loadMeshFromFile("/mesh/terrainRandomElevation30.obj")!!
         val terrainMesh = Mesh3DModel(
             terrainMeshData.vertices.toTypedArray(),
@@ -61,7 +56,7 @@ class GameLogic : CoreEngineDelegate {
         val testTexture = TextureModel(testTextureData.width, testTextureData.height, testTextureData.data)
 
         val r = Random()
-        val pineTreeMeshComp = TexturedMeshEntityComponent(pineTreeMesh, lowPolyAtlasTexture, staticShader)
+        val pineTreeMeshComp = TexturedMeshEntityComponent(pineTreeMesh, lowPolyAtlasTexture)
         for(x in 1 until 30) {
             for(y in 1 until 30)
             {
@@ -77,12 +72,12 @@ class GameLogic : CoreEngineDelegate {
             }
         }
 
-        val terrainMeshComp = TexturedMeshEntityComponent(terrainMesh, lowPolyAtlasTexture, staticShader)
+        val terrainMeshComp = TexturedMeshEntityComponent(terrainMesh, lowPolyAtlasTexture)
         val terrain = Entity(Vector3f(0f, 0f, 0f), Vector3f(0f, 0f, 0f), Vector3f(1f, 1f, 1f))
         terrain.addComponent(terrainMeshComp)
         engine.addEntity(terrain)
 
-        val guiComp = GuiEntityComponent(testTexture, guiShader)
+        val guiComp = GuiEntityComponent(testTexture)
         val gui = Entity(
             Vector2f(0.5f, 0.5f),
             0.0f,
