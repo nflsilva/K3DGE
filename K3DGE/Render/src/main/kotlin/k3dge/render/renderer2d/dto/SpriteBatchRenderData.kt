@@ -54,7 +54,6 @@ class SpriteBatchRenderData(private val maxQuads: Int,
         glBindBuffer(GL_ARRAY_BUFFER, 0)
 
     }
-
     fun cleanUp(){
         glBindVertexArray(0)
         glDeleteVertexArrays(vao)
@@ -95,6 +94,7 @@ class SpriteBatchRenderData(private val maxQuads: Int,
 
     fun addSprite(data: SpriteRenderData){
 
+        //TODO: Create exception for this
         if(nQuads >= maxQuads || textures.size >= maxTextures) { return }
 
         val x = data.position.x

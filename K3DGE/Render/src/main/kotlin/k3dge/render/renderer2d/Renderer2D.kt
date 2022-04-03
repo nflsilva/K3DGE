@@ -17,7 +17,7 @@ class Renderer2D(private val configuration: EngineConfiguration) {
     private lateinit var spriteShader: SpriteShader
 
     private var maxTextureSlots: Int = 0
-    private var zoom = 1.0F
+    private var zoom = 0.05F
     private val bottom = 0.0F
     private val left = 0.0F
     private val top = configuration.resolutionHeight.toFloat() * zoom
