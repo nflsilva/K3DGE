@@ -4,29 +4,31 @@ import org.joml.Vector2f
 import java.nio.ByteBuffer
 
 open class TextureAtlas(width: Int,
-                   height: Int,
-                   data: ByteBuffer,
-                   private val size: Int): TextureModel(width, height, data) {
+                        height: Int,
+                        data: ByteBuffer,
+                        private val numberOfRows: Int,
+                        private val numberOfColumns: Int): TextureModel(width, height, data) {
 
-    private val sprites: MutableMap<String, Pair<Float, Float>> = mutableMapOf()
-    private val spriteSize: Float = 1F / size
+    private val sprites: MutableMap<String, Array<Vector2f>> = mutableMapOf()
+    private val spriteSize = width / numberOfColumns
 
-    fun setSpriteCoordinates(name: String, column: Int, row: Int) {
+    fun setSpriteCoordinates(name: String, row: Int, column: Int) {
         //TODO: Create exception for this
-        if(column > size || row > size || sprites.keys.contains(name)) { return }
-        sprites[name] = Pair(column * spriteSize, size - row * spriteSize)
+        if(column > numberOfColumns || row > numberOfRows || sprites.keys.contains(name)) { return }
+
+        val spriteLeft = column * spriteSize / width.toFloat()
+        val spriteTop = row * spriteSize / height.toFloat()
+        val spriteBottom = spriteTop + spriteSize / height.toFloat()
+        val spriteRight = spriteLeft + spriteSize / width.toFloat()
+
+        sprites[name] = arrayOf(
+            Vector2f(spriteLeft, spriteTop),
+            Vector2f(spriteLeft, spriteBottom),
+            Vector2f(spriteRight, spriteBottom),
+            Vector2f(spriteRight, spriteTop))
     }
     fun getSpriteCoordinates(name: String): Array<Vector2f>?  {
-        sprites[name]?.let {
-            val subSpriteV = it.second      //Vertical
-            val subSpriteU = it.first       //Horizontal
-            return arrayOf(
-                Vector2f(subSpriteU, subSpriteV),
-                Vector2f(subSpriteU, subSpriteV + spriteSize),
-                Vector2f(subSpriteU + spriteSize, subSpriteV + spriteSize),
-                Vector2f(subSpriteU + spriteSize, subSpriteV))
-        }
-        return null
+        return sprites[name]
     }
 
 }

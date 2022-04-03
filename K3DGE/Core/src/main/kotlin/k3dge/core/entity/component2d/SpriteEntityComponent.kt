@@ -19,7 +19,7 @@ class SpriteEntityComponent(private val texture: TextureModel,
             context.graphics.renderSprite(
                 SpriteRenderData(
                     Vector2f(entity.position.x, entity.position.y),
-                    texture,
+                    texture.id,
                     textureCoords
                 )
             )

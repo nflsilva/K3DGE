@@ -4,7 +4,7 @@ import k3dge.ui.dto.InputStateData
 
 interface CoreEngineDelegate {
     fun onStart()
-    fun onUpdate()
-    fun onFrame(elapsedTime: Double, input: InputStateData)
+    fun onUpdate(elapsedTime: Double, input: InputStateData)
+    fun onFrame()
     fun onCleanUp()
 }

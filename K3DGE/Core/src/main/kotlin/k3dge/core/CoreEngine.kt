@@ -83,10 +83,12 @@ class CoreEngine(configuration: EngineConfiguration? = null) {
         onCleanUp()
     }
     private fun onFrame() {
+        delegate?.onFrame()
         uiEngine.onFrame()
         renderEngine.onFrame()
     }
     private fun onUpdate(elapsedTime: Double, input: InputStateData) {
+        delegate?.onUpdate(elapsedTime, input)
         uiEngine.onUpdate()
         renderEngine.onUpdate()
         gameObjects.forEach { o ->

@@ -112,7 +112,8 @@ class SpriteBatchRenderData(private val maxQuads: Int,
             .put(tr.x).put(tr.y)
 
         if(data.texCoords == null || data.texCoords.size != 4){
-            // VU
+            // H V
+            // V U
             texCoordinates
                 .put(0.0F).put(0.0F)    //TL
                 .put(0.0F).put(1.0F)    //BL
@@ -127,9 +128,9 @@ class SpriteBatchRenderData(private val maxQuads: Int,
                 .put(data.texCoords[3].x).put(data.texCoords[3].y)
         }
 
-        var textureId = textures.find { id -> data.texture.id == id }
+        var textureId = textures.find { id -> data.textureId == id }
         if(textureId == null){
-            textures.add(data.texture.id)
+            textures.add(data.textureId)
             textureId = textures.size
         }
 

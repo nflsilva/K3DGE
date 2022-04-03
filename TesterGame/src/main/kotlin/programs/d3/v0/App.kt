@@ -87,10 +87,10 @@ class GameLogic : CoreEngineDelegate {
         engine.addEntity(camera)
 
     }
-    override fun onUpdate() {
+    override fun onUpdate(elapsedTime: Double, input: InputStateData) {
 
     }
-    override fun onFrame(elapsedTime: Double, input: InputStateData) {
+    override fun onFrame() {
 
     }
     override fun onCleanUp() {

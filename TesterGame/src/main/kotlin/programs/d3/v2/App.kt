@@ -106,7 +106,7 @@ class GameLogic : CoreEngineDelegate {
         engine.addEntity(sun)
 
     }
-    override fun onUpdate() {}
-    override fun onFrame(elapsedTime: Double, input: InputStateData) {}
+    override fun onUpdate(elapsedTime: Double, input: InputStateData) {}
+    override fun onFrame() {}
     override fun onCleanUp() {}
 }

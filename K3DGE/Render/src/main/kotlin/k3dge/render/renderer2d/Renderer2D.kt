@@ -6,9 +6,7 @@ import k3dge.render.renderer2d.dto.SpriteRenderData
 import k3dge.render.renderer2d.shader.SpriteShader
 import k3dge.render.renderer3d.dto.ShaderUniformData
 import org.joml.Matrix4f
-import org.joml.Vector3f
 import org.lwjgl.BufferUtils
-import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL30.*
 
 class Renderer2D(private val configuration: EngineConfiguration) {
@@ -17,7 +15,7 @@ class Renderer2D(private val configuration: EngineConfiguration) {
     private lateinit var spriteShader: SpriteShader
 
     private var maxTextureSlots: Int = 0
-    private var zoom = 0.05F
+    private var zoom = 0.25F
     private val bottom = 0.0F
     private val left = 0.0F
     private val top = configuration.resolutionHeight.toFloat() * zoom
@@ -67,7 +65,7 @@ class Renderer2D(private val configuration: EngineConfiguration) {
         for(batch in spriteBatches) {
             if(batch.isSpriteFull()) { continue }
 
-            if(batch.hasTexture(data.texture.id) || !batch.isTextureFull()) {
+            if(batch.hasTexture(data.textureId) || !batch.isTextureFull()) {
                 suitableBatch = batch
                 break
             }
