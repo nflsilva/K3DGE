@@ -42,6 +42,11 @@ abstract class ShaderModel(vertexSource: String, fragmentSource: String) {
             glUniform1i(it, value)
         }
     }
+    fun setUniformiv(name: String, value: List<Int>) {
+        uniforms[name]?.let {
+            glUniform1iv(it, value.toIntArray())
+        }
+    }
     fun setUniformf(name: String, value: Float){
         uniforms[name]?.let {
             glUniform1f(it, value)

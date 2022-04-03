@@ -46,6 +46,11 @@ class RenderEngine(configuration: EngineConfiguration) {
     fun onUpdate() {
         renderer2D?.onUpdate()
     }
+    fun onCleanUp() {
+        renderer3D?.onCleanUp()
+        renderer2D?.onCleanUp()
+        rendererGUI?.onCleanUp()
+    }
 
     fun renderCamera(cameraData: CameraRenderData){
         renderer3D?.renderCamera(cameraData)

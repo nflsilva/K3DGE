@@ -11,10 +11,10 @@ class RendererGUI(private val configuration: EngineConfiguration): BaseRenderer(
     fun renderGui(model: EntityRenderData){
         addEntityToRenderList(model)
     }
-
     fun onFrame() {
         drawGuis()
     }
+    fun onCleanUp(){}
 
     private fun drawGuis(){
         for(batch in renderBatches.values){

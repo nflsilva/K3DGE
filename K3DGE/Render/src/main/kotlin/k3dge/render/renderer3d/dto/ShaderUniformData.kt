@@ -11,7 +11,8 @@ class ShaderUniformData(modelMatrix: Matrix4f? = null,
                         lightColor: Vector4f? = null,
                         lightSpaceMatrix: Matrix4f? = null,
                         ambientCoefficient: Float? = null,
-                        shadowsEnabled: Boolean? = null) {
+                        shadowsEnabled: Boolean? = null,
+                        textureSlots: Int? = null) {
 
     val modelMatrix: Matrix4f
     val viewMatrix: Matrix4f
@@ -21,6 +22,7 @@ class ShaderUniformData(modelMatrix: Matrix4f? = null,
     val lightSpaceMatrix: Matrix4f
     val ambientCoefficient: Float
     val shadowsEnabled: Boolean
+    val textureSlots: Int
 
     init {
         this.modelMatrix = modelMatrix ?: Matrix4f().identity()
@@ -31,5 +33,6 @@ class ShaderUniformData(modelMatrix: Matrix4f? = null,
         this.lightSpaceMatrix = lightSpaceMatrix ?: Matrix4f().identity()
         this.ambientCoefficient = ambientCoefficient ?: 0.25f
         this.shadowsEnabled = shadowsEnabled?: true
+        this.textureSlots = textureSlots?: 0
     }
 }

@@ -14,17 +14,17 @@ class MoveEntityComponent() : BaseComponent() {
         context.entity?.let { entity ->
 
             if(context.input.isKeyPressed(InputStateData.KEY_A)) {
-                entity.position.x -= 500.0f * context.elapsedTime.toFloat()
+                entity.position.x -= 10.0f * context.elapsedTime.toFloat()
             }
             else if(context.input.isKeyPressed(InputStateData.KEY_D)) {
-                entity.position.x += 500.0f * context.elapsedTime.toFloat()
+                entity.position.x += 10.0f * context.elapsedTime.toFloat()
             }
 
             if(context.input.isKeyPressed(InputStateData.KEY_W)) {
-                entity.position.y += 500.0f * context.elapsedTime.toFloat()
+                entity.position.y += 10.0f * context.elapsedTime.toFloat()
             }
             else if(context.input.isKeyPressed(InputStateData.KEY_S)) {
-                entity.position.y -= 500.0f * context.elapsedTime.toFloat()
+                entity.position.y -= 10.0f * context.elapsedTime.toFloat()
             }
 
         }

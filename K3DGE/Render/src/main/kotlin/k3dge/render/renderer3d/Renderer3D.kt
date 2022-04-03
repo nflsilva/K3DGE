@@ -53,6 +53,7 @@ class Renderer3D(private val configuration: EngineConfiguration): BaseRenderer()
 
         drawBatches()
     }
+    fun onCleanUp(){}
 
     private fun computeShadowMap(){
 

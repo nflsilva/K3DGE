@@ -13,20 +13,27 @@ class SpriteShader: ShaderModel(ResourceLoader.loadShaderSourceFromFile("/shader
     }
     override fun bindAttributes() {
         bindAttribute(0, POSITION_ATTRIBUTE);
+        bindAttribute(1, TEXTCOORDS_ATTRIBUTE);
+        bindAttribute(2, TEXTINDEX_ATTRIBUTE);
     }
     override fun createUniforms() {
         addUniform(PROJECTION_MATRIX_UNIFORM)
-        addUniform(TEXTURE_0_UNIFORM)
+        addUniform(TEXTURE_SLOTS_UNIFORM)
     }
     override fun updateUniforms(data: ShaderUniformData) {
         setUniformMatrix4f(PROJECTION_MATRIX_UNIFORM, data.projectionMatrix)
-        setUniformi(TEXTURE_0_UNIFORM, 0)
+
+        val samplers = mutableListOf<Int>()
+        for(i in 0 until data.textureSlots){ samplers.add(i) }
+        setUniformiv(TEXTURE_SLOTS_UNIFORM, samplers)
     }
 
     companion object {
         private const val POSITION_ATTRIBUTE = "in_position"
+        private const val TEXTCOORDS_ATTRIBUTE = "in_textureCoords"
+        private const val TEXTINDEX_ATTRIBUTE = "in_textureIndex"
         private const val PROJECTION_MATRIX_UNIFORM = "in_projectionMatrix"
 
-        private const val TEXTURE_0_UNIFORM = "texture0"
+        private const val TEXTURE_SLOTS_UNIFORM = "in_samplers"
     }
 }
