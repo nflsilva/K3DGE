@@ -1,16 +1,9 @@
 package programs.d2.v1
 
-import k3dge.configuration.EngineConfiguration
 import k3dge.core.CoreEngine
 import k3dge.core.CoreEngineDelegate
-import k3dge.core.entity.Entity
-import k3dge.core.entity.component.MoveEntityComponent
 import k3dge.core.entity.component2d.SpriteAnimationComponent
-import k3dge.core.entity.component2d.SpriteAnimationComponent.SpriteKeyframe
-import k3dge.render.renderer2d.model.SpriteAtlas
-import k3dge.tools.ResourceManager
 import k3dge.ui.dto.InputStateData
-import org.joml.Vector2f
 
 val engine = CoreEngine()
 val animComp = SpriteAnimationComponent()

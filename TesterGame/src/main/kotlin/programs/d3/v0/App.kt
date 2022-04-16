@@ -10,6 +10,8 @@ import k3dge.core.camera.component.ZoomCameraComponent
 import k3dge.core.entity.Entity
 import k3dge.core.entity.component.SpinEntityComponent
 import k3dge.core.entity.component3d.TexturedMeshEntityComponent
+import k3dge.render.common.enum.MeshDimensions
+import k3dge.render.common.enum.MeshUsage
 import k3dge.render.common.model.Mesh
 import k3dge.render.common.model.Texture
 import k3dge.tools.ResourceManager
@@ -32,12 +34,12 @@ class GameLogic : CoreEngineDelegate {
 
     override fun onStart() {
 
-        val cubeMesh = Mesh(Mesh.Dimensions.D3, Mesh.Usage.STATIC, "/mesh/cube.obj")
+        val cubeMesh = Mesh(MeshDimensions.D3, MeshUsage.STATIC, "/mesh/cube.obj")
         val cubeTexture = Texture("/texture/cube.png")
         val cubeMeshComp = TexturedMeshEntityComponent(cubeMesh, cubeTexture)
 
         val teddyTexture = Texture("/texture/bear.jpg")
-        val teddyMesh = Mesh(Mesh.Dimensions.D3, Mesh.Usage.STATIC, "/mesh/teddy.obj")
+        val teddyMesh = Mesh(MeshDimensions.D3, MeshUsage.STATIC, "/mesh/teddy.obj")
         val teddyMeshComp = TexturedMeshEntityComponent(teddyMesh, teddyTexture)
 
         val spinComp = SpinEntityComponent(0.5F)

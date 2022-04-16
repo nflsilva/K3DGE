@@ -12,6 +12,8 @@ import k3dge.core.light.Light
 import k3dge.core.light.component.ColorLightComponent
 import k3dge.core.light.component.DirectionalLightComponent
 import k3dge.core.light.component.LightRotateLightComponent
+import k3dge.render.common.enum.MeshDimensions
+import k3dge.render.common.enum.MeshUsage
 import k3dge.render.common.model.Mesh
 import k3dge.render.common.model.Texture
 import k3dge.tools.ResourceManager
@@ -34,7 +36,7 @@ class GameLogic : CoreEngineDelegate {
 
     override fun onStart() {
 
-        val terrainMesh = Mesh(Mesh.Dimensions.D3, Mesh.Usage.STATIC, "/mesh/terrain.obj")
+        val terrainMesh = Mesh(MeshDimensions.D3, MeshUsage.STATIC, "/mesh/terrain.obj")
         val terrainTexture = Texture("/texture/lowPolyAtlas.png")
         val terrainMeshComp = TexturedMeshEntityComponent(terrainMesh, terrainTexture)
         val terrain = Entity(
@@ -45,7 +47,7 @@ class GameLogic : CoreEngineDelegate {
         }
         engine.addEntity(terrain)
 
-        val cubeMesh = Mesh(Mesh.Dimensions.D3, Mesh.Usage.STATIC, "/mesh/cube.obj")
+        val cubeMesh = Mesh(MeshDimensions.D3, MeshUsage.STATIC, "/mesh/cube.obj")
         val boxTexture = Texture("/texture/box.jpg")
         val boxMeshComp = TexturedMeshEntityComponent(cubeMesh, boxTexture)
         val box = Entity(

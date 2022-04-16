@@ -13,6 +13,8 @@ import k3dge.core.light.Light
 import k3dge.core.light.component.ColorLightComponent
 import k3dge.core.light.component.DirectionalLightComponent
 import k3dge.core.light.component.LightRotateLightComponent
+import k3dge.render.common.enum.MeshDimensions
+import k3dge.render.common.enum.MeshUsage
 import k3dge.render.common.model.Mesh
 import k3dge.render.common.model.Texture
 import k3dge.tools.ResourceManager
@@ -37,8 +39,8 @@ class GameLogic : CoreEngineDelegate {
 
     override fun onStart() {
 
-        val terrainMesh = Mesh(Mesh.Dimensions.D3, Mesh.Usage.STATIC, "/mesh/terrainRandomElevation30.obj")
-        val pineTreeMesh = Mesh(Mesh.Dimensions.D3, Mesh.Usage.STATIC, "/mesh/pineTree.obj")
+        val terrainMesh = Mesh(MeshDimensions.D3, MeshUsage.STATIC, "/mesh/terrainRandomElevation30.obj")
+        val pineTreeMesh = Mesh(MeshDimensions.D3, MeshUsage.STATIC, "/mesh/pineTree.obj")
 
         val lowPolyAtlasTextureData = ResourceManager.loadTextureFromFile("/texture/lowPolyAtlas.png")!!
         val lowPolyAtlasTexture = Texture(lowPolyAtlasTextureData.width, lowPolyAtlasTextureData.height, lowPolyAtlasTextureData.data)

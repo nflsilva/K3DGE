@@ -10,7 +10,7 @@ import k3dge.render.renderer2d.shader.Shader2D
 class GuiEntityComponent(private val texture: Texture,
                          private val shader: Shader = Shader2D()): Component()  {
 
-    private val model = Mesh.initQuad()
+    private val mesh = Mesh.initQuad()
 
     init {
         setUpdateObserver { context -> onUpdate(context) }
@@ -18,11 +18,11 @@ class GuiEntityComponent(private val texture: Texture,
     }
     private fun onUpdate(context: UpdateData){
         context.entity?.let { entity ->
-            //context.graphics.renderGui(model, texture, shader, entity.transform.data)
+            context.graphics.renderGUI(mesh, texture, shader, entity.transform.data)
         }
     }
     private fun cleanUp(){
-        model.cleanUp()
+        mesh.cleanUp()
         texture.cleanUp()
     }
 }
