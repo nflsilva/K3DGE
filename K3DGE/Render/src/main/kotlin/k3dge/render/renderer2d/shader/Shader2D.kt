@@ -1,11 +1,10 @@
 package k3dge.render.renderer2d.shader
 
 import k3dge.render.common.dto.ShaderUniformData
-import k3dge.render.common.model.Shader
+import k3dge.render.common.shader.Shader
 import k3dge.tools.ResourceManager
 
-class SpriteShader: Shader(ResourceManager.loadShaderSourceFromFile("/shader/sprite/vertex.glsl")!!,
-    ResourceManager.loadShaderSourceFromFile("/shader/sprite/fragment.glsl")!!) {
+class Shader2D: Shader(VERTEX_SHADER, FRAGMENT_SHADER) {
 
     init {
         bindAttributes()
@@ -29,6 +28,9 @@ class SpriteShader: Shader(ResourceManager.loadShaderSourceFromFile("/shader/spr
     }
 
     companion object {
+        private const val VERTEX_SHADER = "/shader/2d/static/vertex.glsl"
+        private const val FRAGMENT_SHADER = "/shader/2d/static/fragment.glsl"
+
         private const val POSITION_ATTRIBUTE = "in_position"
         private const val TEXTCOORDS_ATTRIBUTE = "in_textureCoords"
         private const val TEXTINDEX_ATTRIBUTE = "in_textureIndex"

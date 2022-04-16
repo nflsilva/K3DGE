@@ -10,7 +10,7 @@ class SpriteEntityComponent(private val spriteData: Sprite): Component() {
     }
     private fun onUpdate(context: UpdateData){
         context.entity?.let { entity ->
-            context.graphics.renderSprite(entity.transform.data, spriteData)
+            //context.graphics.renderSprite(entity.transform.data, spriteData)
         }
     }
 }

@@ -1,12 +1,10 @@
 package k3dge.render.renderer3d.shader
 
 import k3dge.render.common.dto.ShaderUniformData
-import k3dge.render.common.model.Shader
+import k3dge.render.common.shader.Shader
 import k3dge.tools.ResourceManager
 
-class StaticShader: Shader(
-    ResourceManager.loadShaderSourceFromFile("/shader/static/vertex.glsl")!!,
-    ResourceManager.loadShaderSourceFromFile("/shader/static/fragment.glsl")!!) {
+class Shader3D: Shader(VERTEX_SHADER, FRAGMENT_SHADER) {
 
     init {
         bindAttributes()
@@ -43,6 +41,9 @@ class StaticShader: Shader(
     }
 
     companion object {
+        private const val VERTEX_SHADER = "/shader/3d/static/vertex.glsl"
+        private const val FRAGMENT_SHADER = "/shader/3d/static/fragment.glsl"
+
         private const val POSITION_ATTRIBUTE = "in_position"
         private const val TEXTCOORDS_ATTRIBUTE = "in_textureCoords"
         private const val NORMAL_ATTRIBUTE = "in_normal"

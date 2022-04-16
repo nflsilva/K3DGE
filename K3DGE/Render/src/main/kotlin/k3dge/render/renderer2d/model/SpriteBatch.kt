@@ -99,10 +99,10 @@ class SpriteBatch(private val maxQuads: Int,
         val x = 0//data.position.x
         val y = 0//data.position.y
 
-        val tl = Vector2f(0.0f + x, sprite.spriteSize.toFloat() + y)
+        val tl = Vector2f(0.0f + x, sprite.spriteSize.value + y.toFloat())
         val bl = Vector2f(0.0f + x, 0.0f + y)
-        val br = Vector2f(sprite.spriteSize.toFloat() + x, 0.0f + y)
-        val tr = Vector2f(sprite.spriteSize.toFloat() + x, sprite.spriteSize.toFloat() + y)
+        val br = Vector2f(sprite.spriteSize.value + x.toFloat(), 0.0f + y)
+        val tr = Vector2f(sprite.spriteSize.value + x.toFloat(), sprite.spriteSize.value + y.toFloat())
 
         positions
             .put(tl.x).put(tl.y)

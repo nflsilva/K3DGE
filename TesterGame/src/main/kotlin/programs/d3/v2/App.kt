@@ -7,13 +7,13 @@ import k3dge.core.camera.component.RotateCameraComponent
 import k3dge.core.camera.component.TranslateCameraComponent
 import k3dge.core.camera.component.ZoomCameraComponent
 import k3dge.core.entity.Entity
-import k3dge.core.entity.componentgui.GuiEntityComponent
+import k3dge.core.entity.component2d.GuiEntityComponent
 import k3dge.core.entity.component3d.TexturedMeshEntityComponent
 import k3dge.core.light.Light
 import k3dge.core.light.component.ColorLightComponent
 import k3dge.core.light.component.DirectionalLightComponent
 import k3dge.core.light.component.LightRotateLightComponent
-import k3dge.render.renderer3d.entity.StaticObjectModel
+import k3dge.render.common.model.Mesh
 import k3dge.render.common.model.Texture
 import k3dge.tools.ResourceManager
 import k3dge.ui.dto.InputStateData
@@ -37,18 +37,8 @@ class GameLogic : CoreEngineDelegate {
 
     override fun onStart() {
 
-        val terrainMeshData = ResourceManager.loadMeshFromFile("/mesh/terrainRandomElevation30.obj")!!
-        val terrainMesh = StaticObjectModel(
-            terrainMeshData.vertices.toTypedArray(),
-            terrainMeshData.textureCoordinates.toTypedArray(),
-            terrainMeshData.normals.toTypedArray(),
-            terrainMeshData.indices.toTypedArray())
-        val pineTreeData = ResourceManager.loadMeshFromFile("/mesh/pineTree.obj")!!
-        val pineTreeMesh = StaticObjectModel(
-            pineTreeData.vertices.toTypedArray(),
-            pineTreeData.textureCoordinates.toTypedArray(),
-            pineTreeData.normals.toTypedArray(),
-            pineTreeData.indices.toTypedArray())
+        val terrainMesh = Mesh(Mesh.Dimensions.D3, Mesh.Usage.STATIC, "/mesh/terrainRandomElevation30.obj")
+        val pineTreeMesh = Mesh(Mesh.Dimensions.D3, Mesh.Usage.STATIC, "/mesh/pineTree.obj")
 
         val lowPolyAtlasTextureData = ResourceManager.loadTextureFromFile("/texture/lowPolyAtlas.png")!!
         val lowPolyAtlasTexture = Texture(lowPolyAtlasTextureData.width, lowPolyAtlasTextureData.height, lowPolyAtlasTextureData.data)

@@ -1,5 +1,6 @@
 package k3dge.render.common.model
 
+import k3dge.tools.ResourceManager
 import k3dge.tools.dto.TextureData
 import org.lwjgl.opengl.GL13.*
 import org.lwjgl.opengl.GL20
@@ -9,11 +10,11 @@ import java.nio.ByteBuffer
 class Texture(val width: Int,
               val height: Int,
               data: ByteBuffer) {
-    
+
     private val id: Int = glGenTextures()
 
-    constructor(textureData: TextureData):
-            this(textureData.width, textureData.height, textureData.data)
+    constructor(textureData: TextureData): this(textureData.width, textureData.height, textureData.data)
+    constructor(resourceName: String): this(ResourceManager.loadTextureFromFile(resourceName))
 
     init {
         glBindTexture(GL_TEXTURE_2D, id);

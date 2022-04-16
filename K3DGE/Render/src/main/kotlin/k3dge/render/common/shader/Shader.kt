@@ -1,7 +1,8 @@
-package k3dge.render.common.model
+package k3dge.render.common.shader
 
 import k3dge.render.common.dto.ShaderUniformData
 import k3dge.tools.Log
+import k3dge.tools.ResourceManager
 import k3dge.tools.dto.ShaderData
 import org.joml.Matrix4f
 import org.joml.Vector3f
@@ -14,6 +15,10 @@ abstract class Shader(vertexData: ShaderData, fragmentData: ShaderData) {
     private val id: Int = glCreateProgram()
     private val shaders: MutableList<Int> = mutableListOf()
     private val uniforms: MutableMap<String, Int> = mutableMapOf()
+
+    constructor(vertexResource: String, fragmentResource: String):
+            this(ResourceManager.loadShaderSourceFromFile(vertexResource),
+                ResourceManager.loadShaderSourceFromFile(fragmentResource))
 
     init {
         addShader(vertexData.sourceCode, GL_VERTEX_SHADER)

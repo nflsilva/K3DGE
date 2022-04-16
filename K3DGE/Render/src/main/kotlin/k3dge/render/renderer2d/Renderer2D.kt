@@ -4,7 +4,7 @@ import k3dge.configuration.EngineConfiguration
 import k3dge.render.renderer2d.model.SpriteBatch
 import k3dge.render.renderer2d.model.Sprite
 import k3dge.render.common.dto.TransformData
-import k3dge.render.renderer2d.shader.SpriteShader
+import k3dge.render.renderer2d.shader.Shader2D
 import k3dge.render.common.dto.ShaderUniformData
 import org.joml.Matrix4f
 import org.lwjgl.BufferUtils
@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL30.*
 class Renderer2D(private val configuration: EngineConfiguration) {
 
     private lateinit var spriteBatches: MutableList<SpriteBatch>
-    private lateinit var spriteShader: SpriteShader
+    private lateinit var spriteShader: Shader2D
 
     private var maxTextureSlots: Int = 0
     private var zoom = 0.25F
@@ -28,7 +28,7 @@ class Renderer2D(private val configuration: EngineConfiguration) {
         maxTextureSlots = mtsb.get()
 
         spriteBatches = mutableListOf(SpriteBatch(DEFAULT_BATCH_SIZE, maxTextureSlots))
-        spriteShader = SpriteShader()
+        spriteShader = Shader2D()
     }
     fun onFrame() {
         glViewport(0, 0, configuration.resolutionWidth, configuration.resolutionHeight)
@@ -49,12 +49,12 @@ class Renderer2D(private val configuration: EngineConfiguration) {
         }
     }
 
-    fun renderSprite(transform: TransformData, data: Sprite) {
+    fun renderQuad(transform: TransformData, data: Sprite) {
 
         val isVisible = transform.position.x > left - DEFAULT_SCREEN_RENDER_MARGINS &&
-                transform.position.x + data.spriteSize < right + DEFAULT_SCREEN_RENDER_MARGINS &&
+                transform.position.x + data.spriteSize.value < right + DEFAULT_SCREEN_RENDER_MARGINS &&
                 transform.position.y < top + DEFAULT_SCREEN_RENDER_MARGINS &&
-                transform.position.y + data.spriteSize > bottom - DEFAULT_SCREEN_RENDER_MARGINS
+                transform.position.y + data.spriteSize.value > bottom - DEFAULT_SCREEN_RENDER_MARGINS
 
         if(!isVisible) { return }
 

@@ -8,17 +8,14 @@ import k3dge.core.entity.component.MoveEntityComponent
 import k3dge.core.entity.component2d.SpriteAnimationComponent
 import k3dge.core.entity.component2d.SpriteEntityComponent
 import k3dge.render.renderer2d.model.Sprite
-import k3dge.render.renderer2d.enum.SpriteSizeEnum.X4
-import k3dge.render.renderer2d.enum.SpriteSizeEnum.X16
+import k3dge.render.renderer2d.model.SpriteSizeEnum.X4
+import k3dge.render.renderer2d.model.SpriteSizeEnum.X16
 import k3dge.render.renderer2d.model.SpriteAtlas
 import k3dge.tools.ResourceManager
 import k3dge.ui.dto.InputStateData
 import org.joml.Vector2f
 
-
-val engine = CoreEngine(EngineConfiguration.default().apply {
-    is3D = false
-})
+val engine = CoreEngine()
 
 fun main(args: Array<String>) {
 
@@ -33,6 +30,7 @@ class GameLogic : CoreEngineDelegate {
 
     override fun onStart() {
 
+        /*
         val lowPolyAtlasData = ResourceManager.loadTextureFromFile("/texture/lowPolyAtlas.png")!!
 
         val lowPolyAtlas = SpriteAtlas(lowPolyAtlasData, 4, 4).apply {
@@ -90,7 +88,7 @@ class GameLogic : CoreEngineDelegate {
         })
 
         animatedSprite.addComponent(MoveEntityComponent())
-        engine.addEntity(animatedSprite)
+        engine.addEntity(animatedSprite)*/
 
     }
     override fun onUpdate(elapsedTime: Double, input: InputStateData) {

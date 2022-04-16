@@ -1,11 +1,11 @@
 package k3dge.render.renderer3d
 
 import k3dge.configuration.EngineConfiguration
-import k3dge.render.common.dto.CameraData
+import k3dge.render.renderer3d.dto.CameraData
 import k3dge.render.renderer3d.dto.LightData
 import k3dge.render.common.dto.ShaderUniformData
 import k3dge.render.common.dto.TransformData
-import k3dge.render.common.model.Shader
+import k3dge.render.common.shader.Shader
 import k3dge.render.common.model.Mesh
 import k3dge.render.common.model.Texture
 import org.joml.Matrix4f

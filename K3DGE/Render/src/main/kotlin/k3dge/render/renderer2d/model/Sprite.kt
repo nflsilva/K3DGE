@@ -1,6 +1,5 @@
 package k3dge.render.renderer2d.model
 
-import k3dge.render.renderer2d.enum.SpriteSizeEnum
 import org.joml.Vector2f
 
 class Sprite(val spriteSize: SpriteSizeEnum,

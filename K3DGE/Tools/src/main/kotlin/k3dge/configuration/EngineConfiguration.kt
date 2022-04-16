@@ -6,7 +6,6 @@ class EngineConfiguration(var windowTitle: String,
                           var enableShadows: Boolean,
                           var shadowResolutionWidth: Int,
                           var shadowResolutionHeight: Int,
-                          var is3D: Boolean,
                           var renderDistance: Int,
                           var enableVsync: Boolean) {
 
@@ -19,7 +18,6 @@ class EngineConfiguration(var windowTitle: String,
                 true,
                 1920 * 2,
                 1080 * 2,
-                true,
                 1000,
                 true)
         }

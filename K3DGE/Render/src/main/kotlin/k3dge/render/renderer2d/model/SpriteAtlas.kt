@@ -1,7 +1,6 @@
 package k3dge.render.renderer2d.model
 
 import k3dge.render.common.model.Texture
-import k3dge.render.renderer2d.enum.SpriteSizeEnum
 import org.joml.Vector2f
 
 open class SpriteAtlas(private val texture: Texture,
@@ -19,11 +18,12 @@ open class SpriteAtlas(private val texture: Texture,
         val spriteBottom = spriteTop + spriteSize.value / texture.height.toFloat()
         val spriteRight = spriteLeft + spriteSize.value / texture.width.toFloat()
 
+        /*
         sprites[name] = Sprite(
             spriteSize,
             texture.id,
             Vector2f(spriteLeft, spriteTop),
-            Vector2f(spriteRight, spriteBottom))
+            Vector2f(spriteRight, spriteBottom))*/
     }
     fun getSprite(name: String): Sprite?  {
         return sprites[name]

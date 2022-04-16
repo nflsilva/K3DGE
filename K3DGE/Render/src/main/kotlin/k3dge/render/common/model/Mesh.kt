@@ -1,24 +1,31 @@
 package k3dge.render.common.model
 
+import k3dge.tools.ResourceManager
+import k3dge.tools.dto.MeshData
 import org.lwjgl.opengl.GL30.*
 
 class Mesh(dimensions: Dimensions,
-           usage: Int,
+           usage: Usage,
            indices: MutableList<Int>,
            positions: MutableList<Float>,
            textureCoordinates: MutableList<Float> = mutableListOf(),
            normals: MutableList<Float> = mutableListOf()) {
 
-    val vao: Int = glGenVertexArrays()
+    private val vao: Int = glGenVertexArrays()
     var size: Int = 0
     private val vbos: MutableList<Int> = mutableListOf()
 
+    constructor(dimensions: Dimensions, usage: Usage, meshData: MeshData):
+            this(dimensions, usage, meshData.indices, meshData.positions, meshData.textureCoordinates, meshData.normals)
+    constructor(dimensions: Dimensions, usage: Usage, resourceName: String):
+            this(dimensions, usage, ResourceManager.loadMeshFromFile(resourceName))
+
     init {
         glBindVertexArray(vao)
-        loadIntoIndexBuffer(indices.toTypedArray(), usage)
-        loadIntoAttributeArray(0, dimensions.value, positions.toTypedArray(), usage)
-        loadIntoAttributeArray(1, 2, textureCoordinates.toTypedArray(), usage)
-        loadIntoAttributeArray(2, dimensions.value, normals.toTypedArray(), usage)
+        loadIntoIndexBuffer(indices.toTypedArray(), usage.value)
+        loadIntoAttributeArray(0, dimensions.value, positions.toTypedArray(), usage.value)
+        loadIntoAttributeArray(1, 2, textureCoordinates.toTypedArray(), usage.value)
+        loadIntoAttributeArray(2, dimensions.value, normals.toTypedArray(), usage.value)
         glBindVertexArray(0)
     }
     fun cleanUp(){
@@ -68,7 +75,7 @@ class Mesh(dimensions: Dimensions,
         fun initQuad(): Mesh {
             return Mesh(
                 Dimensions.D2,
-                GL_STATIC_DRAW,
+                Usage.STATIC,
                 mutableListOf(0, 1, 2, 3),
                 mutableListOf(-1F, 1F, -1F, -1F, 1F, 1F, 1F, -1F)
             )

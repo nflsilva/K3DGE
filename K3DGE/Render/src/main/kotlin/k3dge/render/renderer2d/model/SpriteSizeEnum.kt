@@ -1,4 +1,4 @@
-package k3dge.render.renderer2d.enum
+package k3dge.render.renderer2d.model
 
 enum class SpriteSizeEnum(val value: Int) {
     X4(4),

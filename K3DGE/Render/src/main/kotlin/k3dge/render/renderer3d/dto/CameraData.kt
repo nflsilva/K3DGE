@@ -1,9 +1,8 @@
-package k3dge.render.common.dto
+package k3dge.render.renderer3d.dto
 
 import org.joml.Vector3f
 
 data class CameraData(var position: Vector3f,
                       var forward: Vector3f,
                       var up: Vector3f,
-                      var lookAt: Vector3f
-)
+                      var lookAt: Vector3f)

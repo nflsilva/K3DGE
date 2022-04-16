@@ -12,9 +12,7 @@ import k3dge.tools.ResourceManager
 import k3dge.ui.dto.InputStateData
 import org.joml.Vector2f
 
-val engine = CoreEngine(EngineConfiguration.default().apply {
-    is3D = false
-})
+val engine = CoreEngine()
 val animComp = SpriteAnimationComponent()
 
 fun main(args: Array<String>) {
@@ -30,6 +28,7 @@ class GameLogic : CoreEngineDelegate {
 
     override fun onStart() {
 
+        /*
         val animatedSprite = Entity(Vector2f(0F, 0F), 0.0f, Vector2f(1f, 1f))
 
         val atlasData = ResourceManager.loadTextureFromFile("/texture/dungeon.png")!!
@@ -73,7 +72,7 @@ class GameLogic : CoreEngineDelegate {
 
         animatedSprite.addComponent(animComp)
         animatedSprite.addComponent(MoveEntityComponent(50F))
-        engine.addEntity(animatedSprite)
+        engine.addEntity(animatedSprite)*/
 
     }
     override fun onUpdate(elapsedTime: Double, input: InputStateData) {
