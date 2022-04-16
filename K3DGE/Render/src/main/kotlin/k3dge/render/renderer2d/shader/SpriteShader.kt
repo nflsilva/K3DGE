@@ -1,11 +1,11 @@
 package k3dge.render.renderer2d.shader
 
-import k3dge.render.renderer3d.dto.ShaderUniformData
-import k3dge.render.common.model.ShaderModel
-import k3dge.tools.ResourceLoader
+import k3dge.render.common.dto.ShaderUniformData
+import k3dge.render.common.model.Shader
+import k3dge.tools.ResourceManager
 
-class SpriteShader: ShaderModel(ResourceLoader.loadShaderSourceFromFile("/shader/sprite/vertex.glsl")!!,
-    ResourceLoader.loadShaderSourceFromFile("/shader/sprite/fragment.glsl")!!) {
+class SpriteShader: Shader(ResourceManager.loadShaderSourceFromFile("/shader/sprite/vertex.glsl")!!,
+    ResourceManager.loadShaderSourceFromFile("/shader/sprite/fragment.glsl")!!) {
 
     init {
         bindAttributes()

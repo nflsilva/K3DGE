@@ -10,9 +10,9 @@ import k3dge.core.camera.component.ZoomCameraComponent
 import k3dge.core.entity.Entity
 import k3dge.core.entity.component.SpinEntityComponent
 import k3dge.core.entity.component3d.TexturedMeshEntityComponent
-import k3dge.render.renderer3d.model.Mesh3DModel
-import k3dge.render.common.model.TextureModel
-import k3dge.tools.ResourceLoader
+import k3dge.render.renderer3d.entity.StaticObjectModel
+import k3dge.render.common.model.Texture
+import k3dge.tools.ResourceManager
 import k3dge.ui.dto.InputStateData
 import org.joml.Random
 import org.joml.Vector3f
@@ -34,25 +34,25 @@ class GameLogic : CoreEngineDelegate {
 
         val shader = StaticShader()
 
-        val cubeMeshData = ResourceLoader.loadMeshFromFile("/mesh/cube.obj")!!
-        val cubeMesh = Mesh3DModel(
+        val cubeMeshData = ResourceManager.loadMeshFromFile("/mesh/cube.obj")!!
+        val cubeMesh = StaticObjectModel(
             cubeMeshData.vertices.toTypedArray(),
             cubeMeshData.textureCoordinates.toTypedArray(),
             cubeMeshData.normals.toTypedArray(),
             cubeMeshData.indices.toTypedArray())
 
-        val teddyMeshData = ResourceLoader.loadMeshFromFile("/mesh/teddy.obj")!!
-        val teddyMesh = Mesh3DModel(
+        val teddyMeshData = ResourceManager.loadMeshFromFile("/mesh/teddy.obj")!!
+        val teddyMesh = StaticObjectModel(
             teddyMeshData.vertices.toTypedArray(),
             teddyMeshData.textureCoordinates.toTypedArray(),
             teddyMeshData.normals.toTypedArray(),
             teddyMeshData.indices.toTypedArray())
 
-        val teddyTextureData = ResourceLoader.loadTextureFromFile("/texture/bear.jpg")!!
-        val teddyTexture = TextureModel(teddyTextureData.width, teddyTextureData.height, teddyTextureData.data)
+        val teddyTextureData = ResourceManager.loadTextureFromFile("/texture/bear.jpg")!!
+        val teddyTexture = Texture(teddyTextureData.width, teddyTextureData.height, teddyTextureData.data)
 
-        val cubeTextureData = ResourceLoader.loadTextureFromFile("/texture/cube.png")!!
-        val cubeTexture = TextureModel(cubeTextureData.width, cubeTextureData.height, cubeTextureData.data)
+        val cubeTextureData = ResourceManager.loadTextureFromFile("/texture/cube.png")!!
+        val cubeTexture = Texture(cubeTextureData.width, cubeTextureData.height, cubeTextureData.data)
 
         val cubeMeshComp = TexturedMeshEntityComponent(cubeMesh, cubeTexture, shader)
         val teddyMeshComp = TexturedMeshEntityComponent(teddyMesh, teddyTexture, shader)

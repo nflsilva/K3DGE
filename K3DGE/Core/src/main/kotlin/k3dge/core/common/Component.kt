@@ -6,7 +6,7 @@ import k3dge.core.common.observer.SignalObserver
 import k3dge.core.common.observer.UpdateObserver
 import java.util.*
 
-abstract class BaseComponent {
+abstract class Component {
     protected val uid: UUID = UUID.randomUUID()
     var updateObserver: UpdateObserver? = null
     var signalObserver: SignalObserver? = null

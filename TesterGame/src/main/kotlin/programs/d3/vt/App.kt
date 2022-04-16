@@ -13,9 +13,9 @@ import k3dge.core.light.Light
 import k3dge.core.light.component.ColorLightComponent
 import k3dge.core.light.component.DirectionalLightComponent
 import k3dge.core.light.component.LightRotateLightComponent
-import k3dge.render.renderer3d.model.Mesh3DModel
-import k3dge.render.common.model.TextureModel
-import k3dge.tools.ResourceLoader
+import k3dge.render.renderer3d.entity.StaticObjectModel
+import k3dge.render.common.model.Texture
+import k3dge.tools.ResourceManager
 import k3dge.ui.dto.InputStateData
 import org.joml.Vector3f
 import org.joml.Vector4f
@@ -36,22 +36,22 @@ class GameLogic : CoreEngineDelegate {
     override fun onStart() {
 
         val shader = StaticShader()
-        val terrainMeshData = ResourceLoader.loadMeshFromFile("/mesh/terrain.obj")!!
-        val terrainMesh = Mesh3DModel(
+        val terrainMeshData = ResourceManager.loadMeshFromFile("/mesh/terrain.obj")!!
+        val terrainMesh = StaticObjectModel(
             terrainMeshData.vertices.toTypedArray(),
             terrainMeshData.textureCoordinates.toTypedArray(),
             terrainMeshData.normals.toTypedArray(),
             terrainMeshData.indices.toTypedArray())
 
-        val cubeMeshData = ResourceLoader.loadMeshFromFile("/mesh/home.obj")!!
-        val cubeMesh = Mesh3DModel(
+        val cubeMeshData = ResourceManager.loadMeshFromFile("/mesh/home.obj")!!
+        val cubeMesh = StaticObjectModel(
             cubeMeshData.vertices.toTypedArray(),
             cubeMeshData.textureCoordinates.toTypedArray(),
             cubeMeshData.normals.toTypedArray(),
             cubeMeshData.indices.toTypedArray())
 
-        val terrainTextureData = ResourceLoader.loadTextureFromFile("/texture/lowPolyAtlas.png")!!
-        val terrainTexture = TextureModel(terrainTextureData.width, terrainTextureData.height, terrainTextureData.data)
+        val terrainTextureData = ResourceManager.loadTextureFromFile("/texture/lowPolyAtlas.png")!!
+        val terrainTexture = Texture(terrainTextureData.width, terrainTextureData.height, terrainTextureData.data)
 
         val terrainMeshComp = TexturedMeshEntityComponent(terrainMesh, terrainTexture, shader)
         val terrain = Entity(

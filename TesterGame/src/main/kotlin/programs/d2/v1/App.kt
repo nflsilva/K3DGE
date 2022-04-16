@@ -7,8 +7,8 @@ import k3dge.core.entity.Entity
 import k3dge.core.entity.component.MoveEntityComponent
 import k3dge.core.entity.component2d.SpriteAnimationComponent
 import k3dge.core.entity.component2d.SpriteAnimationComponent.SpriteKeyframe
-import k3dge.render.common.model.TextureAtlas
-import k3dge.tools.ResourceLoader
+import k3dge.render.renderer2d.model.SpriteAtlas
+import k3dge.tools.ResourceManager
 import k3dge.ui.dto.InputStateData
 import org.joml.Vector2f
 
@@ -32,9 +32,9 @@ class GameLogic : CoreEngineDelegate {
 
         val animatedSprite = Entity(Vector2f(0F, 0F), 0.0f, Vector2f(1f, 1f))
 
-        val atlasData = ResourceLoader.loadTextureFromFile("/texture/dungeon.png")!!
+        val atlasData = ResourceManager.loadTextureFromFile("/texture/dungeon.png")!!
 
-        val atlas = TextureAtlas(atlasData.width, atlasData.height, atlasData.data,
+        val atlas = SpriteAtlas(atlasData.width, atlasData.height, atlasData.data,
              9, 28).apply {
             setSpriteCoordinates("walking0", 6, 0)
             setSpriteCoordinates("walking1", 6, 1)

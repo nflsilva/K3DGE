@@ -1,4 +1,4 @@
-package k3dge.render.renderer2d.dto
+package k3dge.render.renderer2d.model
 
 import org.joml.Vector2f
 import org.lwjgl.BufferUtils
@@ -6,9 +6,8 @@ import org.lwjgl.opengl.GL30.*
 import java.nio.FloatBuffer
 import java.nio.IntBuffer
 
-class SpriteBatchRenderData(private val maxQuads: Int,
-                            private val maxTextures: Int,
-                            private val spriteSize: Int) {
+class SpriteBatch(private val maxQuads: Int,
+                  private val maxTextures: Int) {
 
     var nIndices: Int = 0
     var nQuads: Int = 0
@@ -18,7 +17,7 @@ class SpriteBatchRenderData(private val maxQuads: Int,
     private val indexesVbo: Int
 
     private val positions: FloatBuffer
-    private val texCoordinates: FloatBuffer
+    private val textureCoordinates: FloatBuffer
     private val indices: IntBuffer
 
     private val textureIndicesVbo: Int
@@ -35,9 +34,9 @@ class SpriteBatchRenderData(private val maxQuads: Int,
         glVertexAttribPointer(0, 2, GL_FLOAT, false, 0, 0)
 
         texCoordinatesVbo = glGenBuffers()
-        texCoordinates = BufferUtils.createFloatBuffer(maxQuads * 4 * 2)
+        textureCoordinates = BufferUtils.createFloatBuffer(maxQuads * 4 * 2)
         glBindBuffer(GL_ARRAY_BUFFER, texCoordinatesVbo)
-        glBufferData(GL_ARRAY_BUFFER, texCoordinates, GL_DYNAMIC_DRAW)
+        glBufferData(GL_ARRAY_BUFFER, textureCoordinates, GL_DYNAMIC_DRAW)
         glVertexAttribPointer(1, 2, GL_FLOAT, false, 0, 0)
 
         textureIndicesVbo = glGenBuffers()
@@ -66,7 +65,7 @@ class SpriteBatchRenderData(private val maxQuads: Int,
         glBufferSubData(GL_ARRAY_BUFFER, 0, positions.flip())
 
         glBindBuffer(GL_ARRAY_BUFFER, texCoordinatesVbo)
-        glBufferSubData(GL_ARRAY_BUFFER, 0, texCoordinates.flip())
+        glBufferSubData(GL_ARRAY_BUFFER, 0, textureCoordinates.flip())
 
         glBindBuffer(GL_ARRAY_BUFFER, textureIndicesVbo)
         glBufferSubData(GL_ARRAY_BUFFER, 0, textureIndices.flip())
@@ -92,18 +91,18 @@ class SpriteBatchRenderData(private val maxQuads: Int,
         glBindVertexArray(0)
     }
 
-    fun addSprite(data: SpriteRenderData){
+    fun addSprite(sprite: Sprite){
 
         //TODO: Create exception for this
         if(nQuads >= maxQuads || textures.size >= maxTextures) { return }
 
-        val x = data.position.x
-        val y = data.position.y
+        val x = 0//data.position.x
+        val y = 0//data.position.y
 
-        val tl = Vector2f(0.0f + x, spriteSize.toFloat() + y)
+        val tl = Vector2f(0.0f + x, sprite.spriteSize.toFloat() + y)
         val bl = Vector2f(0.0f + x, 0.0f + y)
-        val br = Vector2f(spriteSize.toFloat() + x, 0.0f + y)
-        val tr = Vector2f(spriteSize.toFloat() + x, spriteSize.toFloat() + y)
+        val br = Vector2f(sprite.spriteSize.toFloat() + x, 0.0f + y)
+        val tr = Vector2f(sprite.spriteSize.toFloat() + x, sprite.spriteSize.toFloat() + y)
 
         positions
             .put(tl.x).put(tl.y)
@@ -111,26 +110,15 @@ class SpriteBatchRenderData(private val maxQuads: Int,
             .put(br.x).put(br.y)
             .put(tr.x).put(tr.y)
 
-        if(data.texCoords == null || data.texCoords.size != 4){
-            // H V
-            // V U
-            texCoordinates
-                .put(0.0F).put(0.0F)    //TL
-                .put(0.0F).put(1.0F)    //BL
-                .put(1.0F).put(1.0F)    //BR
-                .put(1.0F).put(0.0F)    //TR
-        }
-        else {
-            texCoordinates
-                .put(data.texCoords[0].x).put(data.texCoords[0].y)
-                .put(data.texCoords[1].x).put(data.texCoords[1].y)
-                .put(data.texCoords[2].x).put(data.texCoords[2].y)
-                .put(data.texCoords[3].x).put(data.texCoords[3].y)
-        }
+        textureCoordinates
+            .put(sprite.startTextureCoordinates.x).put(sprite.startTextureCoordinates.y)    // TL
+            .put(sprite.startTextureCoordinates.x).put(sprite.endTextureCoordinates.y)      // BL
+            .put(sprite.endTextureCoordinates.x).put(sprite.endTextureCoordinates.y)        // BR
+            .put(sprite.endTextureCoordinates.x).put(sprite.startTextureCoordinates.y)      // TR
 
-        var textureId = textures.find { id -> data.textureId == id }
+        var textureId = textures.find { id -> sprite.textureId == id }
         if(textureId == null){
-            textures.add(data.textureId)
+            textures.add(sprite.textureId)
             textureId = textures.size
         }
 
@@ -152,7 +140,7 @@ class SpriteBatchRenderData(private val maxQuads: Int,
     }
     fun clear() {
         positions.clear()
-        texCoordinates.clear()
+        textureCoordinates.clear()
         indices.clear()
         textureIndices.clear()
         textures.clear()

@@ -1,36 +1,41 @@
 package k3dge.render.common.model
 
-import k3dge.render.renderer3d.dto.ShaderUniformData
+import k3dge.render.common.dto.ShaderUniformData
 import k3dge.tools.Log
+import k3dge.tools.dto.ShaderData
 import org.joml.Matrix4f
 import org.joml.Vector3f
 import org.joml.Vector4f
 import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL20.*
 
-abstract class ShaderModel(vertexSource: String, fragmentSource: String) {
+abstract class Shader(vertexData: ShaderData, fragmentData: ShaderData) {
 
-    val programId: Int = glCreateProgram()
+    private val id: Int = glCreateProgram()
     private val shaders: MutableList<Int> = mutableListOf()
     private val uniforms: MutableMap<String, Int> = mutableMapOf()
 
     init {
-        addShader(vertexSource, GL_VERTEX_SHADER)
-        addShader(fragmentSource, GL_FRAGMENT_SHADER)
+        addShader(vertexData.sourceCode, GL_VERTEX_SHADER)
+        addShader(fragmentData.sourceCode, GL_FRAGMENT_SHADER)
         linkProgram()
     }
+    fun cleanUp() {
+
+    }
     fun bind(){
-        glUseProgram(programId);
+        glUseProgram(id)
     }
     fun unbind(){
-        glUseProgram(0);
+        glUseProgram(0)
     }
+
     fun bindAttribute(attribute: Int, variableName: String){
-        glBindAttribLocation(programId, attribute, variableName);
+        glBindAttribLocation(id, attribute, variableName);
     }
     fun addUniform(name: String){
         if(uniforms.containsKey(name)) return
-        val location: Int = glGetUniformLocation(programId, name)
+        val location: Int = glGetUniformLocation(id, name)
         if(location == GL_INVALID_VALUE || location == GL_INVALID_OPERATION || location == GL_INVALID_OPERATION){
             Log.e("Failed to create \"$name\" uniform.");
             return
@@ -91,25 +96,25 @@ abstract class ShaderModel(vertexSource: String, fragmentSource: String) {
             return
         }
 
-        glAttachShader(programId, shader)
+        glAttachShader(id, shader)
         shaders.add(shader)
     }
     private fun linkProgram(){
 
         var success = BufferUtils.createIntBuffer(1)
-        glLinkProgram(programId);
-        glGetProgramiv(programId, GL_LINK_STATUS, success)
+        glLinkProgram(id);
+        glGetProgramiv(id, GL_LINK_STATUS, success)
         if(success.get() != GL_TRUE){
-            val message = glGetProgramInfoLog(programId)
+            val message = glGetProgramInfoLog(id)
             Log.e(message)
             return
         }
 
         success = BufferUtils.createIntBuffer(1)
-        glValidateProgram(programId);
-        glGetProgramiv(programId, GL_VALIDATE_STATUS, success)
+        glValidateProgram(id);
+        glGetProgramiv(id, GL_VALIDATE_STATUS, success)
         if(success.get() != GL_TRUE) {
-            val message = glGetProgramInfoLog(programId)
+            val message = glGetProgramInfoLog(id)
             Log.e(message)
             return
         }

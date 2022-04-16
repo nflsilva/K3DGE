@@ -4,10 +4,14 @@ import k3dge.configuration.EngineConfiguration
 import k3dge.render.renderergui.RendererGUI
 import k3dge.render.renderer2d.Renderer2D
 import k3dge.render.renderer3d.Renderer3D
-import k3dge.render.common.dto.CameraRenderData
-import k3dge.render.renderer2d.dto.SpriteRenderData
-import k3dge.render.renderer3d.dto.EntityRenderData
-import k3dge.render.renderer3d.dto.LightRenderData
+import k3dge.render.common.dto.CameraData
+import k3dge.render.renderer2d.model.Sprite
+import k3dge.render.common.dto.TransformData
+import k3dge.render.common.model.Mesh
+import k3dge.render.common.model.Shader
+import k3dge.render.common.model.Texture
+import k3dge.render.renderer3d.dto.StaticObjectData
+import k3dge.render.renderer3d.dto.LightData
 import org.joml.Vector4f
 import org.lwjgl.opengl.GL30.glClearColor
 
@@ -52,22 +56,21 @@ class RenderEngine(configuration: EngineConfiguration) {
         rendererGUI?.onCleanUp()
     }
 
-    fun renderCamera(cameraData: CameraRenderData){
+    fun renderCamera(cameraData: CameraData){
         renderer3D?.renderCamera(cameraData)
     }
-    fun renderDirectionalLight(light: LightRenderData) {
+    fun renderDirectionalLight(light: LightData) {
         renderer3D?.renderDirectionalLight(light)
     }
-    fun renderTexturedMesh(model: EntityRenderData){
-        renderer3D?.renderTexturedMesh(model)
+    fun renderTexturedMesh(mesh: Mesh, texture: Texture, shader: Shader, transform: TransformData){
+        renderer3D?.renderTexturedMesh(mesh, texture, shader, transform)
     }
-
-    fun renderGui(model: EntityRenderData){
+    fun renderGui(mesh: Mesh, texture: Texture, shader: Shader, transform: TransformData){
         rendererGUI?.renderGui(model)
     }
 
-    fun renderSprite(model: SpriteRenderData) {
-        renderer2D?.renderSprite(model)
+    fun renderSprite(transform: TransformData, model: Sprite) {
+        renderer2D?.renderSprite(transform, model)
     }
 
 }

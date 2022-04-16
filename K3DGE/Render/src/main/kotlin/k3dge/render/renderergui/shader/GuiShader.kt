@@ -1,11 +1,11 @@
 package k3dge.render.renderergui.shader
 
-import k3dge.render.renderer3d.dto.ShaderUniformData
-import k3dge.render.common.model.ShaderModel
-import k3dge.tools.ResourceLoader
+import k3dge.render.common.dto.ShaderUniformData
+import k3dge.render.common.model.Shader
+import k3dge.tools.ResourceManager
 
-class GuiShader: ShaderModel(ResourceLoader.loadShaderSourceFromFile("/shader/gui/vertex.glsl")!!,
-    ResourceLoader.loadShaderSourceFromFile("/shader/gui/fragment.glsl")!!) {
+class GuiShader: Shader(ResourceManager.loadShaderSourceFromFile("/shader/gui/vertex.glsl")!!,
+    ResourceManager.loadShaderSourceFromFile("/shader/gui/fragment.glsl")!!) {
 
     init {
         bindAttributes()

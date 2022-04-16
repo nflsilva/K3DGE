@@ -15,7 +15,7 @@ class CoreEngine(configuration: EngineConfiguration? = null) {
     private var isRunning: Boolean = false
     private var gameObjects: MutableList<Entity> = mutableListOf()
     private var gameLights: MutableList<Light> = mutableListOf()
-    private var camera: Camera = Camera()
+    private var camera: Camera? = null
 
     private val uiEngine: UIEngine
     private val renderEngine: RenderEngine
@@ -97,7 +97,7 @@ class CoreEngine(configuration: EngineConfiguration? = null) {
         gameLights.forEach { l ->
             l.onUpdate(UpdateData(elapsedTime, input, renderEngine, light = l))
         }
-        camera.onUpdate(UpdateData(elapsedTime, input, renderEngine, camera = camera))
+        camera?.onUpdate(UpdateData(elapsedTime, input, renderEngine, camera = camera))
     }
     private fun onCleanUp() {
         gameObjects.forEach { o ->

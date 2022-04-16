@@ -7,15 +7,15 @@ import k3dge.core.camera.component.RotateCameraComponent
 import k3dge.core.camera.component.TranslateCameraComponent
 import k3dge.core.camera.component.ZoomCameraComponent
 import k3dge.core.entity.Entity
-import k3dge.core.entity.component3d.GuiEntityComponent
+import k3dge.core.entity.componentgui.GuiEntityComponent
 import k3dge.core.entity.component3d.TexturedMeshEntityComponent
 import k3dge.core.light.Light
 import k3dge.core.light.component.ColorLightComponent
 import k3dge.core.light.component.DirectionalLightComponent
 import k3dge.core.light.component.LightRotateLightComponent
-import k3dge.render.renderer3d.model.Mesh3DModel
-import k3dge.render.common.model.TextureModel
-import k3dge.tools.ResourceLoader
+import k3dge.render.renderer3d.entity.StaticObjectModel
+import k3dge.render.common.model.Texture
+import k3dge.tools.ResourceManager
 import k3dge.ui.dto.InputStateData
 import org.joml.Random
 import org.joml.Vector2f
@@ -37,23 +37,23 @@ class GameLogic : CoreEngineDelegate {
 
     override fun onStart() {
 
-        val terrainMeshData = ResourceLoader.loadMeshFromFile("/mesh/terrainRandomElevation30.obj")!!
-        val terrainMesh = Mesh3DModel(
+        val terrainMeshData = ResourceManager.loadMeshFromFile("/mesh/terrainRandomElevation30.obj")!!
+        val terrainMesh = StaticObjectModel(
             terrainMeshData.vertices.toTypedArray(),
             terrainMeshData.textureCoordinates.toTypedArray(),
             terrainMeshData.normals.toTypedArray(),
             terrainMeshData.indices.toTypedArray())
-        val pineTreeData = ResourceLoader.loadMeshFromFile("/mesh/pineTree.obj")!!
-        val pineTreeMesh = Mesh3DModel(
+        val pineTreeData = ResourceManager.loadMeshFromFile("/mesh/pineTree.obj")!!
+        val pineTreeMesh = StaticObjectModel(
             pineTreeData.vertices.toTypedArray(),
             pineTreeData.textureCoordinates.toTypedArray(),
             pineTreeData.normals.toTypedArray(),
             pineTreeData.indices.toTypedArray())
 
-        val lowPolyAtlasTextureData = ResourceLoader.loadTextureFromFile("/texture/lowPolyAtlas.png")!!
-        val lowPolyAtlasTexture = TextureModel(lowPolyAtlasTextureData.width, lowPolyAtlasTextureData.height, lowPolyAtlasTextureData.data)
-        val testTextureData = ResourceLoader.loadTextureFromFile("/texture/cube.png")!!
-        val testTexture = TextureModel(testTextureData.width, testTextureData.height, testTextureData.data)
+        val lowPolyAtlasTextureData = ResourceManager.loadTextureFromFile("/texture/lowPolyAtlas.png")!!
+        val lowPolyAtlasTexture = Texture(lowPolyAtlasTextureData.width, lowPolyAtlasTextureData.height, lowPolyAtlasTextureData.data)
+        val testTextureData = ResourceManager.loadTextureFromFile("/texture/cube.png")!!
+        val testTexture = Texture(testTextureData.width, testTextureData.height, testTextureData.data)
 
         val r = Random()
         val pineTreeMeshComp = TexturedMeshEntityComponent(pineTreeMesh, lowPolyAtlasTexture)

@@ -1,13 +1,19 @@
 package k3dge.render.common.model
 
+import k3dge.tools.dto.TextureData
 import org.lwjgl.opengl.GL13.*
+import org.lwjgl.opengl.GL20
+import org.lwjgl.opengl.GL30
 import java.nio.ByteBuffer
 
-open class TextureModel(protected val width: Int,
-                        protected val height: Int,
-                        data: ByteBuffer) {
+class Texture(val width: Int,
+              val height: Int,
+              data: ByteBuffer) {
+    
+    private val id: Int = glGenTextures()
 
-    val id: Int = glGenTextures()
+    constructor(textureData: TextureData):
+            this(textureData.width, textureData.height, textureData.data)
 
     init {
         glBindTexture(GL_TEXTURE_2D, id);
@@ -21,5 +27,12 @@ open class TextureModel(protected val width: Int,
     fun cleanUp(){
         glBindTexture(GL_TEXTURE_2D, 0)
         glDeleteTextures(id)
+    }
+    fun bind(slot: Int){
+        glActiveTexture(GL_TEXTURE0 + slot)
+        glBindTexture(GL_TEXTURE_2D, id)
+    }
+    fun unbind(){
+        glBindTexture(GL_TEXTURE_2D, 0)
     }
 }

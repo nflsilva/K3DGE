@@ -2,16 +2,16 @@ package k3dge.tools
 
 import java.io.File
 
-class SimpleObj {
+class ObjFile {
 
     data class Position(val x: Float, val y: Float, val z: Float)
     data class Normal(val x: Float, val y: Float, val z: Float)
-    data class TextCoord(val u: Float, val v: Float, var w: Float? = null)
+    data class TextureCoordinates(val u: Float, val v: Float, var w: Float? = null)
     data class Face(var v: Int, var vt: Int? = null, var vn: Int? = null)
 
     val positions: MutableList<Position> = mutableListOf()
     val normals: MutableList<Normal> = mutableListOf()
-    val textCoords: MutableList<TextCoord> = mutableListOf()
+    val textureCoordinates: MutableList<TextureCoordinates> = mutableListOf()
     val faces: MutableList<Face> = mutableListOf()
 
     private fun addPosition(lineParts: List<String>) {
@@ -26,11 +26,11 @@ class SimpleObj {
                 Normal(lineParts[0].toFloat(), lineParts[1].toFloat(), lineParts[2].toFloat()))
         }
     }
-    private fun addTextCoord(lineParts: List<String>) {
+    private fun addTextureCoordinate(lineParts: List<String>) {
         if(lineParts.size > 1) {
-            val textCoord = TextCoord(lineParts[0].toFloat(), lineParts[1].toFloat())
+            val textCoord = TextureCoordinates(lineParts[0].toFloat(), lineParts[1].toFloat())
             if(lineParts.size > 2) textCoord.w = lineParts[2].toFloat()
-            textCoords.add(textCoord)
+            textureCoordinates.add(textCoord)
         }
     }
     private fun addFace(lineParts: List<String>) {
@@ -46,17 +46,17 @@ class SimpleObj {
     }
 
     companion object {
-        fun fromFile(path: String): SimpleObj? {
+        fun loadFromPath(path: String): ObjFile? {
             val file = File(path)
             if(!file.exists()) { return null }
-            val result = SimpleObj()
+            val result = ObjFile()
             file.readLines().forEach { line->
                 val lineParts = line.split(" ")
                 if(lineParts.size > 1) {
                     when(lineParts[0]) {
                         "v" -> result.addPosition(lineParts.drop(1))
                         "vn" -> result.addNormal(lineParts.drop(1))
-                        "vt" -> result.addTextCoord(lineParts.drop(1))
+                        "vt" -> result.addTextureCoordinate(lineParts.drop(1))
                         "f" -> result.addFace(lineParts.drop(1))
                     }
                 }

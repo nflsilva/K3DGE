@@ -7,9 +7,11 @@ import k3dge.core.entity.Entity
 import k3dge.core.entity.component.MoveEntityComponent
 import k3dge.core.entity.component2d.SpriteAnimationComponent
 import k3dge.core.entity.component2d.SpriteEntityComponent
-import k3dge.render.common.model.TextureAtlas
-import k3dge.render.common.model.TextureModel
-import k3dge.tools.ResourceLoader
+import k3dge.render.renderer2d.model.Sprite
+import k3dge.render.renderer2d.enum.SpriteSizeEnum.X4
+import k3dge.render.renderer2d.enum.SpriteSizeEnum.X16
+import k3dge.render.renderer2d.model.SpriteAtlas
+import k3dge.tools.ResourceManager
 import k3dge.ui.dto.InputStateData
 import org.joml.Vector2f
 
@@ -31,40 +33,37 @@ class GameLogic : CoreEngineDelegate {
 
     override fun onStart() {
 
-        val lowPolyAtlasTextureData = ResourceLoader.loadTextureFromFile("/texture/lowPolyAtlas.png")!!
-        val lowPolyAtlasTexture = TextureAtlas(
-            lowPolyAtlasTextureData.width,
-            lowPolyAtlasTextureData.height,
-            lowPolyAtlasTextureData.data,
-            4, 4)
-        lowPolyAtlasTexture.setSpriteCoordinates("purple", 3, 3)
+        val lowPolyAtlasData = ResourceManager.loadTextureFromFile("/texture/lowPolyAtlas.png")!!
 
-        val testTextureData = ResourceLoader.loadTextureFromFile("/texture/cube.png")!!
-        val testTexture = TextureModel(testTextureData.width, testTextureData.height, testTextureData.data)
+        val lowPolyAtlas = SpriteAtlas(lowPolyAtlasData, 4, 4).apply {
+            setSprite("purple", 3, 3, X4)
+        }
 
-        val textures = listOf(lowPolyAtlasTexture, testTexture)
+        val testTextureData = ResourceManager.loadTextureFromFile("/texture/cube.png")!!
+        val testSprite = Sprite(testTextureData, X16)
+
         var i = 0
 
         for(x in 0 until 1000) {
             for(y in 0 until 100) {
                 val sprite = Entity(Vector2f(x * 16F, y * 16F), 0.0f, Vector2f(1f, 1f))
                 val ti = i++ % 2
-                val text = textures[ti]
+
                 if(ti == 1){
-                    lowPolyAtlasTexture.getSpriteCoordinates("purple")?.let {
-                        sprite.addComponent(SpriteEntityComponent(text, it))
+                    lowPolyAtlas.getSprite("purple")?.let {
+                        sprite.addComponent(SpriteEntityComponent(it))
                     }
                 }
                 else {
-                    sprite.addComponent(SpriteEntityComponent(text))
+                    sprite.addComponent(SpriteEntityComponent(testSprite))
                 }
                 sprite.addComponent(MoveEntityComponent())
                 engine.addEntity(sprite)
             }
         }
 
-        val selectAtlasTextureData = ResourceLoader.loadTextureFromFile("/texture/selectAtlas.png")!!
-        val selectAtlasTexture = TextureAtlas(
+        val selectAtlasTextureData = ResourceManager.loadTextureFromFile("/texture/selectAtlas.png")!!
+        val selectAtlasTexture = SpriteAtlas(
             selectAtlasTextureData.width,
             selectAtlasTextureData.height,
             selectAtlasTextureData.data, 2, 2)

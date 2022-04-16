@@ -1,12 +1,12 @@
-package k3dge.render.renderer3d.model
+package k3dge.render.renderer3d.shader
 
-import k3dge.render.common.model.ShaderModel
-import k3dge.render.renderer3d.dto.ShaderUniformData
-import k3dge.tools.ResourceLoader
+import k3dge.render.common.model.Shader
+import k3dge.render.common.dto.ShaderUniformData
+import k3dge.tools.ResourceManager
 
-class ShadowShader: ShaderModel(
-    ResourceLoader.loadShaderSourceFromFile("/shader/shadow/vertex.glsl")!!,
-    ResourceLoader.loadShaderSourceFromFile("/shader/shadow/fragment.glsl")!!) {
+class ShadowShader: Shader(
+    ResourceManager.loadShaderSourceFromFile("/shader/shadow/vertex.glsl")!!,
+    ResourceManager.loadShaderSourceFromFile("/shader/shadow/fragment.glsl")!!) {
 
     init {
         bindAttributes()

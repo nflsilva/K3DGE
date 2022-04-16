@@ -1,11 +1,10 @@
 package k3dge.core.entity.component
 
-import k3dge.core.common.BaseComponent
+import k3dge.core.common.Component
 import k3dge.core.common.dto.UpdateData
 import k3dge.ui.dto.InputStateData
-import kotlin.math.sin
 
-class MoveEntityComponent(private val speed: Float = 10F) : BaseComponent() {
+class MoveEntityComponent(private val speed: Float = 10F) : Component() {
 
     init {
         setUpdateObserver { context -> onUpdate(context) }
@@ -14,17 +13,17 @@ class MoveEntityComponent(private val speed: Float = 10F) : BaseComponent() {
         context.entity?.let { entity ->
 
             if(context.input.isKeyPressed(InputStateData.KEY_A)) {
-                entity.position.x -= speed * context.elapsedTime.toFloat()
+                entity.transform.position.x -= speed * context.elapsedTime.toFloat()
             }
             else if(context.input.isKeyPressed(InputStateData.KEY_D)) {
-                entity.position.x += speed * context.elapsedTime.toFloat()
+                entity.transform.position.x += speed * context.elapsedTime.toFloat()
             }
 
             if(context.input.isKeyPressed(InputStateData.KEY_W)) {
-                entity.position.y += speed * context.elapsedTime.toFloat()
+                entity.transform.position.y += speed * context.elapsedTime.toFloat()
             }
             else if(context.input.isKeyPressed(InputStateData.KEY_S)) {
-                entity.position.y -= speed * context.elapsedTime.toFloat()
+                entity.transform.position.y -= speed * context.elapsedTime.toFloat()
             }
 
         }

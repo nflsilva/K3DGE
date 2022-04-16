@@ -1,13 +1,13 @@
 package k3dge.core.camera.component
 
-import k3dge.core.common.BaseComponent
+import k3dge.core.common.Component
 import k3dge.core.common.dto.UpdateData
 import k3dge.tools.Util
 import org.joml.Vector3f
 
 class ZoomCameraComponent(private val speed: Float,
                           private val nearLimit: Float? = null,
-                          private val farLimit: Float? = null): BaseComponent() {
+                          private val farLimit: Float? = null): Component() {
 
     private var zoomSpeed: Float = 0.0F
 
@@ -24,7 +24,7 @@ class ZoomCameraComponent(private val speed: Float,
                 val nPlane = Vector3f(0.0f, 1.0f, 0.0f)
                 val xPlane = Vector3f(0.0f, 0.0f, 0.0f)
                 val mRay = Vector3f(camera.forward)
-                val t = Vector3f(nPlane).dot(xPlane.sub(camera.position)) / Vector3f(nPlane).dot(mRay)
+                val t = Vector3f(nPlane).dot(xPlane.sub(camera.transform.position)) / Vector3f(nPlane).dot(mRay)
                 val delta = zoomSpeed * context.elapsedTime.toFloat()
 
                 var isWithinNearLimits = true

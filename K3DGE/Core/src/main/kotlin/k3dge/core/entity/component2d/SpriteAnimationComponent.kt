@@ -1,11 +1,10 @@
 package k3dge.core.entity.component2d
 
-import k3dge.core.common.BaseComponent
+import k3dge.core.common.Component
 import k3dge.core.common.dto.UpdateData
-import k3dge.render.renderer2d.dto.SpriteRenderData
 import org.joml.Vector2f
 
-class SpriteAnimationComponent(): BaseComponent()  {
+class SpriteAnimationComponent(): Component()  {
 
     private var currentState: String? = null
     private var currentKeyframeIndex: Int = 0
@@ -24,13 +23,16 @@ class SpriteAnimationComponent(): BaseComponent()  {
         val currentKeyframe = currentStateKeyframes[currentKeyframeIndex % currentStateKeyframes.size]
 
         context.entity?.let { entity ->
+
+            /*
             context.graphics.renderSprite(
+                entity.transformData
                 SpriteRenderData(
-                    Vector2f(entity.position.x, entity.position.y),
                     currentKeyframe.textureId,
-                    currentKeyframe.textureCoords
+                    currentKeyframe.textureCoords, 16
                 )
             )
+            */
         }
 
         currentKeyframeElapsedTime += context.elapsedTime

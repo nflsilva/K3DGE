@@ -1,13 +1,13 @@
 package k3dge.core.camera.component
 
-import k3dge.core.common.BaseComponent
+import k3dge.core.common.Component
 import k3dge.core.common.ComponentSignal
 import k3dge.core.common.dto.UpdateData
 import k3dge.tools.Util
 import k3dge.ui.dto.InputStateData
 import org.joml.Vector3f
 
-class TranslateCameraComponent(private var speed: Float): BaseComponent() {
+class TranslateCameraComponent(private var speed: Float): Component() {
 
     private var moveSpeed: Vector3f = Vector3f(0.0f, 0.0f, 0.0f)
 
