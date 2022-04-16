@@ -51,16 +51,11 @@ class Renderer3D(private val configuration: EngineConfiguration) {
         glEnable(GL_DEPTH_TEST)
     }
     fun onFrame() {
-
         computeShadowMap()
-
-        glViewport(0, 0, configuration.resolutionWidth, configuration.resolutionHeight)
-        glBindFramebuffer(GL_FRAMEBUFFER, 0)
-        glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
-        glEnable(GL_CULL_FACE)
-        glCullFace(GL_BACK)
-
-        draw()
+        drawObjects()
+    }
+    fun onUpdate() {
+        objectsData.clear()
     }
     fun onCleanUp(){}
 
@@ -70,8 +65,9 @@ class Renderer3D(private val configuration: EngineConfiguration) {
             if(light == null) return
 
             it.bindFramebuffer()
+            glViewport(0, 0, configuration.shadowResolutionWidth, configuration.shadowResolutionHeight)
             glClear(GL_DEPTH_BUFFER_BIT)
-            glCullFace(GL_FRONT)
+            glDisable(GL_CULL_FACE)
             it.updateLightSpaceMatrix(light!!.position, cameraPosition)
 
             for(entity in objectsData) {
@@ -85,7 +81,13 @@ class Renderer3D(private val configuration: EngineConfiguration) {
             it.unbindFramebuffer()
         }
     }
-    private fun draw(){
+    private fun drawObjects(){
+
+        glViewport(0, 0, configuration.resolutionWidth, configuration.resolutionHeight)
+        glBindFramebuffer(GL_FRAMEBUFFER, 0)
+        glEnable(GL_CULL_FACE)
+        glCullFace(GL_BACK)
+
         shadowRenderer?.bindDepthMap(1)
         for(entity in objectsData) {
 

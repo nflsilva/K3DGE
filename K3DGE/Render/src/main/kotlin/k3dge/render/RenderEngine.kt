@@ -8,8 +8,11 @@ import k3dge.render.common.dto.TransformData
 import k3dge.render.common.model.Mesh
 import k3dge.render.common.shader.Shader
 import k3dge.render.common.model.Texture
+import k3dge.render.renderer2d.dto.Sprite
+import k3dge.render.renderer2d.model.SpriteSizeEnum
 import k3dge.render.renderer3d.dto.LightData
 import org.joml.Vector4f
+import org.lwjgl.opengl.GL11.*
 import org.lwjgl.opengl.GL30.glClearColor
 
 class RenderEngine(configuration: EngineConfiguration) {
@@ -33,11 +36,16 @@ class RenderEngine(configuration: EngineConfiguration) {
         renderer3D.onStart()
     }
     fun onFrame() {
+
+        glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
         glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, backgroundColor.w)
+
         renderer3D.onFrame()
         renderer2D.onFrame()
+
     }
     fun onUpdate() {
+        renderer3D.onUpdate()
         renderer2D.onUpdate()
     }
     fun onCleanUp() {
@@ -54,8 +62,8 @@ class RenderEngine(configuration: EngineConfiguration) {
     fun render3D(mesh: Mesh, texture: Texture, shader: Shader, transform: TransformData){
         renderer3D.renderTexturedMesh(mesh, texture, shader, transform)
     }
-    fun render2D(mesh: Mesh, texture: Texture, shader: Shader, transform: TransformData){
-        //renderer2D.renderQuad()
+    fun renderGUI(mesh: Mesh, texture: Texture, shader: Shader, transform: TransformData){
+        renderer2D.renderQuad(transform, Sprite(SpriteSizeEnum.X32, texture))
     }
 
 }

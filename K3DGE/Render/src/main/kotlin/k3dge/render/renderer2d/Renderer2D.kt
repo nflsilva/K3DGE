@@ -2,7 +2,7 @@ package k3dge.render.renderer2d
 
 import k3dge.configuration.EngineConfiguration
 import k3dge.render.renderer2d.model.SpriteBatch
-import k3dge.render.renderer2d.model.Sprite
+import k3dge.render.renderer2d.dto.Sprite
 import k3dge.render.common.dto.TransformData
 import k3dge.render.renderer2d.shader.Shader2D
 import k3dge.render.common.dto.ShaderUniformData
@@ -32,10 +32,8 @@ class Renderer2D(private val configuration: EngineConfiguration) {
     }
     fun onFrame() {
         glViewport(0, 0, configuration.resolutionWidth, configuration.resolutionHeight)
-        glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
         glEnable(GL_CULL_FACE)
         glCullFace(GL_BACK)
-
         drawBatches()
     }
     fun onUpdate() {
@@ -50,23 +48,27 @@ class Renderer2D(private val configuration: EngineConfiguration) {
     }
 
     fun renderQuad(transform: TransformData, data: Sprite) {
+        if(isVisible(transform, data.spriteSize.value)) {
+            addToSuitableBatch(data)
+        }
+    }
 
-        val isVisible = transform.position.x > left - DEFAULT_SCREEN_RENDER_MARGINS &&
-                transform.position.x + data.spriteSize.value < right + DEFAULT_SCREEN_RENDER_MARGINS &&
+    private fun isVisible(transform: TransformData, size: Int): Boolean {
+        return transform.position.x > left - DEFAULT_SCREEN_RENDER_MARGINS &&
+                transform.position.x + size < right + DEFAULT_SCREEN_RENDER_MARGINS &&
                 transform.position.y < top + DEFAULT_SCREEN_RENDER_MARGINS &&
-                transform.position.y + data.spriteSize.value > bottom - DEFAULT_SCREEN_RENDER_MARGINS
-
-        if(!isVisible) { return }
-
+                transform.position.y + size > bottom - DEFAULT_SCREEN_RENDER_MARGINS
+    }
+    private fun addToSuitableBatch(data: Sprite) {
         var suitableBatch: SpriteBatch? = null
         for(batch in spriteBatches) {
             if(batch.isSpriteFull()) { continue }
-
-            if(batch.hasTexture(data.textureId) || !batch.isTextureFull()) {
+            if(batch.hasTexture(data.texture) || !batch.isTextureFull()) {
                 suitableBatch = batch
                 break
             }
         }
+
         if(suitableBatch == null) {
             suitableBatch = SpriteBatch(DEFAULT_BATCH_SIZE, maxTextureSlots)
             spriteBatches.add(suitableBatch)
@@ -74,7 +76,6 @@ class Renderer2D(private val configuration: EngineConfiguration) {
 
         suitableBatch.addSprite(data)
     }
-
     private fun prepareShader(uniformData: ShaderUniformData) {
         spriteShader.bind()
         spriteShader.updateUniforms(uniformData)

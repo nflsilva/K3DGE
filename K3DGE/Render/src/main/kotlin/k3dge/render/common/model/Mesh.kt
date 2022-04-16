@@ -1,11 +1,13 @@
 package k3dge.render.common.model
 
+import k3dge.render.common.enum.MeshDimensions
+import k3dge.render.common.enum.MeshUsage
 import k3dge.tools.ResourceManager
 import k3dge.tools.dto.MeshData
 import org.lwjgl.opengl.GL30.*
 
-class Mesh(dimensions: Dimensions,
-           usage: Usage,
+class Mesh(dimensions: MeshDimensions,
+           usage: MeshUsage,
            indices: MutableList<Int>,
            positions: MutableList<Float>,
            textureCoordinates: MutableList<Float> = mutableListOf(),
@@ -15,9 +17,9 @@ class Mesh(dimensions: Dimensions,
     var size: Int = 0
     private val vbos: MutableList<Int> = mutableListOf()
 
-    constructor(dimensions: Dimensions, usage: Usage, meshData: MeshData):
+    constructor(dimensions: MeshDimensions, usage: MeshUsage, meshData: MeshData):
             this(dimensions, usage, meshData.indices, meshData.positions, meshData.textureCoordinates, meshData.normals)
-    constructor(dimensions: Dimensions, usage: Usage, resourceName: String):
+    constructor(dimensions: MeshDimensions, usage: MeshUsage, resourceName: String):
             this(dimensions, usage, ResourceManager.loadMeshFromFile(resourceName))
 
     init {
@@ -61,21 +63,11 @@ class Mesh(dimensions: Dimensions,
         size = data.size
     }
 
-    enum class Dimensions(val value: Int){
-        D1(1),
-        D2(2),
-        D3(3)
-    }
-    enum class Usage(val value: Int){
-        STATIC(GL_STATIC_DRAW),
-        DYNAMIC(GL_DYNAMIC_DRAW)
-    }
-
     companion object {
         fun initQuad(): Mesh {
             return Mesh(
-                Dimensions.D2,
-                Usage.STATIC,
+                MeshDimensions.D2,
+                MeshUsage.STATIC,
                 mutableListOf(0, 1, 2, 3),
                 mutableListOf(-1F, 1F, -1F, -1F, 1F, 1F, 1F, -1F)
             )

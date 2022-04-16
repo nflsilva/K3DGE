@@ -1,5 +1,7 @@
 package k3dge.render.renderer2d.model
 
+import k3dge.render.common.model.Texture
+import k3dge.render.renderer2d.dto.Sprite
 import org.joml.Vector2f
 import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL30.*
@@ -22,7 +24,7 @@ class SpriteBatch(private val maxQuads: Int,
 
     private val textureIndicesVbo: Int
     private val textureIndices: FloatBuffer
-    private val textures: MutableList<Int> = mutableListOf()
+    private val textures: MutableList<Texture> = mutableListOf()
 
     init {
         glBindVertexArray(vao)
@@ -78,9 +80,8 @@ class SpriteBatch(private val maxQuads: Int,
             glEnableVertexAttribArray(i)
         }
 
-        for(i in 0 until textures.size){
-            glActiveTexture(GL_TEXTURE0 + i)
-            glBindTexture(GL_TEXTURE_2D, textures[i])
+        for(i in 0 until textures.size) {
+            textures[i].bind(i)
         }
 
     }
@@ -116,14 +117,13 @@ class SpriteBatch(private val maxQuads: Int,
             .put(sprite.endTextureCoordinates.x).put(sprite.endTextureCoordinates.y)        // BR
             .put(sprite.endTextureCoordinates.x).put(sprite.startTextureCoordinates.y)      // TR
 
-        var textureId = textures.find { id -> sprite.textureId == id }
-        if(textureId == null){
-            textures.add(sprite.textureId)
-            textureId = textures.size
+        var texture = textures.indexOf(sprite.texture)
+        if(texture < 0){
+            textures.add(sprite.texture)
+            texture = textures.size
         }
 
-        textureIndices
-            .put(textureId*1F).put(textureId*1F).put(textureId*1F).put(textureId*1F)
+        textureIndices.put(texture*1f).put(texture*1f).put(texture*1f).put(texture*1f)
 
         val indexOffset = nQuads * 4
         indices
@@ -153,7 +153,7 @@ class SpriteBatch(private val maxQuads: Int,
     fun isTextureFull(): Boolean {
         return textures.size == maxTextures
     }
-    fun hasTexture(texture: Int): Boolean {
+    fun hasTexture(texture: Texture): Boolean {
         return textures.contains(texture)
     }
     fun getTextureSlots(): Int {
