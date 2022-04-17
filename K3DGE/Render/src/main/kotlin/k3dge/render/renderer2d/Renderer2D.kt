@@ -47,7 +47,7 @@ class Renderer2D(private val configuration: EngineConfiguration) {
         }
     }
 
-    fun renderQuad(transform: TransformData, data: Sprite) {
+    fun renderQuad(data: Sprite, transform: TransformData) {
         if(isVisible(transform, data.spriteSize.value)) {
             addToSuitableBatch(data)
         }
@@ -80,12 +80,8 @@ class Renderer2D(private val configuration: EngineConfiguration) {
         spriteShader.bind()
         spriteShader.updateUniforms(uniformData)
     }
-    private fun drawBatches(){
-
-        val projectionMatrix: Matrix4f = Matrix4f()
-            .identity()
-            .setOrtho2D(left, right, bottom, top)
-
+    private fun drawBatches() {
+        val projectionMatrix: Matrix4f = Matrix4f().setOrtho2D(left, right, bottom, top)
         for(batch in spriteBatches){
             batch.bind()
             prepareShader(

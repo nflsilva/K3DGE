@@ -62,8 +62,11 @@ class RenderEngine(configuration: EngineConfiguration) {
     fun render3D(mesh: Mesh, texture: Texture, shader: Shader, transform: TransformData){
         renderer3D.renderTexturedMesh(mesh, texture, shader, transform)
     }
-    fun renderGUI(mesh: Mesh, texture: Texture, shader: Shader, transform: TransformData){
-        renderer2D.renderQuad(transform, Sprite(SpriteSizeEnum.X32, texture))
+    fun render2D(texture: Texture, transform: TransformData){
+        renderer2D.renderQuad(Sprite(SpriteSizeEnum.X4, texture), transform)
+    }
+    fun render2D(sprite: Sprite, transform: TransformData){
+        renderer2D.renderQuad(sprite, transform)
     }
 
 }

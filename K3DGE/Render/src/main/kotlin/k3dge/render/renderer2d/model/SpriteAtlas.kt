@@ -10,7 +10,10 @@ open class SpriteAtlas(private val texture: Texture,
 
     private val sprites: MutableMap<String, Sprite> = mutableMapOf()
 
-    fun setSprite(name: String, row: Int, column: Int, spriteSize: SpriteSizeEnum) {
+    constructor(textureResource: String, numberOfRows: Int, numberOfColumns: Int):
+            this(Texture(textureResource), numberOfRows, numberOfColumns)
+
+    fun setSprite(spriteSize: SpriteSizeEnum, name: String, row: Int, column: Int) {
         //TODO: Create exception for this
         if(column > numberOfColumns || row > numberOfRows || sprites.keys.contains(name)) { return }
 
@@ -25,8 +28,12 @@ open class SpriteAtlas(private val texture: Texture,
             Vector2f(spriteLeft, spriteTop),
             Vector2f(spriteRight, spriteBottom))
     }
-    fun getSprite(name: String): Sprite?  {
-        return sprites[name]
+    fun getSprite(name: String): Sprite  {
+        if(name in sprites) {
+            return sprites[name]!!
+        }
+        //TODO: Improve this
+        throw java.lang.Exception("The sprite '${name}' does not exist.")
     }
 
 }

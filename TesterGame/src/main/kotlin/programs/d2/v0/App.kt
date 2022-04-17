@@ -2,7 +2,15 @@ package programs.d2.v0
 
 import k3dge.core.CoreEngine
 import k3dge.core.CoreEngineDelegate
+import k3dge.core.entity.Entity
+import k3dge.core.entity.component.MoveEntityComponent
+import k3dge.core.entity.component2d.SpriteAnimationComponent
+import k3dge.core.entity.component2d.SpriteEntityComponent
+import k3dge.render.renderer2d.dto.Sprite
+import k3dge.render.renderer2d.model.SpriteAtlas
+import k3dge.render.renderer2d.model.SpriteSizeEnum
 import k3dge.ui.dto.InputStateData
+import org.joml.Vector2f
 
 val engine = CoreEngine()
 
@@ -19,18 +27,18 @@ class GameLogic : CoreEngineDelegate {
 
     override fun onStart() {
 
-        /*
-        val lowPolyAtlasData = ResourceManager.loadTextureFromFile("/texture/lowPolyAtlas.png")!!
-
-        val lowPolyAtlas = SpriteAtlas(lowPolyAtlasData, 4, 4).apply {
-            setSprite("purple", 3, 3, X4)
+        val lowPolyAtlas = SpriteAtlas("/texture/lowPolyAtlas.png", 4, 4).apply {
+            setSprite(SpriteSizeEnum.X4,"purple", 3, 3)
         }
 
-        val testTextureData = ResourceManager.loadTextureFromFile("/texture/cube.png")!!
-        val testSprite = Sprite(testTextureData, X16)
+        val testSprite = Sprite(SpriteSizeEnum.X16,"/texture/cube.png",)
+        val selectAtlasTexture = SpriteAtlas("/texture/selectAtlas.png", 2, 2).apply {
+            setSprite(SpriteSizeEnum.X16,"0", 0, 0)
+            setSprite(SpriteSizeEnum.X16,"1", 1, 0)
+            setSprite(SpriteSizeEnum.X16,"2", 1, 0)
+        }
 
         var i = 0
-
         for(x in 0 until 1000) {
             for(y in 0 until 100) {
                 val sprite = Entity(Vector2f(x * 16F, y * 16F), 0.0f, Vector2f(1f, 1f))
@@ -49,45 +57,21 @@ class GameLogic : CoreEngineDelegate {
             }
         }
 
-        val selectAtlasTextureData = ResourceManager.loadTextureFromFile("/texture/selectAtlas.png")!!
-        val selectAtlasTexture = SpriteAtlas(
-            selectAtlasTextureData.width,
-            selectAtlasTextureData.height,
-            selectAtlasTextureData.data, 2, 2)
-
-        selectAtlasTexture.setSpriteCoordinates("0", 0, 0)
-        selectAtlasTexture.setSpriteCoordinates("1", 1, 0)
-        selectAtlasTexture.setSpriteCoordinates("2", 1, 0)
-
         val animatedSprite = Entity(Vector2f(0F, 0F), 0.0f, Vector2f(1f, 1f))
-
-        val keyframes = mutableListOf(
-            SpriteAnimationComponent.SpriteKeyframe(
-                selectAtlasTexture.id, selectAtlasTexture.getSpriteCoordinates("0")!!, 0.5),
-            SpriteAnimationComponent.SpriteKeyframe(
-                selectAtlasTexture.id, selectAtlasTexture.getSpriteCoordinates("1")!!, 0.5),
-            SpriteAnimationComponent.SpriteKeyframe(
-                selectAtlasTexture.id, selectAtlasTexture.getSpriteCoordinates("2")!!, 0.5),
-            SpriteAnimationComponent.SpriteKeyframe(
-                selectAtlasTexture.id, selectAtlasTexture.getSpriteCoordinates("1")!!, 0.5))
-
         animatedSprite.addComponent(SpriteAnimationComponent().apply {
-            addStateKeyframes("default", keyframes)
+            addAnimationKeyframe("default", selectAtlasTexture.getSprite("0"), 0.5)
+            addAnimationKeyframe("default", selectAtlasTexture.getSprite("1"), 0.5)
+            addAnimationKeyframe("default", selectAtlasTexture.getSprite("2"), 0.5)
+            addAnimationKeyframe("default", selectAtlasTexture.getSprite("1"), 0.5)
             setState("default")
         })
 
         animatedSprite.addComponent(MoveEntityComponent())
-        engine.addEntity(animatedSprite)*/
+        engine.addEntity(animatedSprite)
 
     }
-    override fun onUpdate(elapsedTime: Double, input: InputStateData) {
-
-    }
-    override fun onFrame() {
-
-    }
-    override fun onCleanUp() {
-
-    }
+    override fun onUpdate(elapsedTime: Double, input: InputStateData) {}
+    override fun onFrame() {}
+    override fun onCleanUp() {}
 
 }

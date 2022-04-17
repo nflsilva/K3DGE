@@ -5,12 +5,14 @@ import k3dge.core.common.dto.UpdateData
 import k3dge.render.renderer2d.dto.Sprite
 
 class SpriteEntityComponent(private val spriteData: Sprite): Component() {
+
     init {
         setUpdateObserver { context -> onUpdate(context) }
     }
+
     private fun onUpdate(context: UpdateData){
         context.entity?.let { entity ->
-            //context.graphics.renderSprite(entity.transform.data, spriteData)
+            context.graphics.render2D(spriteData, entity.transform.data)
         }
     }
 }
