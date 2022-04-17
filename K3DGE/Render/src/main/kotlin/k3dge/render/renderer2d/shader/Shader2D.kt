@@ -12,8 +12,10 @@ class Shader2D: Shader(VERTEX_SHADER, FRAGMENT_SHADER) {
     }
     override fun bindAttributes() {
         bindAttribute(0, POSITION_ATTRIBUTE);
-        bindAttribute(1, TEXTCOORDS_ATTRIBUTE);
-        bindAttribute(2, TEXTINDEX_ATTRIBUTE);
+        bindAttribute(1, ROTATION_ATTRIBUTE);
+        bindAttribute(2, SCALE_ATTRIBUTE);
+        bindAttribute(3, TEXTCOORDS_ATTRIBUTE);
+        bindAttribute(4, TEXTINDEX_ATTRIBUTE);
     }
     override fun createUniforms() {
         addUniform(PROJECTION_MATRIX_UNIFORM)
@@ -32,6 +34,8 @@ class Shader2D: Shader(VERTEX_SHADER, FRAGMENT_SHADER) {
         private const val FRAGMENT_SHADER = "/shader/2d/static/fragment.glsl"
 
         private const val POSITION_ATTRIBUTE = "in_position"
+        private const val ROTATION_ATTRIBUTE = "in_rotation"
+        private const val SCALE_ATTRIBUTE = "in_scale"
         private const val TEXTCOORDS_ATTRIBUTE = "in_textureCoords"
         private const val TEXTINDEX_ATTRIBUTE = "in_textureIndex"
         private const val PROJECTION_MATRIX_UNIFORM = "in_projectionMatrix"

@@ -49,7 +49,7 @@ class Renderer2D(private val configuration: EngineConfiguration) {
 
     fun renderQuad(data: Sprite, transform: TransformData) {
         if(isVisible(transform, data.spriteSize.value)) {
-            addToSuitableBatch(data)
+            addToSuitableBatch(data, transform)
         }
     }
 
@@ -59,7 +59,7 @@ class Renderer2D(private val configuration: EngineConfiguration) {
                 transform.position.y < top + DEFAULT_SCREEN_RENDER_MARGINS &&
                 transform.position.y + size > bottom - DEFAULT_SCREEN_RENDER_MARGINS
     }
-    private fun addToSuitableBatch(data: Sprite) {
+    private fun addToSuitableBatch(data: Sprite, transform: TransformData) {
         var suitableBatch: SpriteBatch? = null
         for(batch in spriteBatches) {
             if(batch.isSpriteFull()) { continue }
@@ -74,7 +74,7 @@ class Renderer2D(private val configuration: EngineConfiguration) {
             spriteBatches.add(suitableBatch)
         }
 
-        suitableBatch.addSprite(data)
+        suitableBatch.addSprite(data, transform)
     }
     private fun prepareShader(uniformData: ShaderUniformData) {
         spriteShader.bind()

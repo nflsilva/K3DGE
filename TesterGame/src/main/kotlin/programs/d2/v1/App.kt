@@ -3,7 +3,7 @@ package programs.d2.v1
 import k3dge.core.CoreEngine
 import k3dge.core.CoreEngineDelegate
 import k3dge.core.entity.Entity
-import k3dge.core.entity.component.MoveEntityComponent
+import k3dge.core.entity.component.EntityMoveComponent
 import k3dge.core.entity.component2d.SpriteAnimationComponent
 import k3dge.render.renderer2d.model.SpriteAtlas
 import k3dge.render.renderer2d.model.SpriteSizeEnum
@@ -61,7 +61,7 @@ class GameLogic : CoreEngineDelegate {
         }
 
         animatedSprite.addComponent(animComp)
-        animatedSprite.addComponent(MoveEntityComponent(50F))
+        animatedSprite.addComponent(EntityMoveComponent(50F))
         engine.addEntity(animatedSprite)
 
     }

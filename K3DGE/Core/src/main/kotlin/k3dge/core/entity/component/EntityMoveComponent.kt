@@ -4,7 +4,7 @@ import k3dge.core.common.Component
 import k3dge.core.common.dto.UpdateData
 import k3dge.ui.dto.InputStateData
 
-class MoveEntityComponent(private val speed: Float = 10F) : Component() {
+class EntityMoveComponent(private val speed: Float = 10F) : Component() {
 
     init {
         setUpdateObserver { context -> onUpdate(context) }
