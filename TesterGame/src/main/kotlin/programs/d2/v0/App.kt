@@ -35,9 +35,9 @@ class GameLogic : CoreEngineDelegate {
         val testSprite = Sprite(SpriteSizeEnum.X16,"/texture/cube.png",)
 
         var i = 0
-        for(x in 0 until 1) {
-            for(y in 0 until 1) {
-                val sprite = Entity(Vector2f(x * 16F, y * 16F), 0.0f, Vector2f(2f, 1f))
+        for(x in 0 until 100) {
+            for(y in 0 until 1000) {
+                val sprite = Entity(Vector2f(x * 16F, y * 16F), 0.0f, Vector2f(1f, 1f))
                 val ti = i++ % 2
 
                 if(ti == 1){
