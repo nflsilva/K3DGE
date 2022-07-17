@@ -1,6 +1,6 @@
 package k3dge.core.camera.component
 
-import k3dge.core.common.BaseComponent
+import k3dge.core.common.Component
 import k3dge.core.common.ComponentSignal
 import k3dge.core.common.dto.UpdateData
 import k3dge.tools.Util
@@ -10,7 +10,7 @@ import org.joml.Vector3f
 
 class RotateCameraComponent(private val speed: Float,
                             private val upperLimit: Float,
-                            private val lowerLimit: Float): BaseComponent() {
+                            private val lowerLimit: Float): Component() {
 
     private var rotateSpeed: Vector2f = Vector2f(0.0f)
     private var rotationLookAt: Vector3f = Vector3f(0.0f)
@@ -32,12 +32,12 @@ class RotateCameraComponent(private val speed: Float,
                     val nPlane = Vector3f(0.0f, 1.0f, 0.0f)
                     val xPlane = Vector3f(0.0f, 0.0f, 0.0f)
                     val mRay = Vector3f(camera.forward)
-                    val t = Vector3f(nPlane).dot(xPlane.sub(camera.position)) / Vector3f(nPlane).dot(mRay)
+                    val t = Vector3f(nPlane).dot(xPlane.sub(camera.transform.position)) / Vector3f(nPlane).dot(mRay)
 
                     // NOTE: t may be infinite or invalid.
                     // This check will prevent unwanted behaviours when this is the case.
                     if(t > 0 && t < Int.MAX_VALUE){
-                        rotationLookAt = Vector3f(camera.forward).mul(t).add(camera.position)
+                        rotationLookAt = Vector3f(camera.forward).mul(t).add(camera.transform.position)
                         isRotating = true
                     }
                 }
@@ -70,7 +70,7 @@ class RotateCameraComponent(private val speed: Float,
 
             if(rotateSpeed.x != 0.0f || rotateSpeed.y != 0.0f){
                 isRotating = true
-                camera.forward = Vector3f(rotationLookAt).sub(camera.position)
+                camera.forward = Vector3f(rotationLookAt).sub(camera.transform.position)
                 camera.forward.normalize()
             }
             camera.lookForward()

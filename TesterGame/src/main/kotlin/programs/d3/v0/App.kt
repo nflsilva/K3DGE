@@ -1,6 +1,6 @@
 package programs.d3.v0
 
-import k3dge.render.renderer3d.shader.StaticShader
+import k3dge.render.renderer3d.shader.Shader3D
 import k3dge.core.CoreEngine
 import k3dge.core.CoreEngineDelegate
 import k3dge.core.camera.Camera
@@ -10,9 +10,11 @@ import k3dge.core.camera.component.ZoomCameraComponent
 import k3dge.core.entity.Entity
 import k3dge.core.entity.component.SpinEntityComponent
 import k3dge.core.entity.component3d.TexturedMeshEntityComponent
-import k3dge.render.renderer3d.model.Mesh3DModel
-import k3dge.render.common.model.TextureModel
-import k3dge.tools.ResourceLoader
+import k3dge.render.common.enum.MeshDimensions
+import k3dge.render.common.enum.MeshUsage
+import k3dge.render.common.model.Mesh
+import k3dge.render.common.model.Texture
+import k3dge.tools.ResourceManager
 import k3dge.ui.dto.InputStateData
 import org.joml.Random
 import org.joml.Vector3f
@@ -32,30 +34,14 @@ class GameLogic : CoreEngineDelegate {
 
     override fun onStart() {
 
-        val shader = StaticShader()
+        val cubeMesh = Mesh(MeshDimensions.D3, MeshUsage.STATIC, "/mesh/cube.obj")
+        val cubeTexture = Texture("/texture/cube.png")
+        val cubeMeshComp = TexturedMeshEntityComponent(cubeMesh, cubeTexture)
 
-        val cubeMeshData = ResourceLoader.loadMeshFromFile("/mesh/cube.obj")!!
-        val cubeMesh = Mesh3DModel(
-            cubeMeshData.vertices.toTypedArray(),
-            cubeMeshData.textureCoordinates.toTypedArray(),
-            cubeMeshData.normals.toTypedArray(),
-            cubeMeshData.indices.toTypedArray())
+        val teddyTexture = Texture("/texture/bear.jpg")
+        val teddyMesh = Mesh(MeshDimensions.D3, MeshUsage.STATIC, "/mesh/teddy.obj")
+        val teddyMeshComp = TexturedMeshEntityComponent(teddyMesh, teddyTexture)
 
-        val teddyMeshData = ResourceLoader.loadMeshFromFile("/mesh/teddy.obj")!!
-        val teddyMesh = Mesh3DModel(
-            teddyMeshData.vertices.toTypedArray(),
-            teddyMeshData.textureCoordinates.toTypedArray(),
-            teddyMeshData.normals.toTypedArray(),
-            teddyMeshData.indices.toTypedArray())
-
-        val teddyTextureData = ResourceLoader.loadTextureFromFile("/texture/bear.jpg")!!
-        val teddyTexture = TextureModel(teddyTextureData.width, teddyTextureData.height, teddyTextureData.data)
-
-        val cubeTextureData = ResourceLoader.loadTextureFromFile("/texture/cube.png")!!
-        val cubeTexture = TextureModel(cubeTextureData.width, cubeTextureData.height, cubeTextureData.data)
-
-        val cubeMeshComp = TexturedMeshEntityComponent(cubeMesh, cubeTexture, shader)
-        val teddyMeshComp = TexturedMeshEntityComponent(teddyMesh, teddyTexture, shader)
         val spinComp = SpinEntityComponent(0.5F)
 
         val r = Random()

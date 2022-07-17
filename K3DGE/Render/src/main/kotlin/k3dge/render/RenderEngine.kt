@@ -1,32 +1,30 @@
 package k3dge.render
 
 import k3dge.configuration.EngineConfiguration
-import k3dge.render.renderergui.RendererGUI
 import k3dge.render.renderer2d.Renderer2D
 import k3dge.render.renderer3d.Renderer3D
-import k3dge.render.common.dto.CameraRenderData
-import k3dge.render.renderer2d.dto.SpriteRenderData
-import k3dge.render.renderer3d.dto.EntityRenderData
-import k3dge.render.renderer3d.dto.LightRenderData
+import k3dge.render.renderer3d.dto.CameraData
+import k3dge.render.common.dto.TransformData
+import k3dge.render.common.model.Mesh
+import k3dge.render.common.shader.Shader
+import k3dge.render.common.model.Texture
+import k3dge.render.renderer2d.dto.Sprite
+import k3dge.render.renderer2d.model.SpriteSizeEnum
+import k3dge.render.renderer3d.dto.LightData
 import org.joml.Vector4f
+import org.lwjgl.opengl.GL11.*
 import org.lwjgl.opengl.GL30.glClearColor
 
 class RenderEngine(configuration: EngineConfiguration) {
 
     private var backgroundColor: Vector4f = Vector4f(0.0f)
 
-    private val rendererGUI: RendererGUI?
-    private var renderer2D: Renderer2D? = null
-    private var renderer3D: Renderer3D? = null
+    private var renderer2D: Renderer2D
+    private var renderer3D: Renderer3D
 
     init {
-        if(configuration.is3D){
-            renderer3D = Renderer3D(configuration)
-        }
-        else {
-            renderer2D = Renderer2D(configuration)
-        }
-        rendererGUI = RendererGUI(configuration)
+        renderer3D = Renderer3D(configuration)
+        renderer2D = Renderer2D(configuration)
     }
 
     fun setBackgroundColor(color: Vector4f){
@@ -34,40 +32,41 @@ class RenderEngine(configuration: EngineConfiguration) {
     }
 
     fun onStart() {
-        renderer2D?.onStart()
-        renderer3D?.onStart()
+        renderer2D.onStart()
+        renderer3D.onStart()
     }
     fun onFrame() {
+
+        glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
         glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, backgroundColor.w)
-        renderer3D?.onFrame()
-        renderer2D?.onFrame()
-        rendererGUI?.onFrame()
+
+        renderer3D.onFrame()
+        renderer2D.onFrame()
+
     }
     fun onUpdate() {
-        renderer2D?.onUpdate()
+        renderer3D.onUpdate()
+        renderer2D.onUpdate()
     }
     fun onCleanUp() {
-        renderer3D?.onCleanUp()
-        renderer2D?.onCleanUp()
-        rendererGUI?.onCleanUp()
+        renderer3D.onCleanUp()
+        renderer2D.onCleanUp()
     }
 
-    fun renderCamera(cameraData: CameraRenderData){
-        renderer3D?.renderCamera(cameraData)
+    fun renderCamera(cameraData: CameraData){
+        renderer3D.renderCamera(cameraData)
     }
-    fun renderDirectionalLight(light: LightRenderData) {
-        renderer3D?.renderDirectionalLight(light)
+    fun renderDirectionalLight(light: LightData) {
+        renderer3D.renderDirectionalLight(light)
     }
-    fun renderTexturedMesh(model: EntityRenderData){
-        renderer3D?.renderTexturedMesh(model)
+    fun render3D(mesh: Mesh, texture: Texture, shader: Shader, transform: TransformData){
+        renderer3D.renderTexturedMesh(mesh, texture, shader, transform)
     }
-
-    fun renderGui(model: EntityRenderData){
-        rendererGUI?.renderGui(model)
+    fun render2D(texture: Texture, transform: TransformData){
+        renderer2D.renderQuad(Sprite(SpriteSizeEnum.X4, texture), transform)
     }
-
-    fun renderSprite(model: SpriteRenderData) {
-        renderer2D?.renderSprite(model)
+    fun render2D(sprite: Sprite, transform: TransformData){
+        renderer2D.renderQuad(sprite, transform)
     }
 
 }

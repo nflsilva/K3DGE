@@ -1,15 +1,14 @@
 package k3dge.core.light.component
 
-import k3dge.core.common.BaseComponent
+import k3dge.core.common.Component
 import k3dge.core.common.dto.UpdateData
-import k3dge.tools.Log
 import org.joml.Vector3f
 import org.joml.Vector4f
 import java.lang.Float.max
 import kotlin.math.abs
 import kotlin.math.min
 
-class ColorLightComponent: BaseComponent() {
+class ColorLightComponent: Component() {
 
     private val color0 = Vector4f(1.0f, 1.0f, 1.0f, 1.0f)
     private val color1 = Vector4f(250f/255f, 114f/255f, 55/255f, 1.0f)
@@ -20,9 +19,9 @@ class ColorLightComponent: BaseComponent() {
     private fun onUpdate(context: UpdateData) {
         context.light?.let { light ->
             val floorNormal = Vector3f(0.0f, 1.0f, 0.0f)
-            val dotPositionNormal = Vector3f(light.position).normalize().dot(floorNormal)
+            val dotPositionNormal = Vector3f(light.transform.position).normalize().dot(floorNormal)
 
-            val intensity = min(1.0f, max(-light.position.y, 0.0f))
+            val intensity = min(1.0f, max(-light.transform.position.y, 0.0f))
             val colorGradient = abs(dotPositionNormal)
 
             //Log.d("${light.position.y} || $intensity || $colorGradient")

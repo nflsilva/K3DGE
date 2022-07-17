@@ -1,16 +1,16 @@
 package k3dge.core.entity.component
 
-import k3dge.core.common.BaseComponent
+import k3dge.core.common.Component
 import k3dge.core.common.dto.UpdateData
 
-class SpinEntityComponent(private val velocity: Float) : BaseComponent() {
+class SpinEntityComponent(private val velocity: Float) : Component() {
 
     init {
         setUpdateObserver { context -> onUpdate(context) }
     }
     private fun onUpdate(context: UpdateData) {
         context.entity?.let { entity ->
-            entity.rotation.y += (velocity * context.elapsedTime.toFloat())
+            entity.transform.rotation.y += (velocity * context.elapsedTime.toFloat())
         }
     }
 }

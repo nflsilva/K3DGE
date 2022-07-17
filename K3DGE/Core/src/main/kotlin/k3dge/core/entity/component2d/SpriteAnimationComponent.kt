@@ -1,16 +1,19 @@
 package k3dge.core.entity.component2d
 
-import k3dge.core.common.BaseComponent
+import k3dge.core.common.Component
 import k3dge.core.common.dto.UpdateData
-import k3dge.render.renderer2d.dto.SpriteRenderData
-import org.joml.Vector2f
+import k3dge.render.renderer2d.dto.Sprite
 
-class SpriteAnimationComponent(): BaseComponent()  {
+class SpriteAnimationComponent(): Component()  {
+
+
+    private data class AnimationKeyframe(val sprite: Sprite,
+                                         val duration: Double)
 
     private var currentState: String? = null
     private var currentKeyframeIndex: Int = 0
     private var currentKeyframeElapsedTime: Double = 0.0
-    private val keyframesByState: MutableMap<String, MutableList<SpriteKeyframe>> = mutableMapOf()
+    private val keyframesByState: MutableMap<String, MutableList<AnimationKeyframe>> = mutableMapOf()
 
     init {
         setUpdateObserver { context -> onUpdate(context) }
@@ -24,17 +27,11 @@ class SpriteAnimationComponent(): BaseComponent()  {
         val currentKeyframe = currentStateKeyframes[currentKeyframeIndex % currentStateKeyframes.size]
 
         context.entity?.let { entity ->
-            context.graphics.renderSprite(
-                SpriteRenderData(
-                    Vector2f(entity.position.x, entity.position.y),
-                    currentKeyframe.textureId,
-                    currentKeyframe.textureCoords
-                )
-            )
+            context.graphics.render2D(currentKeyframe.sprite, entity.transform.data)
         }
 
         currentKeyframeElapsedTime += context.elapsedTime
-        if(currentKeyframe.time < currentKeyframeElapsedTime){
+        if(currentKeyframe.duration < currentKeyframeElapsedTime){
             currentKeyframeIndex++
             currentKeyframeElapsedTime = 0.0
         }
@@ -44,16 +41,14 @@ class SpriteAnimationComponent(): BaseComponent()  {
 
     }
 
-    fun addStateKeyframes(state: String, keyframes: MutableList<SpriteKeyframe>) {
-        keyframesByState[state] = keyframes
+    fun addAnimationKeyframe(state: String, sprite: Sprite, duration: Double) {
+        if(state !in keyframesByState.keys){
+            keyframesByState[state] = mutableListOf()
+        }
+        keyframesByState[state]?.add(AnimationKeyframe(sprite, duration))
     }
-
     fun setState(state: String) {
         currentState = state
     }
-
-    data class SpriteKeyframe(val textureId: Int,
-                              val textureCoords: Array<Vector2f>?,
-                              val time: Double)
 
 }

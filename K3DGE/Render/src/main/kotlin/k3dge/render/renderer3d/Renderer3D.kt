@@ -1,18 +1,26 @@
 package k3dge.render.renderer3d
 
 import k3dge.configuration.EngineConfiguration
-import k3dge.render.BaseRenderer
-import k3dge.render.common.dto.CameraRenderData
-import k3dge.render.renderer3d.dto.EntityRenderData
-import k3dge.render.renderer3d.dto.LightRenderData
-import k3dge.render.renderer3d.dto.ShaderUniformData
+import k3dge.render.renderer3d.dto.CameraData
+import k3dge.render.renderer3d.dto.LightData
+import k3dge.render.common.dto.ShaderUniformData
+import k3dge.render.common.dto.TransformData
+import k3dge.render.common.shader.Shader
+import k3dge.render.common.model.Mesh
+import k3dge.render.common.model.Texture
 import org.joml.Matrix4f
 import org.joml.Vector3f
 import org.lwjgl.opengl.GL30.*
 
-class Renderer3D(private val configuration: EngineConfiguration): BaseRenderer() {
+class Renderer3D(private val configuration: EngineConfiguration) {
 
-    private var light: LightRenderData? = null
+    private data class ObjectRenderData(val mesh: Mesh,
+                                        val texture: Texture,
+                                        var shader: Shader,
+                                        val modelMatrix: Matrix4f)
+
+    private val objectsData: MutableList<ObjectRenderData> = mutableListOf()
+    private var light: LightData? = null
     private var cameraPosition: Vector3f = Vector3f(0.0F)
     private var shadowRenderer: RendererShadow? = null
 
@@ -24,15 +32,16 @@ class Renderer3D(private val configuration: EngineConfiguration): BaseRenderer()
             configuration.renderDistance.toFloat())
     private var viewMatrix: Matrix4f = Matrix4f().identity()
 
-    fun renderCamera(cameraData: CameraRenderData){
+    fun renderCamera(cameraData: CameraData){
         cameraPosition = cameraData.position
         viewMatrix = Matrix4f().lookAt(cameraData.position, cameraData.lookAt, cameraData.up)
     }
-    fun renderDirectionalLight(light: LightRenderData) {
+    fun renderDirectionalLight(light: LightData) {
         this.light = light
     }
-    fun renderTexturedMesh(model: EntityRenderData){
-        addEntityToRenderList(model)
+    fun renderTexturedMesh(mesh: Mesh, texture: Texture, shader: Shader, transform: TransformData){
+        val modelMatrix = computeModelMatrix(transform)
+        objectsData.add(ObjectRenderData(mesh, texture, shader, modelMatrix))
     }
 
     fun onStart() {
@@ -42,58 +51,72 @@ class Renderer3D(private val configuration: EngineConfiguration): BaseRenderer()
         glEnable(GL_DEPTH_TEST)
     }
     fun onFrame() {
-
         computeShadowMap()
-
-        glViewport(0, 0, configuration.resolutionWidth, configuration.resolutionHeight)
-        glBindFramebuffer(GL_FRAMEBUFFER, 0)
-        glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
-        glEnable(GL_CULL_FACE)
-        glCullFace(GL_BACK)
-
-        drawBatches()
+        drawObjects()
+    }
+    fun onUpdate() {
+        objectsData.clear()
     }
     fun onCleanUp(){}
 
     private fun computeShadowMap(){
-
         shadowRenderer?.let { it ->
 
             if(light == null) return
 
             it.bindFramebuffer()
+            glViewport(0, 0, configuration.shadowResolutionWidth, configuration.shadowResolutionHeight)
             glClear(GL_DEPTH_BUFFER_BIT)
-            glCullFace(GL_FRONT)
+            glDisable(GL_CULL_FACE)
             it.updateLightSpaceMatrix(light!!.position, cameraPosition)
 
-            for(batch in renderBatches.values){
-                batch.bind()
-                for(entity in batch.entityData){
-                    it.updateUniforms(entity.value.modelMatrix)
-                    glDrawElements(GL_TRIANGLES, batch.meshSize, GL_UNSIGNED_INT, 0);
-                }
-                batch.unbind()
+            for(entity in objectsData) {
+                entity.mesh.bind()
+
+                it.updateUniforms(entity.modelMatrix)
+                glDrawElements(GL_TRIANGLES, entity.mesh.size, GL_UNSIGNED_INT, 0)
+
+                entity.mesh.unbind()
             }
             it.unbindFramebuffer()
         }
     }
-    private fun drawBatches(){
-        for(batch in renderBatches.values){
-            batch.bind()
-            shadowRenderer?.bindDepthMap(1)
-            for(entity in batch.entityData){
-                entity.value.prepareShader(
-                    ShaderUniformData(entity.value.modelMatrix,
-                                    viewMatrix,
-                                    projectionMatrix,
-                                    light?.position,
-                                    light?.color,
-                                    shadowRenderer?.lightSpaceMatrix)
-                )
-                glDrawElements(GL_TRIANGLES, batch.meshSize, GL_UNSIGNED_INT, 0);
-            }
-            batch.unbind()
+    private fun drawObjects(){
+
+        glViewport(0, 0, configuration.resolutionWidth, configuration.resolutionHeight)
+        glBindFramebuffer(GL_FRAMEBUFFER, 0)
+        glEnable(GL_CULL_FACE)
+        glCullFace(GL_BACK)
+
+        shadowRenderer?.bindDepthMap(1)
+        for(entity in objectsData) {
+
+            entity.mesh.bind()
+            entity.texture.bind(0)
+            entity.shader.bind()
+            entity.shader.updateUniforms(
+                ShaderUniformData(entity.modelMatrix,
+                    viewMatrix,
+                    projectionMatrix,
+                    light?.position,
+                    light?.color,
+                    shadowRenderer?.lightSpaceMatrix))
+
+            glDrawElements(GL_TRIANGLES, entity.mesh.size, GL_UNSIGNED_INT, 0)
+
+            entity.mesh.unbind()
+            entity.texture.unbind()
+            entity.shader.unbind()
         }
+    }
+    private fun computeModelMatrix(transform: TransformData): Matrix4f {
+        val modelMatrix = Matrix4f()
+        modelMatrix.translation(transform.position)
+        modelMatrix.rotate(transform.rotation.x, Vector3f(1.0f, 0.0f, 0.0f))
+        modelMatrix.rotate(transform.rotation.y, Vector3f(0.0f, 1.0f, 0.0f))
+        modelMatrix.rotate(transform.rotation.z, Vector3f(0.0f, 0.0f, 1.0f))
+        modelMatrix.scale(transform.scale)
+        return modelMatrix
     }
 
 }

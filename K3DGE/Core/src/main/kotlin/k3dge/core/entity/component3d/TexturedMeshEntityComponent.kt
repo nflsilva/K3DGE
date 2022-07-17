@@ -1,16 +1,24 @@
 package k3dge.core.entity.component3d
 
-import k3dge.core.common.BaseComponent
+import k3dge.core.common.Component
 import k3dge.core.common.dto.UpdateData
-import k3dge.render.renderer3d.dto.EntityRenderData
-import k3dge.render.renderer3d.model.Mesh3DModel
-import k3dge.render.common.model.ShaderModel
-import k3dge.render.common.model.TextureModel
-import k3dge.render.renderer3d.shader.StaticShader
+import k3dge.render.common.enum.MeshDimensions
+import k3dge.render.common.enum.MeshUsage
+import k3dge.render.common.model.Mesh
+import k3dge.render.common.shader.Shader
+import k3dge.render.common.model.Texture
+import k3dge.render.renderer3d.shader.Shader3D
 
-class TexturedMeshEntityComponent(private val mesh: Mesh3DModel,
-                                  private val texture: TextureModel,
-                                  private val shader: ShaderModel = StaticShader()) : BaseComponent() {
+class TexturedMeshEntityComponent(private val mesh: Mesh,
+                                  private val texture: Texture,
+                                  private val shader: Shader = Shader3D()) : Component() {
+
+    constructor(dimensions: MeshDimensions,
+                usage: MeshUsage,
+                meshResource: String,
+                textureResource: String, shader: Shader = Shader3D())
+            : this(Mesh(dimensions, usage, meshResource), Texture(textureResource), shader)
+
 
     init {
         setUpdateObserver { context -> onUpdate(context) }
@@ -18,17 +26,7 @@ class TexturedMeshEntityComponent(private val mesh: Mesh3DModel,
     }
     private fun onUpdate(context: UpdateData){
         context.entity?.let { entity ->
-            context.graphics.renderTexturedMesh(
-                EntityRenderData(
-                    uid,
-                    mesh,
-                    texture,
-                    shader,
-                    entity.uid,
-                    entity.position,
-                    entity.rotation,
-                    entity.scale)
-            )
+            context.graphics.render3D(mesh, texture, shader, entity.transform.data)
         }
     }
     private fun cleanUp(){

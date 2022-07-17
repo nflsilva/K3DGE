@@ -1,7 +1,7 @@
 package k3dge.render.renderer3d
 
-import k3dge.render.renderer3d.dto.ShaderUniformData
-import k3dge.render.renderer3d.model.ShadowShader
+import k3dge.render.common.dto.ShaderUniformData
+import k3dge.render.renderer3d.shader.ShadowShader
 import org.joml.Matrix4f
 import org.joml.Vector3f
 import org.lwjgl.opengl.GL30.*
