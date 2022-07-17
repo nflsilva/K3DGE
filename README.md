@@ -2,7 +2,7 @@
 A very simple 3D game engine written in Kotlin
 
 <div id="top"></div>
-<img src="/nflsilva/K3DGE/Media/k3dge.gif?raw=true alt="K3DGE example" title="3D KEDGE example">
+<img src="/Media/k3dge.gif">
 <br />
 <div align="center">
   <h3 align="center">K3DGE</h3>
