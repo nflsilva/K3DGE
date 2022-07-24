@@ -8,6 +8,7 @@ import k3dge.render.common.dto.TransformData
 import k3dge.render.common.model.Mesh
 import k3dge.render.common.shader.Shader
 import k3dge.render.common.model.Texture
+import k3dge.render.renderer2d.dto.Circle
 import k3dge.render.renderer2d.dto.Sprite
 import k3dge.render.renderer2d.model.SpriteSizeEnum
 import k3dge.render.renderer3d.dto.LightData
@@ -63,10 +64,13 @@ class RenderEngine(configuration: EngineConfiguration) {
         renderer3D.renderTexturedMesh(mesh, texture, shader, transform)
     }
     fun render2D(texture: Texture, transform: TransformData){
-        renderer2D.renderQuad(Sprite(SpriteSizeEnum.X4, texture), transform)
+        renderer2D.renderQuad(Sprite(SpriteSizeEnum.X1, texture), transform)
     }
     fun render2D(sprite: Sprite, transform: TransformData){
         renderer2D.renderQuad(sprite, transform)
+    }
+    fun render2D(circle: Circle, transform: TransformData){
+        renderer2D.renderCircle(circle, transform)
     }
 
 }

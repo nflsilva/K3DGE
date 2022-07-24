@@ -26,7 +26,7 @@ class GameLogic : CoreEngineDelegate {
 
     override fun onStart() {
 
-        val animatedSprite = Entity(Vector2f(0F, 0F), 0.0f, Vector2f(1f, 1f))
+        val animatedSprite = Entity(Vector2f(0f, 0f), 0.0f, Vector2f(1f, 1f))
         val atlas = SpriteAtlas("/texture/dungeon.png", 9, 28).apply {
             setSprite(SpriteSizeEnum.X16,"walking0", 6, 0)
             setSprite(SpriteSizeEnum.X16,"walking1", 6, 1)

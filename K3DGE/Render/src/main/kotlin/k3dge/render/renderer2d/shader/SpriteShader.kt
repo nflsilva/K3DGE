@@ -2,9 +2,8 @@ package k3dge.render.renderer2d.shader
 
 import k3dge.render.common.dto.ShaderUniformData
 import k3dge.render.common.shader.Shader
-import k3dge.tools.ResourceManager
 
-class Shader2D: Shader(VERTEX_SHADER, FRAGMENT_SHADER) {
+class SpriteShader: Shader(VERTEX_SHADER, FRAGMENT_SHADER) {
 
     init {
         bindAttributes()
@@ -30,8 +29,8 @@ class Shader2D: Shader(VERTEX_SHADER, FRAGMENT_SHADER) {
     }
 
     companion object {
-        private const val VERTEX_SHADER = "/shader/2d/static/vertex.glsl"
-        private const val FRAGMENT_SHADER = "/shader/2d/static/fragment.glsl"
+        private const val VERTEX_SHADER = "/shader/2d/sprite/vertex.glsl"
+        private const val FRAGMENT_SHADER = "/shader/2d/sprite/fragment.glsl"
 
         private const val POSITION_ATTRIBUTE = "in_position"
         private const val ROTATION_ATTRIBUTE = "in_rotation"

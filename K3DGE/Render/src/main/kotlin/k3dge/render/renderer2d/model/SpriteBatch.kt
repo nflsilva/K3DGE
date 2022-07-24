@@ -121,7 +121,7 @@ class SpriteBatch(private val maxQuads: Int,
         glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, indices.flip())
 
         glBindVertexArray(vao)
-        for (i in 0 until 6) {
+        for(i in 0 until 6) {
             glEnableVertexAttribArray(i)
         }
 
@@ -131,7 +131,7 @@ class SpriteBatch(private val maxQuads: Int,
 
     }
     fun unbind(){
-        for (i in 0 until 5) {
+        for (i in 0 until 6) {
             glDisableVertexAttribArray(i)
         }
         glBindVertexArray(0)
