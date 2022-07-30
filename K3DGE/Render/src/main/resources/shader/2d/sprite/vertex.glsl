@@ -13,7 +13,7 @@ uniform mat4 in_projectionMatrix;
 out vec2 textureCoords;
 out float textureIndex;
 
-vec2 translate(vec2 v, vec2 t){
+vec2 translate(vec2 v, vec2 t) {
     return v + t;
 }
 vec2 rotate(vec2 v, float a) {

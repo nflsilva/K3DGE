@@ -10,13 +10,16 @@ import org.lwjgl.opengl.GL30.*
 import java.nio.FloatBuffer
 import java.nio.IntBuffer
 
-class EntityBatch(private val maxEntities: Int,
-                  private val nVerticesPerEntity: Int) {
+open class EntityBatch(private val maxEntities: Int,
+                       private val nVerticesPerEntity: Int,
+                       private val nIndexesPerEntity: Int) {
 
     private data class BuffersF(val vbo: Int, val buffer: FloatBuffer, val size: Int)
     private data class BuffersI(val vbo: Int, val buffer: IntBuffer)
 
     var nEntities: Int = 0
+    val nIndexes: Int
+        get() = this.nEntities * nIndexesPerEntity
 
     private val vao: Int = glGenVertexArrays()
     private val attributes: MutableMap<Int, BuffersF> = mutableMapOf()
@@ -30,7 +33,7 @@ class EntityBatch(private val maxEntities: Int,
         glBindBuffer(GL_ARRAY_BUFFER, 0)
     }
 
-    fun bind(){
+    open fun bind() {
 
         attributes.forEach { attribute ->
             bindAttributeBuffer(attribute.value.vbo, attribute.value.buffer.flip())
@@ -44,7 +47,7 @@ class EntityBatch(private val maxEntities: Int,
         }
 
     }
-    fun unbind(){
+    open fun unbind() {
         for (i in 0 until attributes.size) {
             glDisableVertexAttribArray(i)
         }
@@ -61,9 +64,12 @@ class EntityBatch(private val maxEntities: Int,
         glBindBuffer(GL_ARRAY_BUFFER, 0)
         attributes[index] = BuffersF(vbo, buffer, size)
     }
-    fun addAttributeData(index: Int, vararg data: Float) {
-        data.forEach { value ->
-            attributes[index]?.buffer?.put(value)
+    fun addAttributeData(index: Int, vararg data: Float, perVertex: Boolean = true) {
+        val adds = if(perVertex) nVerticesPerEntity else 1
+        for(i in 0 until adds) {
+            data.forEach { value ->
+                attributes[index]?.buffer?.put(value)
+            }
         }
     }
     fun addIndexData(vararg data: Int) {
@@ -72,7 +78,7 @@ class EntityBatch(private val maxEntities: Int,
         }
     }
 
-    fun clear() {
+    open fun clear() {
         attributes.values.forEach { it.buffer.clear() }
         indices.clear()
         nEntities = 0
@@ -89,7 +95,7 @@ class EntityBatch(private val maxEntities: Int,
 
     private fun initIndexBuffer(): BuffersI {
         val vbo = glGenBuffers()
-        val buffer = BufferUtils.createIntBuffer(maxEntities * nVerticesPerEntity)
+        val buffer = BufferUtils.createIntBuffer(maxEntities * nIndexesPerEntity)
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo)
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, buffer, GL_DYNAMIC_DRAW)
         return BuffersI(vbo, buffer)

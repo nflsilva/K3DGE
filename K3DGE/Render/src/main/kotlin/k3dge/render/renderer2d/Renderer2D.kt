@@ -1,18 +1,16 @@
 package k3dge.render.renderer2d
 
 import k3dge.configuration.EngineConfiguration
-import k3dge.render.common.dto.ColorData
 import k3dge.render.renderer2d.model.SpriteBatch
 import k3dge.render.renderer2d.dto.Sprite
 import k3dge.render.common.dto.TransformData
 import k3dge.render.renderer2d.shader.SpriteShader
 import k3dge.render.common.dto.ShaderUniformData
 import k3dge.render.common.shader.Shader
-import k3dge.render.renderer2d.dto.Circle
-import k3dge.render.renderer2d.model.CircleBatch
-import k3dge.render.renderer2d.shader.CircleShader
+import k3dge.render.renderer2d.dto.Point
+import k3dge.render.renderer2d.model.ParticlesBatch
+import k3dge.render.renderer2d.shader.ParticleShader
 import org.joml.Matrix4f
-import org.joml.Vector3f
 import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL30.*
 
@@ -21,12 +19,12 @@ class Renderer2D(private val configuration: EngineConfiguration) {
     private lateinit var spriteBatches: MutableList<SpriteBatch>
     private lateinit var spriteShader: SpriteShader
 
-    private lateinit var circleBatches: MutableList<CircleBatch>
-    private lateinit var circleShader: CircleShader
+    private lateinit var pointsBatches: MutableList<ParticlesBatch>
+    private lateinit var particleShader: ParticleShader
 
     private var maxTextureSlots: Int = 0
 
-    private var zoom = 0.75F
+    private var zoom = 0.0F
     private val bottom = 0.0F
     private val left = 0.0F
     private val top = configuration.resolutionHeight.toFloat() * (1.0F - zoom)
@@ -40,19 +38,19 @@ class Renderer2D(private val configuration: EngineConfiguration) {
         spriteBatches = mutableListOf(SpriteBatch(DEFAULT_BATCH_SIZE, maxTextureSlots))
         spriteShader = SpriteShader()
 
-        circleBatches = mutableListOf(CircleBatch(DEFAULT_BATCH_SIZE))
-        circleShader = CircleShader()
+        particleShader = ParticleShader()
+        pointsBatches = mutableListOf(ParticlesBatch(DEFAULT_BATCH_SIZE))
 
     }
     fun onFrame() {
         glViewport(0, 0, configuration.resolutionWidth, configuration.resolutionHeight)
         glEnable(GL_CULL_FACE)
         glCullFace(GL_BACK)
-        render()
+        draw()
     }
     fun onUpdate() {
         spriteBatches.forEach {  it.clear() }
-        circleBatches.forEach {  it.clear() }
+        pointsBatches.forEach {  it.clear() }
     }
     fun onCleanUp(){
         for(batch in spriteBatches){
@@ -60,39 +58,13 @@ class Renderer2D(private val configuration: EngineConfiguration) {
         }
     }
 
-    fun renderQuad(data: Sprite, transform: TransformData) {
+    fun renderSprite(data: Sprite, transform: TransformData) {
         if(isVisible(transform, data.spriteSize.value)) {
             addToSuitableBatch(data, transform)
         }
-
-        val bl = Circle(
-            Vector3f(0.0f),
-            10.0f,
-            ColorData(1.0f, 0.0f, 0.0f, 1.0f))
-
-        val c = Circle(
-            Vector3f(640.0f, 360.0f, 0.0f),
-            10.0f,
-            ColorData(0.0f, 1.0f, 0.0f, 1.0f))
-
-        val tr = Circle(
-            Vector3f(1280.0f, 720.0f, 0.0f),
-            10.0f,
-            ColorData(0.0f, 0.0f, 1.0f, 1.0f))
-
-        val transform1 = TransformData(
-            Vector3f(0.0f),
-            Vector3f(0.0f),
-            Vector3f(1.0f),
-        )
-
-        circleBatches[0].addCircle(bl, transform1)
-        circleBatches[0].addCircle(c, transform1)
-        circleBatches[0].addCircle(tr, transform1)
-
     }
 
-    fun renderCircle(data: Circle, transform: TransformData){
+    fun renderPoint(data: Point, transform: TransformData){
 
     }
 
@@ -105,7 +77,7 @@ class Renderer2D(private val configuration: EngineConfiguration) {
     private fun addToSuitableBatch(data: Sprite, transform: TransformData) {
         var suitableBatch: SpriteBatch? = null
         for(batch in spriteBatches) {
-            if(batch.isSpriteFull()) { continue }
+            if(batch.isFull()) { continue }
             if(batch.hasTexture(data.texture) || !batch.isTextureFull()) {
                 suitableBatch = batch
                 break
@@ -123,12 +95,12 @@ class Renderer2D(private val configuration: EngineConfiguration) {
         shader.bind()
         shader.updateUniforms(uniformData)
     }
-    private fun render() {
+    private fun draw() {
         val projectionMatrix: Matrix4f = Matrix4f().setOrtho2D(left, right, bottom, top)
-        renderCircles(projectionMatrix)
-        renderSprites(projectionMatrix)
+        drawParticles(projectionMatrix)
+        drawSprites(projectionMatrix)
     }
-    private fun renderSprites(projectionMatrix: Matrix4f) {
+    private fun drawSprites(projectionMatrix: Matrix4f) {
         for(batch in spriteBatches){
             batch.bind()
             prepareShader(
@@ -136,17 +108,17 @@ class Renderer2D(private val configuration: EngineConfiguration) {
                 ShaderUniformData(
                     projectionMatrix = projectionMatrix,
                     textureSlots = batch.getTextureSlots()))
-            glDrawElements(GL_TRIANGLES, batch.nIndices, GL_UNSIGNED_INT, 0)
+            glDrawElements(GL_TRIANGLES, batch.nIndexes, GL_UNSIGNED_INT, 0)
             batch.unbind()
         }
     }
-    private fun renderCircles(projectionMatrix: Matrix4f) {
-        for(batch in circleBatches){
+    private fun drawParticles(projectionMatrix: Matrix4f) {
+        for(batch in pointsBatches){
             batch.bind()
             prepareShader(
-                circleShader,
+                particleShader,
                 ShaderUniformData(projectionMatrix = projectionMatrix))
-            glDrawElements(GL_POINTS, batch.nIndices, GL_UNSIGNED_INT, 0)
+            glDrawElements(GL_POINTS, batch.nEntities, GL_UNSIGNED_INT, 0)
             batch.unbind()
         }
     }
