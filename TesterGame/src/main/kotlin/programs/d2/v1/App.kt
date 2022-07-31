@@ -2,7 +2,8 @@ package programs.d2.v1
 
 import k3dge.core.CoreEngine
 import k3dge.core.CoreEngineDelegate
-import k3dge.core.entity.Entity
+import k3dge.core.entity.Entity2D
+import k3dge.core.entity.Entity3D
 import k3dge.core.entity.component.EntityMoveComponent
 import k3dge.core.entity.component2d.SpriteAnimationComponent
 import k3dge.render.renderer2d.model.SpriteAtlas
@@ -26,7 +27,11 @@ class GameLogic : CoreEngineDelegate {
 
     override fun onStart() {
 
-        val animatedSprite = Entity(Vector2f(0f, 0f), 0.0f, Vector2f(1f, 1f))
+        val animatedSprite = Entity2D(
+            Vector2f(0f, 0f),
+            0.0f,
+            Vector2f(10f, 10f))
+
         val atlas = SpriteAtlas("/texture/dungeon.png", 9, 28).apply {
             setSprite(SpriteSizeEnum.X16,"walking0", 6, 0)
             setSprite(SpriteSizeEnum.X16,"walking1", 6, 1)
@@ -63,6 +68,18 @@ class GameLogic : CoreEngineDelegate {
         animatedSprite.addComponent(animComp)
         animatedSprite.addComponent(EntityMoveComponent(50F))
         engine.addEntity(animatedSprite)
+
+
+
+        val particleEntity = Entity2D(
+            Vector2f(0f, 0f),
+            0.0f,
+            Vector2f(10f, 10f))
+
+
+        engine.addEntity(particleEntity)
+
+
 
     }
     override fun onUpdate(elapsedTime: Double, input: InputStateData) {

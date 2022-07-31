@@ -6,7 +6,7 @@ import k3dge.core.camera.Camera
 import k3dge.core.camera.component.RotateCameraComponent
 import k3dge.core.camera.component.TranslateCameraComponent
 import k3dge.core.camera.component.ZoomCameraComponent
-import k3dge.core.entity.Entity
+import k3dge.core.entity.Entity3D
 import k3dge.core.entity.component3d.TexturedMeshEntityComponent
 import k3dge.core.light.Light
 import k3dge.core.light.component.ColorLightComponent
@@ -38,7 +38,7 @@ class GameLogic : CoreEngineDelegate {
         val terrainMesh = Mesh(MeshDimensions.D3, MeshUsage.STATIC, "/mesh/terrain.obj")
         val terrainTexture = Texture("/texture/lowPolyAtlas.png")
         val terrainMeshComp = TexturedMeshEntityComponent(terrainMesh, terrainTexture)
-        val terrain = Entity(
+        val terrain = Entity3D(
             Vector3f(0f, 0f, 0f),
             Vector3f(0f, 0f, 0f),
             Vector3f(1f, 1f, 1f)).apply {
@@ -48,7 +48,7 @@ class GameLogic : CoreEngineDelegate {
 
         val houseMesh = Mesh(MeshDimensions.D3, MeshUsage.STATIC, "/mesh/home.obj")
         val houseMeshComp = TexturedMeshEntityComponent(houseMesh, terrainTexture)
-        val box = Entity(
+        val box = Entity3D(
             Vector3f(0f, 0f, 0f),
             Vector3f(0f, 0f, 0f),
             Vector3f(0.1f, 0.1f, 0.1f)).apply {

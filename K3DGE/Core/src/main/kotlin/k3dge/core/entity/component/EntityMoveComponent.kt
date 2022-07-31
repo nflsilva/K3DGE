@@ -3,6 +3,7 @@ package k3dge.core.entity.component
 import k3dge.core.common.Component
 import k3dge.core.common.dto.UpdateData
 import k3dge.ui.dto.InputStateData
+import org.joml.Vector2f
 
 class EntityMoveComponent(private val speed: Float = 10F) : Component() {
 
@@ -12,18 +13,20 @@ class EntityMoveComponent(private val speed: Float = 10F) : Component() {
     private fun onUpdate(context: UpdateData) {
         context.entity?.let { entity ->
 
+            val dd = speed * context.elapsedTime.toFloat()
+
             if(context.input.isKeyPressed(InputStateData.KEY_A)) {
-                entity.transform.position.x -= speed * context.elapsedTime.toFloat()
+                entity.transform.translate(Vector2f(-dd, 0f))
             }
             else if(context.input.isKeyPressed(InputStateData.KEY_D)) {
-                entity.transform.position.x += speed * context.elapsedTime.toFloat()
+                entity.transform.translate(Vector2f(dd, 0f))
             }
 
             if(context.input.isKeyPressed(InputStateData.KEY_W)) {
-                entity.transform.position.y += speed * context.elapsedTime.toFloat()
+                entity.transform.translate(Vector2f(0f, dd))
             }
             else if(context.input.isKeyPressed(InputStateData.KEY_S)) {
-                entity.transform.position.y -= speed * context.elapsedTime.toFloat()
+                entity.transform.translate(Vector2f(0f, -dd))
             }
 
         }

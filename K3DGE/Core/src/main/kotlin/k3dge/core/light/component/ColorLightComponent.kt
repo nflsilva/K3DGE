@@ -19,9 +19,9 @@ class ColorLightComponent: Component() {
     private fun onUpdate(context: UpdateData) {
         context.light?.let { light ->
             val floorNormal = Vector3f(0.0f, 1.0f, 0.0f)
-            val dotPositionNormal = Vector3f(light.transform.position).normalize().dot(floorNormal)
+            val dotPositionNormal = Vector3f(light.transform.getPos()).normalize().dot(floorNormal)
 
-            val intensity = min(1.0f, max(-light.transform.position.y, 0.0f))
+            val intensity = min(1.0f, max(-light.transform.getPos().y, 0.0f))
             val colorGradient = abs(dotPositionNormal)
 
             //Log.d("${light.position.y} || $intensity || $colorGradient")

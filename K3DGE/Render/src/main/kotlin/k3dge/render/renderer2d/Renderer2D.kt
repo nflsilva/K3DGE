@@ -3,11 +3,12 @@ package k3dge.render.renderer2d
 import k3dge.configuration.EngineConfiguration
 import k3dge.render.renderer2d.model.SpriteBatch
 import k3dge.render.renderer2d.dto.Sprite
-import k3dge.render.common.dto.TransformData
+import k3dge.render.renderer3d.dto.Transform3DData
 import k3dge.render.renderer2d.shader.SpriteShader
 import k3dge.render.common.dto.ShaderUniformData
 import k3dge.render.common.shader.Shader
-import k3dge.render.renderer2d.dto.Point
+import k3dge.render.renderer2d.dto.Particle
+import k3dge.render.renderer2d.dto.Transform2DData
 import k3dge.render.renderer2d.model.ParticlesBatch
 import k3dge.render.renderer2d.shader.ParticleShader
 import org.joml.Matrix4f
@@ -19,7 +20,7 @@ class Renderer2D(private val configuration: EngineConfiguration) {
     private lateinit var spriteBatches: MutableList<SpriteBatch>
     private lateinit var spriteShader: SpriteShader
 
-    private lateinit var pointsBatches: MutableList<ParticlesBatch>
+    private lateinit var particleBatches: MutableList<ParticlesBatch>
     private lateinit var particleShader: ParticleShader
 
     private var maxTextureSlots: Int = 0
@@ -39,7 +40,7 @@ class Renderer2D(private val configuration: EngineConfiguration) {
         spriteShader = SpriteShader()
 
         particleShader = ParticleShader()
-        pointsBatches = mutableListOf(ParticlesBatch(DEFAULT_BATCH_SIZE))
+        particleBatches = mutableListOf(ParticlesBatch(DEFAULT_BATCH_SIZE))
 
     }
     fun onFrame() {
@@ -50,7 +51,7 @@ class Renderer2D(private val configuration: EngineConfiguration) {
     }
     fun onUpdate() {
         spriteBatches.forEach {  it.clear() }
-        pointsBatches.forEach {  it.clear() }
+        particleBatches.forEach {  it.clear() }
     }
     fun onCleanUp(){
         for(batch in spriteBatches){
@@ -58,23 +59,25 @@ class Renderer2D(private val configuration: EngineConfiguration) {
         }
     }
 
-    fun renderSprite(data: Sprite, transform: TransformData) {
-        if(isVisible(transform, data.spriteSize.value)) {
-            addToSuitableBatch(data, transform)
+    fun renderSprite(data: Sprite, transform: Transform2DData) {
+        if(isVisible(transform, data.size.value)) {
+            addToSuitableSpriteBatch(data, transform)
         }
     }
 
-    fun renderPoint(data: Point, transform: TransformData){
-
+    fun renderParticle(data: Particle, transform: Transform2DData){
+        if(isVisible(transform, data.size)) {
+            addToSuitableParticleBatch(data, transform)
+        }
     }
 
-    private fun isVisible(transform: TransformData, size: Int): Boolean {
+    private fun isVisible(transform: Transform2DData, size: Float): Boolean {
         return transform.position.x > left - DEFAULT_SCREEN_RENDER_MARGINS &&
                 transform.position.x + size < right + DEFAULT_SCREEN_RENDER_MARGINS &&
                 transform.position.y < top + DEFAULT_SCREEN_RENDER_MARGINS &&
                 transform.position.y + size > bottom - DEFAULT_SCREEN_RENDER_MARGINS
     }
-    private fun addToSuitableBatch(data: Sprite, transform: TransformData) {
+    private fun addToSuitableSpriteBatch(data: Sprite, transform: Transform2DData) {
         var suitableBatch: SpriteBatch? = null
         for(batch in spriteBatches) {
             if(batch.isFull()) { continue }
@@ -91,6 +94,20 @@ class Renderer2D(private val configuration: EngineConfiguration) {
 
         suitableBatch.addSprite(data, transform)
     }
+    private fun addToSuitableParticleBatch(data: Particle, transform: Transform2DData) {
+        var suitableBatch: ParticlesBatch? = null
+        for(batch in particleBatches) {
+            if(batch.isFull()) { continue }
+        }
+
+        if(suitableBatch == null) {
+            suitableBatch = ParticlesBatch(DEFAULT_BATCH_SIZE)
+            particleBatches.add(suitableBatch)
+        }
+
+        suitableBatch.addParticle(data, transform)
+    }
+
     private fun prepareShader(shader: Shader, uniformData: ShaderUniformData) {
         shader.bind()
         shader.updateUniforms(uniformData)
@@ -113,7 +130,7 @@ class Renderer2D(private val configuration: EngineConfiguration) {
         }
     }
     private fun drawParticles(projectionMatrix: Matrix4f) {
-        for(batch in pointsBatches){
+        for(batch in particleBatches){
             batch.bind()
             prepareShader(
                 particleShader,

@@ -1,13 +1,11 @@
 package k3dge.render.renderer2d.model
 
-import k3dge.render.common.dto.TransformData
+import k3dge.render.renderer3d.dto.Transform3DData
 import k3dge.render.common.model.Texture
 import k3dge.render.renderer2d.dto.Sprite
+import k3dge.render.renderer2d.dto.Transform2DData
 import org.joml.Vector2f
-import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL30.*
-import java.nio.FloatBuffer
-import java.nio.IntBuffer
 
 class SpriteBatch(private val maxSprites: Int,
                   private val maxTextures: Int):
@@ -26,13 +24,13 @@ class SpriteBatch(private val maxSprites: Int,
     }
 
     init {
-        addAttributeBuffer(POSITION_INDEX, 2)
-        addAttributeBuffer(SIZE_INDEX, 1)
-        addAttributeBuffer(TRANSLATION_INDEX, 2)
-        addAttributeBuffer(ROTATION_INDEX, 1)
-        addAttributeBuffer(SCALE_INDEX, 2)
-        addAttributeBuffer(TEXTURE_COORDS_INDEX, 2)
-        addAttributeBuffer(TEXTURE_INDEX, 1)
+        addFloatAttributeBuffer(POSITION_INDEX, 2)
+        addFloatAttributeBuffer(SIZE_INDEX, 1)
+        addFloatAttributeBuffer(TRANSLATION_INDEX, 2)
+        addFloatAttributeBuffer(ROTATION_INDEX, 1)
+        addFloatAttributeBuffer(SCALE_INDEX, 2)
+        addFloatAttributeBuffer(TEXTURE_COORDS_INDEX, 2)
+        addFloatAttributeBuffer(TEXTURE_INDEX, 1)
     }
 
     override fun bind(){
@@ -46,12 +44,12 @@ class SpriteBatch(private val maxSprites: Int,
         glBindVertexArray(0)
     }
 
-    fun addSprite(sprite: Sprite, transform: TransformData){
+    fun addSprite(sprite: Sprite, transform: Transform2DData){
 
         //TODO: Create exception for this
         if(nEntities >= maxSprites || textures.size >= maxTextures) { return }
 
-        val size = sprite.spriteSize.value.toFloat()
+        val size = sprite.size.value
         val tl = Vector2f(0f, size)
         val bl = Vector2f(0f, 0f)
         val br = Vector2f(size, 0f)
@@ -66,7 +64,7 @@ class SpriteBatch(private val maxSprites: Int,
 
         addAttributeData(SIZE_INDEX, size)
         addAttributeData(TRANSLATION_INDEX, transform.position.x, transform.position.y)
-        addAttributeData(ROTATION_INDEX, transform.rotation.z)
+        addAttributeData(ROTATION_INDEX, transform.rotation)
         addAttributeData(SCALE_INDEX, transform.scale.x, transform.scale.y)
         addAttributeData(SCALE_INDEX, transform.scale.x, transform.scale.y)
         addAttributeData(

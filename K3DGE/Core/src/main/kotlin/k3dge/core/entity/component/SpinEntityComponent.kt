@@ -2,6 +2,7 @@ package k3dge.core.entity.component
 
 import k3dge.core.common.Component
 import k3dge.core.common.dto.UpdateData
+import org.joml.Vector3f
 
 class SpinEntityComponent(private val velocity: Float) : Component() {
 
@@ -10,7 +11,8 @@ class SpinEntityComponent(private val velocity: Float) : Component() {
     }
     private fun onUpdate(context: UpdateData) {
         context.entity?.let { entity ->
-            entity.transform.rotation.y += (velocity * context.elapsedTime.toFloat())
+            val dy = velocity * context.elapsedTime.toFloat()
+            entity.transform.rotate(Vector3f(0.0f, dy, 0.0f))
         }
     }
 }

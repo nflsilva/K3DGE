@@ -1,7 +1,8 @@
 package k3dge.render.renderer2d.model
 
-import k3dge.render.common.dto.TransformData
-import k3dge.render.renderer2d.dto.Point
+import k3dge.render.renderer3d.dto.Transform3DData
+import k3dge.render.renderer2d.dto.Particle
+import k3dge.render.renderer2d.dto.Transform2DData
 
 class ParticlesBatch(maxEntities: Int):
     EntityBatch(maxEntities, 1, 1) {
@@ -14,13 +15,13 @@ class ParticlesBatch(maxEntities: Int):
     }
 
     init {
-        addAttributeBuffer(POSITION_INDEX, 2)
-        addAttributeBuffer(SIZE_INDEX, 1)
-        addAttributeBuffer(TYPE_INDEX, 1)
-        addAttributeBuffer(COLOR_INDEX, 4)
+        addFloatAttributeBuffer(POSITION_INDEX, 2)
+        addFloatAttributeBuffer(SIZE_INDEX, 1)
+        addFloatAttributeBuffer(TYPE_INDEX, 1)
+        addFloatAttributeBuffer(COLOR_INDEX, 4)
     }
 
-    fun addParticle(particle: Point, transform: TransformData) {
+    fun addParticle(particle: Particle, transform: Transform2DData) {
         addAttributeData(POSITION_INDEX, transform.position.x, transform.position.y)
         addAttributeData(SIZE_INDEX, particle.size)
         addAttributeData(TYPE_INDEX, 1f)

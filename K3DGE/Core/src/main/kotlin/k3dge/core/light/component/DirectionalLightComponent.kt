@@ -11,7 +11,7 @@ class DirectionalLightComponent: Component() {
     }
     private fun onUpdate(context: UpdateData) {
         context.light?.let { light ->
-            context.graphics.renderDirectionalLight(LightData(uid, light.transform.position, light.color))
+            context.graphics.renderDirectionalLight(LightData(uid, light.transform.getPos(), light.color))
         }
     }
 }

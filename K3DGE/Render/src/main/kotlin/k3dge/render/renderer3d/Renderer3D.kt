@@ -4,7 +4,7 @@ import k3dge.configuration.EngineConfiguration
 import k3dge.render.renderer3d.dto.CameraData
 import k3dge.render.renderer3d.dto.LightData
 import k3dge.render.common.dto.ShaderUniformData
-import k3dge.render.common.dto.TransformData
+import k3dge.render.renderer3d.dto.Transform3DData
 import k3dge.render.common.shader.Shader
 import k3dge.render.common.model.Mesh
 import k3dge.render.common.model.Texture
@@ -39,7 +39,7 @@ class Renderer3D(private val configuration: EngineConfiguration) {
     fun renderDirectionalLight(light: LightData) {
         this.light = light
     }
-    fun renderTexturedMesh(mesh: Mesh, texture: Texture, shader: Shader, transform: TransformData){
+    fun renderTexturedMesh(mesh: Mesh, texture: Texture, shader: Shader, transform: Transform3DData){
         val modelMatrix = computeModelMatrix(transform)
         objectsData.add(ObjectRenderData(mesh, texture, shader, modelMatrix))
     }
@@ -109,7 +109,7 @@ class Renderer3D(private val configuration: EngineConfiguration) {
             entity.shader.unbind()
         }
     }
-    private fun computeModelMatrix(transform: TransformData): Matrix4f {
+    private fun computeModelMatrix(transform: Transform3DData): Matrix4f {
         val modelMatrix = Matrix4f()
         modelMatrix.translation(transform.position)
         modelMatrix.rotate(transform.rotation.x, Vector3f(1.0f, 0.0f, 0.0f))

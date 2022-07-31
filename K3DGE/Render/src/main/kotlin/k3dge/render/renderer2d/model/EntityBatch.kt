@@ -1,12 +1,8 @@
 package k3dge.render.renderer2d.model
 
-import k3dge.render.common.dto.TransformData
-import k3dge.render.common.model.Texture
-import k3dge.render.renderer2d.dto.Sprite
-import org.joml.Vector2f
 import org.lwjgl.BufferUtils
-import org.lwjgl.assimp.AIAABB.Buffer
 import org.lwjgl.opengl.GL30.*
+import java.nio.Buffer
 import java.nio.FloatBuffer
 import java.nio.IntBuffer
 
@@ -14,22 +10,21 @@ open class EntityBatch(private val maxEntities: Int,
                        private val nVerticesPerEntity: Int,
                        private val nIndexesPerEntity: Int) {
 
-    private data class BuffersF(val vbo: Int, val buffer: FloatBuffer, val size: Int)
-    private data class BuffersI(val vbo: Int, val buffer: IntBuffer)
+    private data class Buffers(val vbo: Int, val buffer: Buffer)
 
     var nEntities: Int = 0
     val nIndexes: Int
         get() = this.nEntities * nIndexesPerEntity
 
     private val vao: Int = glGenVertexArrays()
-    private val attributes: MutableMap<Int, BuffersF> = mutableMapOf()
+    private val attributes: MutableMap<Int, Buffers> = mutableMapOf()
 
     private val indexesVbo: Int
     private val indices: IntBuffer
 
     init {
         glBindVertexArray(vao)
-        with(initIndexBuffer()){ indexesVbo = vbo; indices = buffer }
+        with(initIndexBuffer()){ indexesVbo = vbo; indices = buffer as IntBuffer }
         glBindBuffer(GL_ARRAY_BUFFER, 0)
     }
 
@@ -54,7 +49,17 @@ open class EntityBatch(private val maxEntities: Int,
         glBindVertexArray(0)
     }
 
-    fun addAttributeBuffer(index: Int, size: Int) {
+    fun addIntAttributeBuffer(index: Int, size: Int) {
+        glBindVertexArray(vao)
+        val vbo = glGenBuffers()
+        val buffer = BufferUtils.createIntBuffer(maxEntities * nVerticesPerEntity * size)
+        glBindBuffer(GL_ARRAY_BUFFER, vbo)
+        glBufferData(GL_ARRAY_BUFFER, buffer, GL_DYNAMIC_DRAW)
+        glVertexAttribPointer(index, size, GL_FLOAT, false, 0, 0)
+        glBindBuffer(GL_ARRAY_BUFFER, 0)
+        attributes[index] = Buffers(vbo, buffer)
+    }
+    fun addFloatAttributeBuffer(index: Int, size: Int) {
         glBindVertexArray(vao)
         val vbo = glGenBuffers()
         val buffer = BufferUtils.createFloatBuffer(maxEntities * nVerticesPerEntity * size)
@@ -62,13 +67,24 @@ open class EntityBatch(private val maxEntities: Int,
         glBufferData(GL_ARRAY_BUFFER, buffer, GL_DYNAMIC_DRAW)
         glVertexAttribPointer(index, size, GL_FLOAT, false, 0, 0)
         glBindBuffer(GL_ARRAY_BUFFER, 0)
-        attributes[index] = BuffersF(vbo, buffer, size)
+        attributes[index] = Buffers(vbo, buffer)
+    }
+
+    fun addAttributeData(index: Int, vararg data: Int, perVertex: Boolean = true) {
+        val adds = if(perVertex) nVerticesPerEntity else 1
+        val buffer = attributes[index]?.buffer as? IntBuffer ?: return
+        for(i in 0 until adds) {
+            data.forEach { value ->
+                buffer.put(value)
+            }
+        }
     }
     fun addAttributeData(index: Int, vararg data: Float, perVertex: Boolean = true) {
         val adds = if(perVertex) nVerticesPerEntity else 1
+        val buffer = attributes[index]?.buffer as? FloatBuffer ?: return
         for(i in 0 until adds) {
             data.forEach { value ->
-                attributes[index]?.buffer?.put(value)
+                buffer.put(value)
             }
         }
     }
@@ -93,16 +109,23 @@ open class EntityBatch(private val maxEntities: Int,
         glDeleteBuffers(attributes.keys.toIntArray())
     }
 
-    private fun initIndexBuffer(): BuffersI {
+    private fun initIndexBuffer(): Buffers {
         val vbo = glGenBuffers()
         val buffer = BufferUtils.createIntBuffer(maxEntities * nIndexesPerEntity)
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo)
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, buffer, GL_DYNAMIC_DRAW)
-        return BuffersI(vbo, buffer)
+        return Buffers(vbo, buffer)
     }
-    private fun bindAttributeBuffer(vbo: Int, buffer: FloatBuffer){
+    private fun bindAttributeBuffer(vbo: Int, buffer: Buffer){
+        // TODO: Refactor this IntBuffer / FloatBuffer mess
         glBindBuffer(GL_ARRAY_BUFFER, vbo)
-        glBufferSubData(GL_ARRAY_BUFFER, 0, buffer)
+        val intBuffer = buffer as? IntBuffer
+        if(intBuffer != null){
+            glBufferSubData(GL_ARRAY_BUFFER, 0, intBuffer)
+        }
+        else {
+            glBufferSubData(GL_ARRAY_BUFFER, 0, buffer as FloatBuffer)
+        }
     }
     private fun bindIndexBuffer(vbo: Int, buffer: IntBuffer){
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo)

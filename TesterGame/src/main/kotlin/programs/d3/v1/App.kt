@@ -6,7 +6,7 @@ import k3dge.core.camera.Camera
 import k3dge.core.camera.component.RotateCameraComponent
 import k3dge.core.camera.component.TranslateCameraComponent
 import k3dge.core.camera.component.ZoomCameraComponent
-import k3dge.core.entity.Entity
+import k3dge.core.entity.Entity3D
 import k3dge.core.entity.component3d.TexturedMeshEntityComponent
 import k3dge.core.light.Light
 import k3dge.core.light.component.ColorLightComponent
@@ -16,7 +16,6 @@ import k3dge.render.common.enum.MeshDimensions
 import k3dge.render.common.enum.MeshUsage
 import k3dge.render.common.model.Mesh
 import k3dge.render.common.model.Texture
-import k3dge.tools.ResourceManager
 import k3dge.ui.dto.InputStateData
 import org.joml.Vector3f
 import org.joml.Vector4f
@@ -39,7 +38,7 @@ class GameLogic : CoreEngineDelegate {
         val terrainMesh = Mesh(MeshDimensions.D3, MeshUsage.STATIC, "/mesh/terrain.obj")
         val terrainTexture = Texture("/texture/lowPolyAtlas.png")
         val terrainMeshComp = TexturedMeshEntityComponent(terrainMesh, terrainTexture)
-        val terrain = Entity(
+        val terrain = Entity3D(
             Vector3f(0f),
             Vector3f(0f),
             Vector3f(1f, 1f, 1f)).apply {
@@ -50,7 +49,7 @@ class GameLogic : CoreEngineDelegate {
         val cubeMesh = Mesh(MeshDimensions.D3, MeshUsage.STATIC, "/mesh/cube.obj")
         val boxTexture = Texture("/texture/box.jpg")
         val boxMeshComp = TexturedMeshEntityComponent(cubeMesh, boxTexture)
-        val box = Entity(
+        val box = Entity3D(
             Vector3f(5f, 0.0f, 5f),
             Vector3f(0f),
             Vector3f(1f, 1f, 1f)).apply {
@@ -61,7 +60,7 @@ class GameLogic : CoreEngineDelegate {
         val wallTexture = Texture("/texture/wall.jpg")
         val wallMeshComp = TexturedMeshEntityComponent(cubeMesh, wallTexture)
         for(z in 0 until 10) {
-            val wall = Entity(
+            val wall = Entity3D(
                 Vector3f(4.9f, 0.0f, z * 1.0f),
                 Vector3f(0f),
                 Vector3f(0.1f, 3f, 1f)).apply {
