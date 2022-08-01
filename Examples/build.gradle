@@ -41,7 +41,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.nflsilva:K3DGE:bf81ca3310'
+    implementation 'com.github.nflsilva:K3DGE:0.0.1'
     implementation 'org.joml:joml:1.10.4'
 
     runtimeOnly "org.lwjgl:lwjgl::$lwjglNatives"
