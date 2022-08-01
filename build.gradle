@@ -23,6 +23,7 @@ buildscript {
     repositories {
         mavenCentral()
     }
+
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
@@ -31,6 +32,7 @@ buildscript {
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.6.21'
     id 'java-library'
+    id 'maven-publish'
 }
 
 group "com.github.nflsilva"
@@ -61,4 +63,22 @@ dependencies {
     runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
     implementation "org.joml:joml:${jomlVersion}"
 
+}
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
+wrapper {
+    gradleVersion = "7.3.3"
+    distributionType = Wrapper.DistributionType.ALL
 }
