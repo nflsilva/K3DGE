@@ -5,7 +5,10 @@ import k3dge.core.CoreEngineDelegate
 import k3dge.core.entity.Entity2D
 import k3dge.core.entity.Entity3D
 import k3dge.core.entity.component.EntityMoveComponent
+import k3dge.core.entity.component2d.ParticleComponent
 import k3dge.core.entity.component2d.SpriteAnimationComponent
+import k3dge.render.common.dto.ColorData
+import k3dge.render.renderer2d.dto.Particle
 import k3dge.render.renderer2d.model.SpriteAtlas
 import k3dge.render.renderer2d.model.SpriteSizeEnum
 import k3dge.ui.dto.InputStateData
@@ -27,11 +30,7 @@ class GameLogic : CoreEngineDelegate {
 
     override fun onStart() {
 
-        val animatedSprite = Entity2D(
-            Vector2f(0f, 0f),
-            0.0f,
-            Vector2f(10f, 10f))
-
+        val animatedSprite = Entity2D(Vector2f(0f, 0f), 0f, Vector2f(10f, 10f))
         val atlas = SpriteAtlas("/texture/dungeon.png", 9, 28).apply {
             setSprite(SpriteSizeEnum.X16,"walking0", 6, 0)
             setSprite(SpriteSizeEnum.X16,"walking1", 6, 1)
@@ -66,20 +65,16 @@ class GameLogic : CoreEngineDelegate {
         }
 
         animatedSprite.addComponent(animComp)
-        animatedSprite.addComponent(EntityMoveComponent(50F))
+        animatedSprite.addComponent(EntityMoveComponent(500F))
         engine.addEntity(animatedSprite)
 
-
-
         val particleEntity = Entity2D(
-            Vector2f(0f, 0f),
+            Vector2f(10f, 10f),
             0.0f,
-            Vector2f(10f, 10f))
-
-
+            Vector2f(1f, 1f))
+        val particleComponent = ParticleComponent(0, 15f, ColorData(1.0f, 0.0f, 0.0f, 1.0f))
+        particleEntity.addComponent(particleComponent)
         engine.addEntity(particleEntity)
-
-
 
     }
     override fun onUpdate(elapsedTime: Double, input: InputStateData) {

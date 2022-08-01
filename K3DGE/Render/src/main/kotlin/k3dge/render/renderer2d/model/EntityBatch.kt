@@ -34,7 +34,7 @@ open class EntityBatch(private val maxEntities: Int,
             bindAttributeBuffer(attribute.value.vbo, attribute.value.buffer.flip())
         }
 
-        bindIndexBuffer(indexesVbo, indices .flip())
+        bindIndexBuffer(indexesVbo, indices.flip())
 
         glBindVertexArray(vao)
         for (i in 0 until attributes.size) {
@@ -55,7 +55,7 @@ open class EntityBatch(private val maxEntities: Int,
         val buffer = BufferUtils.createIntBuffer(maxEntities * nVerticesPerEntity * size)
         glBindBuffer(GL_ARRAY_BUFFER, vbo)
         glBufferData(GL_ARRAY_BUFFER, buffer, GL_DYNAMIC_DRAW)
-        glVertexAttribPointer(index, size, GL_FLOAT, false, 0, 0)
+        glVertexAttribIPointer(index, size, GL_UNSIGNED_INT, 0, 0)
         glBindBuffer(GL_ARRAY_BUFFER, 0)
         attributes[index] = Buffers(vbo, buffer)
     }

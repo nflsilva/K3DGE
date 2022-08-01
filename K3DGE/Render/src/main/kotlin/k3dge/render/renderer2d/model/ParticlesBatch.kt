@@ -17,14 +17,14 @@ class ParticlesBatch(maxEntities: Int):
     init {
         addFloatAttributeBuffer(POSITION_INDEX, 2)
         addFloatAttributeBuffer(SIZE_INDEX, 1)
-        addFloatAttributeBuffer(TYPE_INDEX, 1)
+        addIntAttributeBuffer(TYPE_INDEX, 1)
         addFloatAttributeBuffer(COLOR_INDEX, 4)
     }
 
     fun addParticle(particle: Particle, transform: Transform2DData) {
         addAttributeData(POSITION_INDEX, transform.position.x, transform.position.y)
         addAttributeData(SIZE_INDEX, particle.size)
-        addAttributeData(TYPE_INDEX, 1f)
+        addAttributeData(TYPE_INDEX, particle.type)
         addAttributeData(COLOR_INDEX, particle.color.r, particle.color.g, particle.color.b, particle.color.a)
         addIndexData(nEntities)
         nEntities += 1

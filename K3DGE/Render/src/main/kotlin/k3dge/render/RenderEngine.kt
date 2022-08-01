@@ -10,6 +10,7 @@ import k3dge.render.common.model.Mesh
 import k3dge.render.common.shader.Shader
 import k3dge.render.common.model.Texture
 import k3dge.render.renderer2d.dto.Particle
+import k3dge.render.renderer2d.dto.Shape
 import k3dge.render.renderer2d.dto.Sprite
 import k3dge.render.renderer2d.dto.Transform2DData
 import k3dge.render.renderer2d.model.SpriteSizeEnum
@@ -77,6 +78,10 @@ class RenderEngine(configuration: EngineConfiguration) {
     fun render2D(particle: Particle, transform: TransformData){
         val t = transform as? Transform2DData ?: return
         renderer2D.renderParticle(particle, t)
+    }
+    fun render2D(shape: Shape, transform: TransformData){
+        val t = transform as? Transform2DData ?: return
+        renderer2D.renderShape(shape, t)
     }
 
 }
