@@ -1,5 +1,0 @@
-include(":Tools")
-include(":UI")
-include(":Render")
-include(":Core")
-rootProject.name = "K3DGE"

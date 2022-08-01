@@ -1,8 +1,0 @@
-dependencies {
-    implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
-
-    implementation "org.lwjgl:lwjgl"
-    implementation "org.lwjgl:lwjgl-stb:$lwjglVersion"
-    runtimeOnly "org.lwjgl:lwjgl::$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-stb::$lwjglNatives"
-}
