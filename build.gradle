@@ -40,6 +40,7 @@ version "0.0.1"
 repositories {
     mavenCentral()
 }
+
 dependencies {
     implementation platform('org.jetbrains.kotlin:kotlin-bom')
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
@@ -61,17 +62,4 @@ dependencies {
     runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
     implementation "org.joml:joml:${jomlVersion}"
 
-}
-
-subprojects {
-    apply plugin: "org.jetbrains.kotlin.jvm"
-    group "pt.k3dge"
-    version "0.0.1-SNAPSHOT"
-
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-
-    }
 }
