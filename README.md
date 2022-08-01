@@ -1,12 +1,10 @@
 # K3DGE
-A very simple 3D game engine written in Kotlin
+A very simple 3D and 2D game engine written in Kotlin
 
 <div id="top"></div>
 <br />
 <div align="center">
   <img src="/assets/k3dge.gif">
-  <br />
-  <h3 align="center">K3DGE</h3>
 </div>
 
 [![](https://jitpack.io/v/nflsilva/K3DGE.svg)](https://jitpack.io/#nflsilva/K3DGE)
