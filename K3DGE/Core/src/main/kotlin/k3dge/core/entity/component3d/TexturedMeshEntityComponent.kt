@@ -5,8 +5,8 @@ import k3dge.core.common.dto.UpdateData
 import k3dge.render.common.enum.MeshDimensions
 import k3dge.render.common.enum.MeshUsage
 import k3dge.render.common.model.Mesh
-import k3dge.render.common.shader.Shader
 import k3dge.render.common.model.Texture
+import k3dge.render.common.shader.Shader
 import k3dge.render.renderer3d.shader.Shader3D
 
 class TexturedMeshEntityComponent(private val mesh: Mesh,
@@ -26,7 +26,7 @@ class TexturedMeshEntityComponent(private val mesh: Mesh,
     }
     private fun onUpdate(context: UpdateData){
         context.entity?.let { entity ->
-            context.graphics.render3D(mesh, texture, shader, entity.transform.data)
+            context.graphics.render3D(mesh, texture, shader, entity.transform)
         }
     }
     private fun cleanUp(){

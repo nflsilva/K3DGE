@@ -6,8 +6,9 @@ import k3dge.core.camera.Camera
 import k3dge.core.camera.component.RotateCameraComponent
 import k3dge.core.camera.component.TranslateCameraComponent
 import k3dge.core.camera.component.ZoomCameraComponent
-import k3dge.core.entity.Entity
-import k3dge.core.entity.component2d.GuiEntityComponent
+import k3dge.core.entity.Entity2D
+import k3dge.core.entity.Entity3D
+import k3dge.core.entity.component2d.GuiComponent
 import k3dge.core.entity.component3d.TexturedMeshEntityComponent
 import k3dge.core.light.Light
 import k3dge.core.light.component.ColorLightComponent
@@ -42,9 +43,9 @@ class GameLogic : CoreEngineDelegate {
         val terrainMesh = Mesh(MeshDimensions.D3, MeshUsage.STATIC, "/mesh/terrainRandomElevation30.obj")
         val pineTreeMesh = Mesh(MeshDimensions.D3, MeshUsage.STATIC, "/mesh/pineTree.obj")
 
-        val lowPolyAtlasTextureData = ResourceManager.loadTextureFromFile("/texture/lowPolyAtlas.png")!!
+        val lowPolyAtlasTextureData = ResourceManager.loadTextureFromFile("/texture/lowPolyAtlas.png")
         val lowPolyAtlasTexture = Texture(lowPolyAtlasTextureData.width, lowPolyAtlasTextureData.height, lowPolyAtlasTextureData.data)
-        val testTextureData = ResourceManager.loadTextureFromFile("/texture/cube.png")!!
+        val testTextureData = ResourceManager.loadTextureFromFile("/texture/cube.png")
         val testTexture = Texture(testTextureData.width, testTextureData.height, testTextureData.data)
 
         val r = Random()
@@ -53,7 +54,7 @@ class GameLogic : CoreEngineDelegate {
             for(y in 1 until 30)
             {
                 if(r.nextInt(5) == 0){
-                    val pineTree = Entity(
+                    val pineTree = Entity3D(
                         Vector3f( x.toFloat(), 0f, y.toFloat()),
                         Vector3f(0f, 0f, 0f),
                         Vector3f(0.5f, 0.5f, 0.5f)).apply {
@@ -65,15 +66,15 @@ class GameLogic : CoreEngineDelegate {
         }
 
         val terrainMeshComp = TexturedMeshEntityComponent(terrainMesh, lowPolyAtlasTexture)
-        val terrain = Entity(Vector3f(0f, 0f, 0f), Vector3f(0f, 0f, 0f), Vector3f(1f, 1f, 1f))
+        val terrain = Entity3D(Vector3f(0f, 0f, 0f), Vector3f(0f, 0f, 0f), Vector3f(1f, 1f, 1f))
         terrain.addComponent(terrainMeshComp)
         engine.addEntity(terrain)
 
-        val guiComp = GuiEntityComponent(testTexture)
-        val gui = Entity(
-            Vector2f(0.5f, 0.5f),
+        val guiComp = GuiComponent(testTexture)
+        val gui = Entity2D(
+            Vector2f(10.5f, 10.5f),
             0.0f,
-            Vector2f(0.25f, 0.25f)).apply {
+            Vector2f(5.0f, 5.0f)).apply {
             addComponent(guiComp)
         }
         engine.addEntity(gui)

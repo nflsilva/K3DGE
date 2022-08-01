@@ -24,7 +24,7 @@ class ZoomCameraComponent(private val speed: Float,
                 val nPlane = Vector3f(0.0f, 1.0f, 0.0f)
                 val xPlane = Vector3f(0.0f, 0.0f, 0.0f)
                 val mRay = Vector3f(camera.forward)
-                val t = Vector3f(nPlane).dot(xPlane.sub(camera.transform.position)) / Vector3f(nPlane).dot(mRay)
+                val t = Vector3f(nPlane).dot(xPlane.sub(camera.transform.getPos())) / Vector3f(nPlane).dot(mRay)
                 val delta = zoomSpeed * context.elapsedTime.toFloat()
 
                 var isWithinNearLimits = true

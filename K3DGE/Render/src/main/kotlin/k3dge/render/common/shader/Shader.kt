@@ -9,6 +9,7 @@ import org.joml.Vector3f
 import org.joml.Vector4f
 import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL20.*
+import org.lwjgl.opengl.GL32.GL_PROGRAM_POINT_SIZE
 
 abstract class Shader(vertexData: ShaderData, fragmentData: ShaderData) {
 

@@ -1,20 +1,18 @@
 package programs.d3.v0
 
-import k3dge.render.renderer3d.shader.Shader3D
 import k3dge.core.CoreEngine
 import k3dge.core.CoreEngineDelegate
 import k3dge.core.camera.Camera
 import k3dge.core.camera.component.RotateCameraComponent
 import k3dge.core.camera.component.TranslateCameraComponent
 import k3dge.core.camera.component.ZoomCameraComponent
-import k3dge.core.entity.Entity
+import k3dge.core.entity.Entity3D
 import k3dge.core.entity.component.SpinEntityComponent
 import k3dge.core.entity.component3d.TexturedMeshEntityComponent
 import k3dge.render.common.enum.MeshDimensions
 import k3dge.render.common.enum.MeshUsage
 import k3dge.render.common.model.Mesh
 import k3dge.render.common.model.Texture
-import k3dge.tools.ResourceManager
 import k3dge.ui.dto.InputStateData
 import org.joml.Random
 import org.joml.Vector3f
@@ -46,7 +44,7 @@ class GameLogic : CoreEngineDelegate {
 
         val r = Random()
         for(i in 0 until 100) {
-            val cube = Entity(
+            val cube = Entity3D(
                 Vector3f((r.nextFloat() * 2 - 1) * 10, (r.nextFloat() * 2 - 1) * 10, -(r.nextFloat() * 10)),
                 Vector3f(r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1),
                 Vector3f(1f, 1f, 1f))
@@ -54,7 +52,7 @@ class GameLogic : CoreEngineDelegate {
             cube.addComponent(spinComp)
             engine.addEntity(cube)
 
-            val teddy = Entity(
+            val teddy = Entity3D(
                 Vector3f((r.nextFloat() * 2 - 1) * 10, (r.nextFloat() * 2 - 1) * 10, -(r.nextFloat() * 10)),
                 Vector3f(r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1, r.nextFloat() * 2 - 1),
                 Vector3f(0.05f, 0.05f, 0.05f))

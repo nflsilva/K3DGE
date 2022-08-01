@@ -27,7 +27,7 @@ class SpriteAnimationComponent(): Component()  {
         val currentKeyframe = currentStateKeyframes[currentKeyframeIndex % currentStateKeyframes.size]
 
         context.entity?.let { entity ->
-            context.graphics.render2D(currentKeyframe.sprite, entity.transform.data)
+            context.graphics.render2D(currentKeyframe.sprite, entity.transform)
         }
 
         currentKeyframeElapsedTime += context.elapsedTime

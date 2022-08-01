@@ -13,7 +13,7 @@ uniform mat4 in_projectionMatrix;
 out vec2 textureCoords;
 out float textureIndex;
 
-vec2 translate(vec2 v, vec2 t){
+vec2 translate(vec2 v, vec2 t) {
     return v + t;
 }
 vec2 rotate(vec2 v, float a) {
@@ -28,14 +28,11 @@ vec2 scale(vec2 v, vec2 s) {
 
 void main(){
 
-    float hsize = in_size / 2f;
-    vec2 final_position = in_position - hsize;
-
-    final_position = scale(final_position, in_scale);
+    vec2 final_position = scale(in_position, in_scale);
     final_position = rotate(final_position, in_rotation);
     final_position = translate(final_position, in_translation);
 
-    gl_Position = in_projectionMatrix * vec4(final_position + hsize, 0f, 1f);
+    gl_Position = in_projectionMatrix * vec4(final_position, 0f, 1f);
     textureCoords = in_textureCoords;
     textureIndex = in_textureIndex;
 };

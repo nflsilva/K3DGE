@@ -1,11 +1,12 @@
 package k3dge.core
 
-import k3dge.render.RenderEngine
-import k3dge.core.camera.Camera
-import k3dge.core.common.dto.UpdateData
 import k3dge.configuration.EngineConfiguration
-import k3dge.core.entity.Entity
+import k3dge.core.camera.Camera
+import k3dge.core.common.BaseEntity
+import k3dge.core.common.dto.UpdateData
+import k3dge.core.entity.Entity3D
 import k3dge.core.light.Light
+import k3dge.render.RenderEngine
 import k3dge.tools.Log
 import k3dge.ui.UIEngine
 import k3dge.ui.dto.InputStateData
@@ -13,7 +14,7 @@ import k3dge.ui.dto.InputStateData
 class CoreEngine(configuration: EngineConfiguration? = null) {
 
     private var isRunning: Boolean = false
-    private var gameObjects: MutableList<Entity> = mutableListOf()
+    private var gameObjects: MutableList<BaseEntity> = mutableListOf()
     private var gameLights: MutableList<Light> = mutableListOf()
     private var camera: Camera? = null
 
@@ -113,7 +114,7 @@ class CoreEngine(configuration: EngineConfiguration? = null) {
         isRunning = true
         run()
     }
-    fun addEntity(gameObject: Entity){
+    fun addEntity(gameObject: BaseEntity){
         gameObjects.add(gameObject)
     }
     fun addEntity(camera: Camera){

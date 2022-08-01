@@ -14,12 +14,11 @@ class LightRotateLightComponent(private var speed: Float): Component() {
     }
     private fun onUpdate(context: UpdateData) {
         context.light?.let { light ->
+
             val rotationMatrix = Matrix4f().rotate(Util.degreeToRadian(speed), Vector3f(0.0f, 0.0f, 1.0f))
-            val newPosition = Vector4f(light.transform.position.x, light.transform.position.y, light.transform.position.z, 1.0F)
-                .mul(rotationMatrix)
-            light.transform.position.x = newPosition.x
-            light.transform.position.y = newPosition.y
-            light.transform.position.z = newPosition.z
+            val newPosition = Vector4f(light.transform.getPos(), 1.0F).mul(rotationMatrix)
+
+            light.transform.setPosition(newPosition)
         }
     }
 }
