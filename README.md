@@ -7,6 +7,7 @@ A very simple 3D game engine written in Kotlin
   <img src="/assets/k3dge.gif">
   <br />
   <h3 align="center">K3DGE</h3>
+[![](https://jitpack.io/v/nflsilva/K3DGE.svg)](https://jitpack.io/#nflsilva/K3DGE)
 </div>
 
 <!-- TABLE OF CONTENTS -->
