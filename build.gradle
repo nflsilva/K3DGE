@@ -28,13 +28,12 @@ buildscript {
     }
 }
 
-
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.6.21'
     id 'java-library'
 }
 
-group "pt.k3dge"
+group "com.github.nflsilva"
 version "0.0.1"
 
 repositories {
