@@ -135,9 +135,10 @@ open class EntityBatch(
         }
     }
 
-    private fun bindIndexBuffer(vbo: Int, buffer: IntBuffer) {
+    private fun bindIndexBuffer(vbo: Int, buffer: Buffer) {
+        val intBuffer = buffer as? IntBuffer ?: return
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo)
-        glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, buffer)
+        glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, intBuffer)
     }
 
 }
