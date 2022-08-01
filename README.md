@@ -4,7 +4,7 @@ A very simple 3D game engine written in Kotlin
 <div id="top"></div>
 <br />
 <div align="center">
-  <img src="/Media/k3dge.gif">
+  <img src="/assets/k3dge.gif">
   <br />
   <h3 align="center">K3DGE</h3>
 </div>
