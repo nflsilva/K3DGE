@@ -36,7 +36,7 @@ open class EntityBatch(
             bindAttributeBuffer(attribute.value.vbo, attribute.value.buffer.flip())
         }
 
-        bindIndexBuffer(indexesVbo, (indices as IntBuffer).flip())
+        //bindIndexBuffer(indexesVbo, (indices as IntBuffer).flip())
 
         glBindVertexArray(vao)
         for (i in 0 until attributes.size) {
