@@ -27,10 +27,10 @@ class ShapesBatch(maxShapes: Int) :
 
     fun addShape(shape: Shape, transform: Transform2DData) {
 
-        val tl = Vector2f(0f, 1f)
-        val bl = Vector2f(0f, 0f)
-        val br = Vector2f(1f, 0f)
-        val tr = Vector2f(1f, 1f)
+        val tl = Vector2f(-0.5f, 0.5f)
+        val bl = Vector2f(-0.5f, -0.5f)
+        val br = Vector2f(0.5f, -0.5f)
+        val tr = Vector2f(0.5f, 0.5f)
 
         addAttributeData(
             POSITION_INDEX,
