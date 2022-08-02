@@ -11,16 +11,16 @@ in vec4 color;
 out vec4 out_color;
 
 void process_circle() {
-    float R = 0.5;
-    float dist = sqrt(dot(center-0.5f,center-0.5f));
-    if (dist >= R){ discard; }
+    float radius = 0.5;
+    float dist = sqrt(dot(center,center));
+    if (dist >= radius){ discard; }
 }
 
 void process_donut() {
-    float R = 0.5;
-    float R2 = 0.25;
-    float dist = sqrt(dot(center-0.5f,center-0.5f));
-    if (dist >= R || dist <= R2)
+    float radius = 0.5;
+    float inner_radius = 0.25;
+    float dist = sqrt(dot(center,center));
+    if (dist >= radius || dist <= inner_radius)
     { discard; }
 }
 
