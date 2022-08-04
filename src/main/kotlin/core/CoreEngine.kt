@@ -5,6 +5,7 @@ import core.camera.Camera
 import core.common.BaseEntity
 import core.common.dto.UpdateData
 import core.light.Light
+import physics.PhysicsEngine
 import render.RenderEngine
 import tools.common.Log
 import tools.configuration.EngineConfiguration
@@ -20,12 +21,14 @@ class CoreEngine(configuration: EngineConfiguration? = null) {
 
     private val uiEngine: UIEngine
     private val renderEngine: RenderEngine
+    private val physicsEngine: PhysicsEngine
     private val configuration: EngineConfiguration
     var delegate: CoreEngineDelegate? = null
 
     init {
         this.configuration = configuration ?: EngineConfiguration.default()
         renderEngine = RenderEngine(this.configuration)
+        physicsEngine = PhysicsEngine(this.configuration)
         uiEngine = UIEngine(this.configuration)
     }
 
@@ -87,20 +90,22 @@ class CoreEngine(configuration: EngineConfiguration? = null) {
     private fun onFrame() {
         delegate?.onFrame()
         uiEngine.onFrame()
+        physicsEngine.onFrame()
         renderEngine.onFrame()
     }
 
     private fun onUpdate(elapsedTime: Double, input: InputStateData) {
         delegate?.onUpdate(elapsedTime, input)
         uiEngine.onUpdate()
+        physicsEngine.onUpdate()
         renderEngine.onUpdate()
         gameObjects.forEach { o ->
-            o.onUpdate(UpdateData(elapsedTime, input, renderEngine, entity = o))
+            o.onUpdate(UpdateData(elapsedTime, input, renderEngine, physicsEngine, entity = o))
         }
         gameLights.forEach { l ->
-            l.onUpdate(UpdateData(elapsedTime, input, renderEngine, light = l))
+            l.onUpdate(UpdateData(elapsedTime, input, renderEngine, physicsEngine, light = l))
         }
-        camera?.onUpdate(UpdateData(elapsedTime, input, renderEngine, camera = camera))
+        camera?.onUpdate(UpdateData(elapsedTime, input, renderEngine, physicsEngine, camera = camera))
     }
 
     private fun onCleanUp() {
@@ -121,11 +126,9 @@ class CoreEngine(configuration: EngineConfiguration? = null) {
     fun addEntity(gameObject: BaseEntity) {
         gameObjects.add(gameObject)
     }
-
     fun addEntity(camera: Camera) {
         this.camera = camera
     }
-
     fun addEntity(light: Light) {
         gameLights.add(light)
     }

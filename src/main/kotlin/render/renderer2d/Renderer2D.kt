@@ -64,13 +64,11 @@ class Renderer2D(private val configuration: EngineConfiguration) {
         glCullFace(GL_BACK)
         draw()
     }
-
     fun onUpdate() {
         spriteBatches.forEach { it.clear() }
         particleBatches.forEach { it.clear() }
         shapeBatches.forEach { it.clear() }
     }
-
     fun onCleanUp() {
         for (batch in spriteBatches) {
             batch.cleanUp()
@@ -82,13 +80,11 @@ class Renderer2D(private val configuration: EngineConfiguration) {
             addToSuitableSpriteBatch(data, transform)
         }
     }
-
     fun renderParticle(data: Particle, transform: Transform2DData) {
         if (isVisible(transform, data.size)) {
             addToSuitableParticleBatch(data, transform)
         }
     }
-
     fun renderShape(data: Shape, transform: Transform2DData) {
         if (isVisible(transform, 0f)) {
             addToSuitableShapeBatch(data, transform)
@@ -121,7 +117,6 @@ class Renderer2D(private val configuration: EngineConfiguration) {
 
         suitableBatch.addSprite(data, transform)
     }
-
     private fun addToSuitableParticleBatch(data: Particle, transform: Transform2DData) {
         var suitableBatch: ParticlesBatch? = null
         for (batch in particleBatches) {
@@ -139,7 +134,6 @@ class Renderer2D(private val configuration: EngineConfiguration) {
 
         suitableBatch.addParticle(data, transform)
     }
-
     private fun addToSuitableShapeBatch(data: Shape, transform: Transform2DData) {
         var suitableBatch: ShapesBatch? = null
         for (batch in shapeBatches) {
@@ -170,7 +164,6 @@ class Renderer2D(private val configuration: EngineConfiguration) {
         drawSprites(projectionMatrix)
         drawShapes(projectionMatrix)
     }
-
     private fun drawSprites(projectionMatrix: Matrix4f) {
         for (batch in spriteBatches) {
             batch.bind()
@@ -185,7 +178,6 @@ class Renderer2D(private val configuration: EngineConfiguration) {
             batch.unbind()
         }
     }
-
     private fun drawParticles(projectionMatrix: Matrix4f) {
         for (batch in particleBatches) {
             batch.bind()
@@ -197,7 +189,6 @@ class Renderer2D(private val configuration: EngineConfiguration) {
             batch.unbind()
         }
     }
-
     private fun drawShapes(projectionMatrix: Matrix4f) {
         for (batch in shapeBatches) {
             batch.bind()

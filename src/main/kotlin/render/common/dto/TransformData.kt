@@ -18,5 +18,6 @@ interface TransformData {
 
     fun scale(vec: Vector2f)
     fun scale(vec: Vector3f)
+    fun getScal(): Vector3f
 
 }

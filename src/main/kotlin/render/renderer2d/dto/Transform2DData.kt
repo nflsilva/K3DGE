@@ -44,4 +44,8 @@ class Transform2DData(
         scale.add(Vector2f(vec.x, vec.y))
     }
 
+    override fun getScal(): Vector3f {
+        return Vector3f(scale, 0.0f)
+    }
+
 }

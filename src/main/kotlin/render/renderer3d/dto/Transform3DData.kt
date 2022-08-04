@@ -45,4 +45,8 @@ class Transform3DData(
         scale.add(vec)
     }
 
+    override fun getScal(): Vector3f {
+        return scale
+    }
+
 }
